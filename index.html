@@ -1,1058 +1,324 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>THE INTERNET — Greatest Technology Ever</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:ital,wght@0,300;0,400;0,600;0,700;0,900;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
-  <style>
-    :root {
-      --neon-cyan: #00FFFF;
-      --neon-pink: #FF00AA;
-      --neon-green: #00FF88;
-      --neon-yellow: #FFEE00;
-      --neon-orange: #FF6600;
-      --neon-purple: #BB00FF;
-      --dark: #03030A;
-      --dark2: #07071A;
-      --dark3: #0D0D28;
-      --card: #0A0A1F;
-      --card2: #0E0E24;
-      --border: rgba(0,255,255,0.15);
-      --text: #C8D8FF;
-      --dim: #5566AA;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LayerUp 3D — Printed for Life</title>
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-    body {
-      background: var(--dark);
-      color: var(--text);
-      font-family: 'Exo 2', sans-serif;
-      overflow-x: hidden;
-    }
+<style>
+/* RESET + ROOT */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --black:#09090b;--surface:#111116;--card:#16161c;--border:rgba(255,255,255,0.07);
+  --border-hi:rgba(255,255,255,0.14);
+  --cyan:#00e5c3;--cyan-dim:rgba(0,229,195,0.1);--cyan-glow:rgba(0,229,195,0.25);
+  --text:#ededf0;--muted:#7a7a86;--subtle:#3d3d48;--radius:14px;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--black);color:var(--text);overflow-x:hidden;line-height:1.6;}
+html{scroll-behavior:smooth;}
 
-    body::after {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.06) 2px, rgba(0,0,0,0.06) 4px);
-      pointer-events: none;
-      z-index: 9998;
-    }
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;height:62px;background:rgba(9,9,11,0.9);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:1.65rem;letter-spacing:0.05em;color:var(--text);text-decoration:none;}
+.logo span{color:var(--cyan);}
+nav ul{display:flex;gap:2rem;list-style:none;}
+nav a{color:var(--muted);text-decoration:none;font-size:0.875rem;font-weight:500;letter-spacing:0.02em;transition:color .2s;}
+nav a:hover{color:var(--text);}
+.nav-cta{background:var(--cyan)!important;color:var(--black)!important;padding:.4rem 1.1rem;border-radius:50px;font-weight:700!important;}
 
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 9997;
-      opacity: 0.25;
-    }
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;padding:7rem 2.5rem 4rem;position:relative;overflow:hidden;}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:52px 52px;mask-image:radial-gradient(ellipse 90% 90% at 50% 50%,black 20%,transparent 100%);}
+.hero-glow{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 55% 65% at 30% 55%,rgba(0,229,195,0.07) 0%,transparent 70%);}
+.hero-inner{position:relative;max-width:1200px;margin:0 auto;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;}
+.hero-tag{display:inline-flex;align-items:center;gap:.5rem;background:var(--cyan-dim);border:1px solid rgba(0,229,195,0.22);color:var(--cyan);font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:.35rem .9rem;border-radius:50px;margin-bottom:1.4rem;}
+.hero-tag::before{content:'';width:6px;height:6px;background:var(--cyan);border-radius:50%;}
+h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,7vw,5.8rem);line-height:.95;letter-spacing:.025em;margin-bottom:1.4rem;}
+h1 em{color:var(--cyan);font-style:normal;}
+.hero-sub{font-size:1rem;color:var(--muted);max-width:420px;margin-bottom:2.5rem;font-weight:300;line-height:1.75;}
+.btn-group{display:flex;gap:.9rem;flex-wrap:wrap;}
+.btn{display:inline-flex;align-items:center;gap:.45rem;padding:.75rem 1.7rem;border-radius:50px;font-size:.875rem;font-weight:600;text-decoration:none;cursor:pointer;border:none;transition:transform .2s,box-shadow .2s;}
+.btn:hover{transform:translateY(-2px);}
+.btn-primary{background:var(--cyan);color:var(--black);}
+.btn-primary:hover{box-shadow:0 8px 32px var(--cyan-glow);}
+.btn-ghost{background:transparent;color:var(--text);border:1px solid var(--border-hi);}
+.btn-ghost:hover{border-color:rgba(255,255,255,.3);}
+.hero-visual{display:flex;align-items:center;justify-content:center;}
+.print-art{width:320px;height:320px;position:relative;}
+.ring{position:absolute;border-radius:50%;border:1px solid;animation:spin linear infinite;}
+.r1{inset:0;border-color:rgba(0,229,195,.18);animation-duration:20s;}
+.r2{inset:28px;border-color:rgba(0,229,195,.13);animation-duration:14s;animation-direction:reverse;}
+.r3{inset:56px;border-color:rgba(0,229,195,.1);animation-duration:9s;}
+@keyframes spin{to{transform:rotate(360deg);}}
 
-    * { cursor: none !important; }
-    #cursor {
-      position: fixed;
-      width: 14px; height: 14px;
-      background: var(--neon-cyan);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 10000;
-      transform: translate(-50%,-50%);
-      mix-blend-mode: screen;
-      box-shadow: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-cyan);
-    }
-    #cursor-trail {
-      position: fixed;
-      width: 38px; height: 38px;
-      border: 1px solid rgba(0,255,255,0.4);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9999;
-      transform: translate(-50%,-50%);
-      transition: all 0.12s ease;
-      mix-blend-mode: screen;
-    }
+/* STATS */
+.stats{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:2rem 2.5rem;background:var(--surface);}
+.stats-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);}
+.stat{text-align:center;padding:1rem;}
+.stat-num{font-family:'Bebas Neue',sans-serif;font-size:2.6rem;letter-spacing:.04em;line-height:1;}
+.c{color:var(--cyan);}
+.stat-label{font-size:.78rem;color:var(--muted);margin-top:.3rem;letter-spacing:.03em;}
 
-    nav {
-      position: fixed;
-      top: 0; width: 100%;
-      z-index: 500;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 3rem;
-      height: 62px;
-      background: rgba(3,3,10,0.9);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--border);
-    }
-    nav::after {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--neon-cyan), var(--neon-pink), var(--neon-green), transparent);
-      animation: navShift 6s linear infinite;
-    }
-    @keyframes navShift { 0%,100%{opacity:0.5} 50%{opacity:1} }
+/* SHARED */
+section{padding:5rem 2.5rem;}
+.section-inner{max-width:1200px;margin:0 auto;}
+.section-tag{font-family:'DM Mono',monospace;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:.7rem;}
+.section-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4vw,3rem);letter-spacing:.03em;line-height:1;margin-bottom:.5rem;}
+.section-sub{font-size:.95rem;color:var(--muted);font-weight:300;margin-bottom:2.5rem;}
 
-    .nav-logo {
-      font-family: 'Orbitron', monospace;
-      font-size: 1rem;
-      font-weight: 900;
-      letter-spacing: 0.18em;
-      color: var(--neon-cyan);
-      text-shadow: 0 0 15px var(--neon-cyan);
-      text-decoration: none;
-    }
-    .nav-logo span { color: var(--neon-pink); text-shadow: 0 0 15px var(--neon-pink); }
+/* CATEGORIES — SMALL ONLY */
+.cat-grid{display:grid;grid-template-columns:1fr;gap:1.5rem;}
+.cat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:2rem;position:relative;overflow:hidden;transition:border-color .25s,transform .25s;}
+.cat-card:hover{transform:translateY(-5px);border-color:rgba(0,229,195,.4);}
+.cat-badge{display:inline-block;padding:.28rem .8rem;border-radius:50px;font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:1.2rem;background:var(--cyan-dim);color:var(--cyan);border:1px solid rgba(0,229,195,.25);}
+.cat-title{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;margin-bottom:.3rem;}
+.cat-sub{font-size:.82rem;color:var(--muted);margin-bottom:1.4rem;}
+.cat-price-row{display:flex;align-items:baseline;gap:.6rem;margin-bottom:1.4rem;padding:.75rem 1rem;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:8px;}
+.price-label{font-size:.7rem;font-family:'DM Mono',monospace;color:var(--muted);}
+.price-val{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--cyan);}
+.price-note{font-size:.7rem;color:var(--muted);margin-left:auto;}
+.cat-weight{font-family:'DM Mono',monospace;font-size:.8rem;color:var(--muted);margin-bottom:1.2rem;}
+.cat-list{list-style:none;}
+.cat-list li{font-size:.83rem;padding:.38rem 0;border-bottom:1px solid var(--border);color:rgba(0,229,195,.75);display:flex;align-items:center;gap:.6rem;}
+.cat-list li::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--cyan);}
 
-    nav ul { list-style: none; display: flex; gap: 0.2rem; flex-wrap: wrap; }
-    nav ul li a {
-      text-decoration: none;
-      font-family: 'Orbitron', monospace;
-      font-size: 0.58rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--dim);
-      padding: 0.4rem 0.75rem;
-      border: 1px solid transparent;
-      border-radius: 3px;
-      transition: all 0.2s;
-    }
-    nav ul li a:hover {
-      color: var(--neon-cyan);
-      border-color: rgba(0,255,255,0.35);
-      background: rgba(0,255,255,0.05);
-      text-shadow: 0 0 8px var(--neon-cyan);
-    }
+/* PRODUCTS — SMALL ONLY */
+.filter-bar{display:flex;gap:.7rem;margin-bottom:2.5rem;}
+.fbtn{padding:.45rem 1.15rem;border-radius:50px;border:1px solid var(--border);background:var(--cyan-dim);color:var(--cyan);font-size:.82rem;font-weight:500;}
+.prod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:1.2rem;}
+.pc{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:transform .2s,border-color .2s;}
+.pc:hover{transform:translateY(-4px);border-color:rgba(0,229,195,.35);}
+.thumb{height:150px;display:flex;align-items:center;justify-content:center;font-size:3.2rem;position:relative;border-bottom:1px solid var(--border);background:linear-gradient(135deg,rgba(0,229,195,.08),rgba(0,229,195,.02));}
+.size-pip{position:absolute;top:.65rem;right:.65rem;font-size:.62rem;font-weight:700;padding:.22rem .55rem;border-radius:50px;background:var(--cyan-dim);color:var(--cyan);border:1px solid rgba(0,229,195,.3);}
+.pbody{padding:.95rem 1.05rem;}
+.pname{font-weight:600;font-size:.92rem;margin-bottom:.25rem;}
+.pdesc{font-size:.78rem;color:var(--muted);margin-bottom:.9rem;line-height:1.5;}
+.pmeta{display:flex;align-items:center;justify-content:space-between;}
+.pweight{font-family:'DM Mono',monospace;font-size:.68rem;color:var(--subtle);}
+.pprice{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;color:var(--cyan);}
 
-    .hero {
-      position: relative;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 8rem 2rem 5rem;
-      overflow: hidden;
-    }
-    .hero-grid {
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(0,255,255,0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,255,255,0.05) 1px, transparent 1px);
-      background-size: 55px 55px;
-      transform: perspective(700px) rotateX(18deg);
-      transform-origin: top center;
-      animation: gridDrift 10s linear infinite;
-    }
-    @keyframes gridDrift { to { background-position: 0 55px; } }
-
-    .hero-glow {
-      position: absolute; inset: 0;
-      background:
-        radial-gradient(ellipse 65% 50% at 50% 0%, rgba(0,255,255,0.13) 0%, transparent 60%),
-        radial-gradient(ellipse 50% 40% at 10% 65%, rgba(255,0,170,0.1) 0%, transparent 55%),
-        radial-gradient(ellipse 45% 35% at 90% 40%, rgba(0,255,136,0.08) 0%, transparent 50%),
-        radial-gradient(ellipse 70% 55% at 50% 100%, rgba(187,0,255,0.09) 0%, transparent 60%);
-    }
-
-    .hero-badge {
-      position: relative; z-index: 1;
-      display: inline-flex; align-items: center; gap: 0.6rem;
-      background: rgba(0,255,255,0.05);
-      border: 1px solid rgba(0,255,255,0.35);
-      color: var(--neon-cyan);
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.72rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      padding: 0.45rem 1.3rem;
-      border-radius: 2px;
-      margin-bottom: 2rem;
-      animation: fadeUp 0.8s ease both;
-      text-shadow: 0 0 8px var(--neon-cyan);
-    }
-    .badge-dot {
-      width: 6px; height: 6px;
-      background: var(--neon-green);
-      border-radius: 50%;
-      box-shadow: 0 0 10px var(--neon-green);
-      animation: blink 1.4s ease-in-out infinite;
-    }
-    @keyframes blink { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.3;transform:scale(0.7)} }
-
-    .hero h1 {
-      position: relative; z-index: 1;
-      font-family: 'Orbitron', monospace;
-      font-weight: 900;
-      font-size: clamp(2.2rem, 7.5vw, 6rem);
-      line-height: 1.08;
-      animation: fadeUp 0.8s 0.15s ease both;
-      margin-bottom: 0.5rem;
-    }
-    .line1 { display: block; color: #fff; text-shadow: 0 0 40px rgba(255,255,255,0.2); }
-    .line2 {
-      display: block;
-      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-green), var(--neon-cyan));
-      background-size: 200%;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      animation: shimmer 3.5s linear infinite;
-    }
-    .line3 { display: block; color: #fff; text-shadow: 0 0 40px rgba(255,255,255,0.2); }
-    @keyframes shimmer { to { background-position: 200% center; } }
-
-    .hero-sub {
-      position: relative; z-index: 1;
-      max-width: 660px;
-      font-size: 1.1rem;
-      line-height: 1.75;
-      color: #8899CC;
-      margin-top: 1.8rem;
-      animation: fadeUp 0.8s 0.3s ease both;
-    }
-
-    .hero-stats {
-      position: relative; z-index: 1;
-      display: flex; gap: 0; flex-wrap: wrap; justify-content: center;
-      margin-top: 3.5rem;
-      animation: fadeUp 0.8s 0.45s ease both;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      overflow: hidden;
-      background: rgba(10,10,31,0.7);
-      backdrop-filter: blur(10px);
-    }
-    .stat {
-      padding: 1.5rem 2.5rem;
-      border-right: 1px solid var(--border);
-      text-align: center;
-    }
-    .stat:last-child { border-right: none; }
-    .stat-num {
-      font-family: 'Orbitron', monospace;
-      font-size: 1.9rem;
-      font-weight: 900;
-      color: var(--neon-yellow);
-      text-shadow: 0 0 20px rgba(255,238,0,0.6);
-      display: block;
-    }
-    .stat-label {
-      font-size: 0.68rem;
-      color: var(--dim);
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      margin-top: 0.3rem;
-      font-family: 'Share Tech Mono', monospace;
-    }
-
-    .scroll-hint {
-      position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
-      z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
-      color: var(--dim); font-size: 0.65rem; letter-spacing: 0.2em; font-family: 'Share Tech Mono', monospace;
-      animation: fadeIn 1s 1.5s ease both;
-    }
-    .scroll-arrow {
-      width: 18px; height: 18px;
-      border-right: 2px solid var(--neon-cyan);
-      border-bottom: 2px solid var(--neon-cyan);
-      transform: rotate(45deg);
-      animation: bounceDown 1.5s ease-in-out infinite;
-      box-shadow: 2px 2px 6px rgba(0,255,255,0.4);
-    }
-    @keyframes bounceDown { 0%,100%{transform:rotate(45deg) translateY(0)} 50%{transform:rotate(45deg) translateY(5px)} }
-    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
-
-    .section-wrap {
-      max-width: 1160px;
-      margin: 0 auto;
-      padding: 6rem 2rem;
-    }
-    .section-header { margin-bottom: 3.5rem; }
-    .section-eyebrow {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.72rem;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      margin-bottom: 0.7rem;
-      display: flex; align-items: center; gap: 0.7rem;
-    }
-    .section-eyebrow::after {
-      content: '';
-      flex: 1; max-width: 80px; height: 1px;
-      background: currentColor;
-      opacity: 0.4;
-    }
-    .section-title {
-      font-family: 'Orbitron', monospace;
-      font-size: clamp(1.8rem, 4.5vw, 3rem);
-      font-weight: 900;
-      line-height: 1.1;
-      color: #fff;
-    }
-    .section-desc {
-      margin-top: 1rem;
-      color: #6677AA;
-      max-width: 580px;
-      line-height: 1.75;
-      font-size: 1rem;
-    }
-
-    .divider {
-      width: 100%;
-      height: 1px;
-      background: linear-gradient(90deg, transparent 0%, var(--border) 30%, rgba(255,0,170,0.2) 50%, var(--border) 70%, transparent 100%);
-    }
-
-    /* HISTORY */
-    #history { background: var(--dark2); }
-
-    .timeline {
-      position: relative;
-      padding-left: 2.5rem;
-    }
-    .timeline::before {
-      content: '';
-      position: absolute;
-      left: 0; top: 0; bottom: 0;
-      width: 2px;
-      background: linear-gradient(180deg, var(--neon-cyan), var(--neon-purple), var(--neon-pink), var(--neon-green));
-    }
-
-    .tl-item {
-      position: relative;
-      margin-bottom: 2.5rem;
-      padding: 1.8rem 2rem;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      transition: border-color 0.3s, box-shadow 0.3s;
-    }
-    .tl-item:hover {
-      border-color: var(--accent, var(--neon-cyan));
-      box-shadow: 0 0 30px rgba(0,255,255,0.05), inset 0 0 30px rgba(0,255,255,0.02);
-    }
-    .tl-dot {
-      position: absolute;
-      left: -3.25rem;
-      top: 2rem;
-      width: 16px; height: 16px;
-      border-radius: 50%;
-      background: var(--accent, var(--neon-cyan));
-      box-shadow: 0 0 12px var(--accent, var(--neon-cyan));
-      border: 2px solid var(--dark2);
-    }
-    .tl-year {
-      font-family: 'Orbitron', monospace;
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 0.15em;
-      color: var(--accent, var(--neon-cyan));
-      text-shadow: 0 0 8px var(--accent, var(--neon-cyan));
-      margin-bottom: 0.5rem;
-    }
-    .tl-title {
-      font-family: 'Orbitron', monospace;
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 0.75rem;
-    }
-    .tl-body {
-      color: #8899BB;
-      line-height: 1.75;
-      font-size: 0.96rem;
-    }
-    .tl-tag {
-      display: inline-block;
-      margin-top: 1rem;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.64rem;
-      letter-spacing: 0.15em;
-      padding: 0.2rem 0.7rem;
-      border-radius: 2px;
-      background: rgba(0,255,255,0.05);
-      border: 1px solid rgba(0,255,255,0.2);
-      color: var(--accent, var(--neon-cyan));
-    }
-
-    /* PROS CONS */
-    #pros-cons { background: var(--dark3); }
-
-    .pc-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2rem;
-    }
-    @media(max-width: 720px) { .pc-grid { grid-template-columns: 1fr; } }
-
-    .pc-card {
-      background: var(--card);
-      border-radius: 8px;
-      padding: 2rem;
-      border: 1px solid var(--border);
-      position: relative;
-      overflow: hidden;
-    }
-    .pc-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 3px;
-    }
-    .pc-card.pros::before { background: linear-gradient(90deg, var(--neon-green), var(--neon-cyan)); }
-    .pc-card.cons::before { background: linear-gradient(90deg, var(--neon-pink), var(--neon-orange)); }
-    .pc-card::after {
-      content: '';
-      position: absolute;
-      top: -60px; right: -60px;
-      width: 200px; height: 200px;
-      border-radius: 50%;
-      opacity: 0.04;
-    }
-    .pc-card.pros::after { background: var(--neon-green); }
-    .pc-card.cons::after { background: var(--neon-pink); }
-
-    .pc-card h3 {
-      font-family: 'Orbitron', monospace;
-      font-size: 1.3rem;
-      font-weight: 900;
-      margin-bottom: 1.8rem;
-      display: flex; align-items: center; gap: 0.7rem;
-      letter-spacing: 0.05em;
-    }
-    .pros h3 { color: var(--neon-green); text-shadow: 0 0 15px rgba(0,255,136,0.5); }
-    .cons h3 { color: var(--neon-pink); text-shadow: 0 0 15px rgba(255,0,170,0.5); }
-
-    .pc-list { list-style: none; display: flex; flex-direction: column; gap: 1.2rem; }
-    .pc-list li {
-      display: flex; gap: 1rem; align-items: flex-start;
-      font-size: 0.97rem; line-height: 1.6; color: #9AAABB;
-      padding-bottom: 1.2rem;
-      border-bottom: 1px solid rgba(255,255,255,0.04);
-    }
-    .pc-list li:last-child { border-bottom: none; padding-bottom: 0; }
-
-    .pc-icon {
-      width: 32px; height: 32px;
-      border-radius: 6px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1rem;
-      flex-shrink: 0;
-      margin-top: 1px;
-    }
-    .pros .pc-icon { background: rgba(0,255,136,0.1); border: 1px solid rgba(0,255,136,0.25); }
-    .cons .pc-icon { background: rgba(255,0,170,0.1); border: 1px solid rgba(255,0,170,0.25); }
-
-    .pc-list strong { color: #ddeeff; display: block; margin-bottom: 0.3rem; font-size: 0.94rem; font-weight: 700; }
-
-    /* IMPACT */
-    #impact { background: var(--dark); }
-
-    .impact-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-    }
-    @media(max-width: 900px) { .impact-grid { grid-template-columns: 1fr 1fr; } }
-    @media(max-width: 560px) { .impact-grid { grid-template-columns: 1fr; } }
-
-    .impact-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 1.8rem;
-      position: relative;
-      overflow: hidden;
-      transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
-    }
-    .impact-card:hover {
-      transform: translateY(-5px);
-      border-color: var(--card-accent, var(--neon-cyan));
-      box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-    }
-    .impact-card .ic-num {
-      font-family: 'Orbitron', monospace;
-      font-size: 2.4rem;
-      font-weight: 900;
-      line-height: 1;
-      margin-bottom: 0.5rem;
-    }
-    .impact-card .ic-label {
-      font-size: 0.72rem;
-      font-family: 'Share Tech Mono', monospace;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--dim);
-      margin-bottom: 0.8rem;
-    }
-    .impact-card .ic-desc {
-      font-size: 0.9rem;
-      color: #7788AA;
-      line-height: 1.65;
-    }
-    .impact-card::before {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 2px;
-      background: var(--card-accent, var(--neon-cyan));
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-    .impact-card:hover::before { opacity: 1; }
-
-    /* FUTURE */
-    #future { background: var(--dark3); }
-    .future-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
-    }
-    @media(max-width: 700px) { .future-grid { grid-template-columns: 1fr; } }
-
-    .future-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 1.8rem;
-      display: flex; gap: 1.2rem; align-items: flex-start;
-      transition: transform 0.2s, border-color 0.2s;
-    }
-    .future-card:hover {
-      transform: translateY(-3px);
-      border-color: rgba(187,0,255,0.4);
-    }
-    .future-icon {
-      font-size: 1.8rem;
-      line-height: 1;
-      flex-shrink: 0;
-      width: 52px; height: 52px;
-      background: rgba(187,0,255,0.08);
-      border: 1px solid rgba(187,0,255,0.25);
-      border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .future-card h4 {
-      font-family: 'Orbitron', monospace;
-      font-size: 0.88rem;
-      font-weight: 700;
-      color: var(--neon-purple);
-      text-shadow: 0 0 10px rgba(187,0,255,0.4);
-      margin-bottom: 0.5rem;
-      letter-spacing: 0.05em;
-    }
-    .future-card p { color: #7788AA; font-size: 0.91rem; line-height: 1.65; }
-
-    /* FAQ */
-    #faq { background: var(--dark2); }
-
-    .faq-list { display: flex; flex-direction: column; gap: 0.7rem; }
-    .faq-item {
-      background: var(--card);
-      border-radius: 6px;
-      border: 1px solid var(--border);
-      overflow: hidden;
-      transition: border-color 0.25s;
-    }
-    .faq-item.open { border-color: var(--f-accent, var(--neon-cyan)); }
-
-    .faq-q {
-      width: 100%;
-      background: none; border: none;
-      color: #ccd8ee;
-      font-family: 'Exo 2', sans-serif;
-      font-size: 1rem; font-weight: 700;
-      text-align: left;
-      padding: 1.3rem 1.6rem;
-      display: flex; justify-content: space-between; align-items: center; gap: 1rem;
-      transition: color 0.2s;
-    }
-    .faq-item.open .faq-q { color: var(--f-accent, var(--neon-cyan)); text-shadow: 0 0 8px var(--f-accent, var(--neon-cyan)); }
-
-    .faq-arrow {
-      font-size: 0.9rem;
-      font-family: 'Share Tech Mono', monospace;
-      transition: transform 0.3s;
-      flex-shrink: 0;
-      color: var(--f-accent, var(--neon-cyan));
-      border: 1px solid var(--f-accent, var(--neon-cyan));
-      width: 24px; height: 24px;
-      display: flex; align-items: center; justify-content: center;
-      border-radius: 3px;
-    }
-    .faq-item.open .faq-arrow { transform: rotate(45deg); background: rgba(0,255,255,0.08); }
-
-    .faq-a {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.45s ease, padding 0.3s ease;
-      padding: 0 1.6rem;
-      color: #7788AA;
-      line-height: 1.8;
-      font-size: 0.96rem;
-    }
-    .faq-item.open .faq-a { max-height: 500px; padding: 0 1.6rem 1.4rem; }
-
-    footer {
-      background: var(--dark);
-      border-top: 1px solid var(--border);
-      text-align: center;
-      padding: 3rem 1rem;
-      position: relative;
-    }
-    footer::before {
-      content: '';
-      position: absolute;
-      top: -1px; left: 0; right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--neon-cyan), var(--neon-pink), transparent);
-    }
-    .footer-logo {
-      font-family: 'Orbitron', monospace;
-      font-size: 1.4rem;
-      font-weight: 900;
-      color: var(--neon-cyan);
-      text-shadow: 0 0 20px var(--neon-cyan);
-      margin-bottom: 0.7rem;
-      letter-spacing: 0.15em;
-    }
-    .footer-logo span { color: var(--neon-pink); text-shadow: 0 0 20px var(--neon-pink); }
-    footer p { font-size: 0.85rem; color: var(--dim); margin-top: 0.4rem; }
-    .heart { color: var(--neon-pink); }
-
-    .reveal {
-      opacity: 0;
-      transform: translateY(32px);
-      transition: opacity 0.75s ease, transform 0.75s ease;
-    }
-    .reveal.visible { opacity: 1; transform: none; }
-
-    ::-webkit-scrollbar { width: 5px; }
-    ::-webkit-scrollbar-track { background: var(--dark); }
-    ::-webkit-scrollbar-thumb { background: var(--neon-cyan); border-radius: 5px; }
-
-    @keyframes fadeUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:none} }
-
-    .glitch { position: relative; display: inline-block; }
-    .glitch::before, .glitch::after {
-      content: attr(data-text);
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      font-family: inherit; font-size: inherit; font-weight: inherit;
-    }
-    .glitch::before {
-      color: var(--neon-pink);
-      animation: glitchTop 4s infinite;
-      clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
-      opacity: 0;
-    }
-    .glitch::after {
-      color: var(--neon-cyan);
-      animation: glitchBot 4s infinite;
-      clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
-      opacity: 0;
-    }
-    @keyframes glitchTop {
-      0%,91%,100%{transform:none;opacity:0}
-      92%{transform:translate(-2px,-2px);opacity:0.7}
-      94%{transform:translate(2px,0);opacity:0.5}
-      96%{transform:translate(-1px,1px);opacity:0}
-    }
-    @keyframes glitchBot {
-      0%,91%,100%{transform:none;opacity:0}
-      93%{transform:translate(2px,2px);opacity:0.7}
-      95%{transform:translate(-2px,0);opacity:0.5}
-      97%{transform:translate(1px,-1px);opacity:0}
-    }
-
-    @media(max-width:640px) {
-      nav { padding: 0 1rem; }
-      nav ul { gap: 0; }
-      .stat { padding: 1.2rem 1.2rem; }
-    }
-  </style>
+/* FOOTER */
+footer{padding:3rem 2.5rem;border-top:1px solid var(--border);}
+.footer-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5rem;}
+.footer-logo{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;}
+.footer-logo span{color:var(--cyan);}
+.footer-badges{display:flex;gap:.6rem;}
+.fbadge{font-size:.7rem;padding:.28rem .7rem;border-radius:50px;border:1px solid rgba(0,229,195,.25);font-family:'DM Mono',monospace;color:var(--cyan);}
+.footer-links{display:flex;gap:1.8rem;}
+.footer-links a{font-size:.82rem;color:var(--muted);text-decoration:none;}
+.footer-links a:hover{color:var(--text);}
+.footer-copy{font-size:.78rem;color:var(--subtle);}
+</style>
 </head>
+
 <body>
 
-<div id="cursor"></div>
-<div id="cursor-trail"></div>
-
+<!-- NAV -->
 <nav>
-  <a class="nav-logo" href="#">THE<span>NET</span></a>
+  <a href="#" class="logo">Layer<span>Up</span></a>
   <ul>
-    <li><a href="#history">History</a></li>
-    <li><a href="#pros-cons">Pros &amp; Cons</a></li>
-    <li><a href="#impact">Impact</a></li>
-    <li><a href="#future">Future</a></li>
-    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#printing">How It Works</a></li>
+    <li><a href="#categories">Sizes</a></li>
+    <li><a href="#products">Products</a></li>
+    <li><a href="#contact" class="nav-cta">Order Now</a></li>
   </ul>
 </nav>
 
-<div class="hero">
+<!-- HERO -->
+<section class="hero">
   <div class="hero-grid"></div>
   <div class="hero-glow"></div>
-  <div class="hero-badge"><div class="badge-dot"></div>ONLINE — Humanity's Greatest Invention</div>
-  <h1>
-    <span class="line1">THE</span>
-    <span class="line2 glitch" data-text="INTERNET">INTERNET</span>
-    <span class="line3">CHANGED EVERYTHING</span>
-  </h1>
-  <p class="hero-sub">No technology in the history of civilization has transformed more aspects of human life, faster, than the internet. From communication to commerce, science to culture — it rewired our world in under 30 years.</p>
-  <div class="hero-stats">
-    <div class="stat"><span class="stat-num">5.4B+</span><div class="stat-label">Users Online</div></div>
-    <div class="stat"><span class="stat-num">$30T+</span><div class="stat-label">Economic Impact</div></div>
-    <div class="stat"><span class="stat-num">~30yrs</span><div class="stat-label">Public Existence</div></div>
-    <div class="stat"><span class="stat-num">333B</span><div class="stat-label">Emails / Day</div></div>
-    <div class="stat"><span class="stat-num">4.5M</span><div class="stat-label">Blog Posts / Day</div></div>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-tag">3D Printed In-House</div>
+      <h1>Built Layer<br>by <em>Layer.</em></h1>
+      <p class="hero-sub">Custom 3D printed goods designed for your home, desk, and daily life — starting at just <strong style="color:var(--cyan)">$2</strong>.</p>
+      <div class="btn-group">
+        <a href="#products" class="btn btn-primary">Browse Products</a>
+        <a href="#printing" class="btn btn-ghost">How It Works</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="print-art">
+        <div class="ring r1"></div>
+        <div class="ring r2"></div>
+        <div class="ring r3"></div>
+        <div class="art-center">
+          <span class="art-icon">🖨️</span>
+          <span class="art-label">Printing…</span>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="scroll-hint"><span>SCROLL</span><div class="scroll-arrow"></div></div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stats-inner">
+    <div class="stat"><div class="stat-num c">$2</div><div class="stat-label">Starting price</div></div>
+    <div class="stat"><div class="stat-num c">50g</div><div class="stat-label">Max filament</div></div>
+    <div class="stat"><div class="stat-num c">100%</div><div class="stat-label">Made to order</div></div>
+    <div class="stat"><div class="stat-num c">∞</div><div class="stat-label">Fun guaranteed</div></div>
+  </div>
 </div>
 
-<div class="divider"></div>
+<!-- CATEGORIES — SMALL ONLY -->
+<section id="categories" style="background:var(--surface);">
+  <div class="section-inner">
+    <div class="section-tag">Pricing & Sizes</div>
+    <div class="section-title">Small Tier</div>
+    <p class="section-sub">Simple, fair, and always $2 — up to 50g of filament.</p>
 
-<section id="history">
-  <div class="section-wrap">
-    <div class="section-header reveal">
-      <div class="section-eyebrow" style="color:var(--neon-cyan)">// CHAPTER_01</div>
-      <h2 class="section-title">A History of <span style="color:var(--neon-cyan)">The Internet</span></h2>
-      <p class="section-desc">From a Cold War military experiment to the infrastructure of modern civilization — the internet's origin story is one of the greatest in human history.</p>
-    </div>
-    <div class="timeline reveal">
+    <div class="cat-grid">
+      <div class="cat-card">
+        <span class="cat-badge">Small</span>
+        <div class="cat-title">Compact</div>
+        <div class="cat-sub">Tiny but mighty — perfect for fun fidgets and everyday helpers.</div>
 
-      <div class="tl-item" style="--accent:var(--neon-cyan)">
-        <div class="tl-dot"></div>
-        <div class="tl-year">1957 — ORIGIN STORY</div>
-        <div class="tl-title">The Space Race Sparks a Network</div>
-        <div class="tl-body">When the Soviet Union launched Sputnik in 1957, the U.S. scrambled to respond. The Department of Defense created ARPA (Advanced Research Projects Agency) to ensure American technological superiority. Among their projects: a communication network that couldn't be taken down by a nuclear strike. The seeds of the internet were planted not in Silicon Valley, but in the Cold War arms race.</div>
-        <span class="tl-tag">ARPA FOUNDED</span>
-      </div>
+        <div class="cat-price-row">
+          <span class="price-label">Price</span>
+          <span class="price-val">$2</span>
+          <span class="price-note">Up to 50g</span>
+        </div>
 
-      <div class="tl-item" style="--accent:var(--neon-green)">
-        <div class="tl-dot" style="background:var(--neon-green);box-shadow:0 0 12px var(--neon-green)"></div>
-        <div class="tl-year">1969 — FIRST CONNECTION</div>
-        <div class="tl-title">ARPANET Goes Live — "LO"</div>
-        <div class="tl-body">On October 29, 1969, UCLA student Charley Kline attempted to send the word "LOGIN" to Stanford Research Institute over ARPANET — the world's first packet-switching network. The system crashed after just two letters: "L" and "O." It didn't matter. The first message ever sent over what would become the internet was, accidentally, "lo" — as in, hello world. Four universities were connected by year's end: UCLA, Stanford, UC Santa Barbara, and the University of Utah.</div>
-        <span class="tl-tag" style="color:var(--neon-green);border-color:rgba(0,255,136,0.25)">FIRST PACKET TRANSMISSION</span>
-      </div>
+        <div class="cat-weight">⚖️ Up to 50g of filament used</div>
 
-      <div class="tl-item" style="--accent:var(--neon-yellow)">
-        <div class="tl-dot" style="background:var(--neon-yellow);box-shadow:0 0 12px var(--neon-yellow)"></div>
-        <div class="tl-year">1974 — THE PROTOCOL</div>
-        <div class="tl-title">Vint Cerf &amp; Bob Kahn Invent TCP/IP</div>
-        <div class="tl-body">Vint Cerf and Bob Kahn published "A Protocol for Packet Network Intercommunication," introducing TCP/IP — the fundamental communication language of the internet. This was the Rosetta Stone that allowed any computer, anywhere, to talk to any other computer. It remains the backbone of all internet communication to this day. Cerf is now widely called the "Father of the Internet."</div>
-        <span class="tl-tag" style="color:var(--neon-yellow);border-color:rgba(255,238,0,0.25)">TCP/IP PROTOCOL BORN</span>
-      </div>
-
-      <div class="tl-item" style="--accent:var(--neon-orange)">
-        <div class="tl-dot" style="background:var(--neon-orange);box-shadow:0 0 12px var(--neon-orange)"></div>
-        <div class="tl-year">1983 — THE SWITCH</div>
-        <div class="tl-title">ARPANET Adopts TCP/IP — "Internet Day"</div>
-        <div class="tl-body">January 1, 1983 is considered the official birthday of the internet. ARPANET switched to TCP/IP on this date, allowing disparate networks to interconnect for the first time under a unified protocol. Email had already been invented (1971) and the @ symbol was in use, but now the infrastructure was in place for a true global network. The internet as a concept — a "network of networks" — was finally real.</div>
-        <span class="tl-tag" style="color:var(--neon-orange);border-color:rgba(255,102,0,0.25)">INTERNET DAY — JAN 1, 1983</span>
-      </div>
-
-      <div class="tl-item" style="--accent:var(--neon-purple)">
-        <div class="tl-dot" style="background:var(--neon-purple);box-shadow:0 0 12px var(--neon-purple)"></div>
-        <div class="tl-year">1989–1991 — THE WEB IS BORN</div>
-        <div class="tl-title">Tim Berners-Lee Invents the World Wide Web</div>
-        <div class="tl-body">Working at CERN in Switzerland, British physicist Tim Berners-Lee proposed a system for sharing information using hypertext — documents linked by clickable references. In 1990 he built the first web browser and web server. On August 6, 1991, the first website went live at info.cern.ch. Berners-Lee gifted his invention to the world, deliberately keeping it royalty-free and open. This single decision may have done more for human progress than any other in modern history.</div>
-        <span class="tl-tag" style="color:var(--neon-purple);border-color:rgba(187,0,255,0.25)">WORLD WIDE WEB — 1991</span>
-      </div>
-
-      <div class="tl-item" style="--accent:var(--neon-pink)">
-        <div class="tl-dot" style="background:var(--neon-pink);box-shadow:0 0 12px var(--neon-pink)"></div>
-        <div class="tl-year">1993–1999 — THE BROWSER WARS</div>
-        <div class="tl-title">Mosaic, Netscape &amp; The Dot-Com Explosion</div>
-        <div class="tl-body">Mosaic (1993) was the first graphical web browser, making the web accessible to non-scientists for the first time. Netscape Navigator followed and dominated. By 1995, Amazon, eBay, and Yahoo launched. The dot-com bubble inflated as investors poured billions into internet startups. By 1999 there were 280 million internet users worldwide. Microsoft vs. Netscape Browser Wars defined the era — eventually settled by Internet Explorer's dominance through bundling with Windows.</div>
-        <span class="tl-tag" style="color:var(--neon-pink);border-color:rgba(255,0,170,0.25)">DOT-COM ERA</span>
-      </div>
-
-      <div class="tl-item" style="--accent:var(--neon-cyan)">
-        <div class="tl-dot"></div>
-        <div class="tl-year">2000–2004 — CRASH &amp; REBUILD</div>
-        <div class="tl-title">Dot-Com Bust, Then Web 2.0 Rises</div>
-        <div class="tl-body">March 2000: the dot-com bubble burst, wiping out trillions in market value. But the internet itself didn't die — it evolved. Broadband replaced dial-up. Google (founded 1998) quietly became the world's most important company. Wikipedia launched in 2001. WordPress in 2003. Facebook in 2004. The era of user-generated content — "Web 2.0" — had begun. The web was no longer something you read; it was something you participated in.</div>
-        <span class="tl-tag">WEB 2.0</span>
-      </div>
-
-      <div class="tl-item" style="--accent:var(--neon-green)">
-        <div class="tl-dot" style="background:var(--neon-green);box-shadow:0 0 12px var(--neon-green)"></div>
-        <div class="tl-year">2007–2012 — THE MOBILE REVOLUTION</div>
-        <div class="tl-title">iPhone, App Stores &amp; The Always-On World</div>
-        <div class="tl-body">Steve Jobs unveiled the iPhone in January 2007. By 2008, Apple launched the App Store. Android followed. The internet jumped from desktops to the device in every pocket. Twitter launched (2006), Instagram (2010), Snapchat (2011). YouTube (founded 2005, acquired by Google 2006) became the second most visited website on Earth. More people now connected to the internet via mobile than desktop. The world was permanently, inescapably online.</div>
-        <span class="tl-tag" style="color:var(--neon-green);border-color:rgba(0,255,136,0.25)">MOBILE INTERNET ERA</span>
-      </div>
-
-      <div class="tl-item" style="--accent:var(--neon-yellow)">
-        <div class="tl-dot" style="background:var(--neon-yellow);box-shadow:0 0 12px var(--neon-yellow)"></div>
-        <div class="tl-year">2020s — AI &amp; THE NEXT LAYER</div>
-        <div class="tl-title">The Internet Becomes Intelligent</div>
-        <div class="tl-body">COVID-19 proved the internet was critical infrastructure: remote work, distance learning, telemedicine, and e-commerce all exploded overnight. Then in late 2022, ChatGPT launched and AI became a mass consumer product for the first time. The internet is entering a new phase — one where AI mediates, filters, creates, and responds. Over 5.4 billion humans are now connected. The question is no longer whether the internet matters, but what it will become.</div>
-        <span class="tl-tag" style="color:var(--neon-yellow);border-color:rgba(255,238,0,0.25)">AI + WEB3 ERA</span>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<section id="pros-cons">
-  <div class="section-wrap">
-    <div class="section-header reveal">
-      <div class="section-eyebrow" style="color:var(--neon-green)">// CHAPTER_02</div>
-      <h2 class="section-title">Pros <span style="color:var(--neon-pink)">&amp;</span> Cons</h2>
-      <p class="section-desc">Every great technology comes with trade-offs. Here's an honest, detailed look at what the internet gives us — and what it costs.</p>
-    </div>
-    <div class="pc-grid reveal">
-      <div class="pc-card pros">
-        <h3>✅ THE PROS</h3>
-        <ul class="pc-list">
-          <li><div class="pc-icon">🌍</div><div><strong>Global Connectivity</strong>People across the world can communicate instantly, breaking down geographic, cultural, and political barriers that persisted for millennia. A farmer in rural Kenya can video call a doctor in Tokyo. A teenager in Brazil can collaborate with engineers in Estonia.</div></li>
-          <li><div class="pc-icon">📚</div><div><strong>Democratized Knowledge</strong>Wikipedia, Khan Academy, MIT OpenCourseWare, YouTube tutorials, arXiv research papers — the sum of human knowledge is freely available 24/7. A curious kid in a poor country now has access to better educational resources than wealthy university students had 25 years ago.</div></li>
-          <li><div class="pc-icon">💼</div><div><strong>Economic Transformation</strong>Remote work, e-commerce, freelancing, digital startups, and creator economies have opened wealth-generating doors to billions. Etsy sellers, YouTube creators, indie game developers, and remote engineers all owe their livelihoods to the internet.</div></li>
-          <li><div class="pc-icon">🏥</div><div><strong>Revolutionized Healthcare</strong>Telemedicine, AI diagnostics, real-time health monitoring, global disease surveillance, and instant dissemination of medical research have collectively saved millions of lives and compressed the pace of medical advancement.</div></li>
-          <li><div class="pc-icon">🗣️</div><div><strong>Amplified Free Speech &amp; Activism</strong>#MeToo, Arab Spring, Black Lives Matter, climate activism — the internet gave ordinary people a global megaphone. Whistleblowers, journalists, and dissidents can now operate and share information despite government censorship attempts.</div></li>
-          <li><div class="pc-icon">🔬</div><div><strong>Accelerated Science</strong>Researchers share findings in real time, collaborate across continents, and crowdsource massive data sets. The COVID-19 vaccine was developed in under a year partly because scientists could share genomic sequencing data globally within days of outbreak detection.</div></li>
-          <li><div class="pc-icon">🎮</div><div><strong>Entertainment &amp; Culture</strong>Streaming, gaming, music, podcasting, art — the internet created entirely new industries and art forms. Independent creators can now reach global audiences without gatekeepers, fundamentally changing how culture is made and distributed.</div></li>
-        </ul>
-      </div>
-      <div class="pc-card cons">
-        <h3>❌ THE CONS</h3>
-        <ul class="pc-list">
-          <li><div class="pc-icon">📵</div><div><strong>Addiction &amp; Mental Health Crisis</strong>Social media algorithms are engineered for maximum engagement, not wellbeing. Studies link heavy use to anxiety, depression, body dysmorphia, and loneliness — especially in teens. The average person touches their phone over 2,600 times per day.</div></li>
-          <li><div class="pc-icon">🕵️</div><div><strong>Mass Surveillance &amp; Privacy Erosion</strong>Every click, search, location, and purchase is tracked. Your data profile is worth thousands of dollars and is bought, sold, and exploited. Governments conduct warrantless mass surveillance. Cambridge Analytica showed how personal data can manipulate democracy at scale.</div></li>
-          <li><div class="pc-icon">💣</div><div><strong>Misinformation at Industrial Scale</strong>A landmark MIT study found false news spreads six times faster than true news online. Anti-vaccine propaganda, election fraud myths, health hoaxes, and state-sponsored disinformation campaigns kill people and destabilize democracies in ways that are still accelerating.</div></li>
-          <li><div class="pc-icon">🔓</div><div><strong>Cybercrime &amp; Warfare</strong>Ransomware attacks have shut down hospitals and pipelines. Identity theft costs consumers tens of billions annually. State-sponsored hackers disrupt elections and critical infrastructure. The global cost of cybercrime exceeded $8 trillion in 2023.</div></li>
-          <li><div class="pc-icon">📊</div><div><strong>The Digital Divide</strong>2.6 billion people still lack internet access, creating a world split between the digitally empowered and the left-behind. Those offline cannot access jobs, education, healthcare, or financial services that increasingly exist only online — worsening global inequality.</div></li>
-          <li><div class="pc-icon">💔</div><div><strong>Loneliness &amp; Social Fragmentation</strong>Despite being hyper-connected online, loneliness rates have reached epidemic levels. Authentic human connection has partly been replaced by performative social media. Filter bubbles and echo chambers have made political and social polarization dramatically worse.</div></li>
-          <li><div class="pc-icon">🌍</div><div><strong>Environmental Cost</strong>Data centers consume approximately 1–2% of global electricity. Cryptocurrency mining alone uses more power than many countries. E-waste from devices is the world's fastest-growing waste stream. The internet's carbon footprint rivals the entire airline industry.</div></li>
+        <ul class="cat-list">
+          <li>Infinity Cube</li>
+          <li>Articulated Dragon</li>
+          <li>Spiral Cone</li>
+          <li>Universal Phone Stand</li>
+          <li>Cable Organizer</li>
+          <li>Snack Box</li>
         </ul>
       </div>
     </div>
   </div>
 </section>
 
-<div class="divider"></div>
+<!-- PRODUCTS — SMALL ONLY -->
+<section id="products">
+  <div class="section-inner">
+    <div class="section-tag">Catalog</div>
+    <div class="section-title">Small Products</div>
+    <p class="section-sub">All items below are $2 and printed fresh for your order.</p>
 
-<section id="impact">
-  <div class="section-wrap">
-    <div class="section-header reveal">
-      <div class="section-eyebrow" style="color:var(--neon-yellow)">// CHAPTER_03</div>
-      <h2 class="section-title">The Numbers <span style="color:var(--neon-yellow)">Don't Lie</span></h2>
-      <p class="section-desc">The internet's scale is almost incomprehensible. These figures represent just a snapshot of its current footprint on civilization.</p>
+    <div class="filter-bar">
+      <button class="fbtn">Small — $2</button>
     </div>
-    <div class="impact-grid reveal">
-      <div class="impact-card" style="--card-accent:var(--neon-cyan)">
-        <div class="ic-num" style="color:var(--neon-cyan)">5.4B+</div>
-        <div class="ic-label">People Online</div>
-        <div class="ic-desc">67% of all humans on Earth are connected — up from just 0.4% in 1995. Growth is still accelerating in Africa and South Asia.</div>
-      </div>
-      <div class="impact-card" style="--card-accent:var(--neon-green)">
-        <div class="ic-num" style="color:var(--neon-green)">$30T+</div>
-        <div class="ic-label">Annual Economic Impact</div>
-        <div class="ic-desc">The internet economy represents 15–25% of GDP in advanced economies. E-commerce alone exceeded $5.8 trillion in sales in 2023.</div>
-      </div>
-      <div class="impact-card" style="--card-accent:var(--neon-pink)">
-        <div class="ic-num" style="color:var(--neon-pink)">333B</div>
-        <div class="ic-label">Emails Sent Per Day</div>
-        <div class="ic-desc">Email remains the backbone of business communication. Over 4 billion people use email — more than any social network.</div>
-      </div>
-      <div class="impact-card" style="--card-accent:var(--neon-yellow)">
-        <div class="ic-num" style="color:var(--neon-yellow)">500M</div>
-        <div class="ic-label">Tweets Per Day</div>
-        <div class="ic-desc">Real-time public discourse has been fundamentally reshaped. Breaking news now spreads on social media minutes before traditional outlets cover it.</div>
-      </div>
-      <div class="impact-card" style="--card-accent:var(--neon-orange)">
-        <div class="ic-num" style="color:var(--neon-orange)">8.8B+</div>
-        <div class="ic-label">Google Searches Per Day</div>
-        <div class="ic-desc">Google processes over 100,000 searches per second. How humanity seeks, finds, and trusts information has been completely transformed.</div>
-      </div>
-      <div class="impact-card" style="--card-accent:var(--neon-purple)">
-        <div class="ic-num" style="color:var(--neon-purple)">500hrs</div>
-        <div class="ic-label">Video Uploaded to YouTube / Min</div>
-        <div class="ic-desc">More video is uploaded to YouTube every minute than all of Hollywood produced in its first decade. The barrier to a global audience is zero.</div>
-      </div>
-      <div class="impact-card" style="--card-accent:var(--neon-cyan)">
-        <div class="ic-num" style="color:var(--neon-cyan)">2B+</div>
-        <div class="ic-label">Websites Exist</div>
-        <div class="ic-desc">From Tim Berners-Lee's single CERN webpage in 1991 to over 2 billion websites today. About 200 million of those are active at any given time.</div>
-      </div>
-      <div class="impact-card" style="--card-accent:var(--neon-green)">
-        <div class="ic-num" style="color:var(--neon-green)">$8T</div>
-        <div class="ic-label">Cybercrime Cost (2023)</div>
-        <div class="ic-desc">Cybercrime now costs the global economy more annually than the GDP of Japan. It's the world's third-largest "economy" if it were a country.</div>
-      </div>
-      <div class="impact-card" style="--card-accent:var(--neon-pink)">
-        <div class="ic-num" style="color:var(--neon-pink)">6.6hrs</div>
-        <div class="ic-label">Avg Daily Internet Use</div>
-        <div class="ic-desc">The average person globally spends nearly 7 hours online per day — over a quarter of their waking life. In the US and South Korea, it's even higher.</div>
-      </div>
+
+    <div class="prod-grid" id="prodGrid"></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-sec" id="contact" style="text-align:center;background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:5rem 2.5rem;">
+  <div class="section-inner">
+    <div class="section-tag">Get Started</div>
+    <div class="section-title">Ready to Print<br>Something <em>Cool?</em></div>
+    <p style="color:var(--muted);margin-bottom:2rem;">From fidgets to helpers — everything is just $2.</p>
+    <div class="btn-group" style="justify-content:center;">
+      <a href="mailto:hello@layerup3d.com" class="btn btn-primary">📧 Send an Order</a>
+      <a href="#products" class="btn btn-ghost">View Products</a>
     </div>
   </div>
 </section>
 
-<div class="divider"></div>
-
-<section id="future">
-  <div class="section-wrap">
-    <div class="section-header reveal">
-      <div class="section-eyebrow" style="color:var(--neon-purple)">// CHAPTER_04</div>
-      <h2 class="section-title">The Internet's <span style="color:var(--neon-purple)">Future</span></h2>
-      <p class="section-desc">We're still in the early chapters of the internet's story. The next 20 years may be even more transformative than the last 30.</p>
-    </div>
-    <div class="future-grid reveal">
-      <div class="future-card">
-        <div class="future-icon">🤖</div>
-        <div>
-          <h4>AI-Powered Web</h4>
-          <p>Artificial intelligence will reshape how we interact with the internet entirely. Instead of searching and clicking, we'll converse with intelligent agents that browse, summarize, and act on our behalf. The web will become proactive, not reactive.</p>
-        </div>
-      </div>
-      <div class="future-card">
-        <div class="future-icon">🛰️</div>
-        <div>
-          <h4>Satellite Internet Coverage</h4>
-          <p>Starlink, OneWeb, and Amazon's Kuiper will bring high-speed internet to every corner of the planet — including remote jungles, ocean vessels, and developing nations. The last 2.6 billion will come online within this decade.</p>
-        </div>
-      </div>
-      <div class="future-card">
-        <div class="future-icon">🥽</div>
-        <div>
-          <h4>Spatial &amp; Immersive Internet</h4>
-          <p>AR glasses and VR headsets will blur the line between digital and physical. The "spatial web" will overlay information onto the real world. Meetings, education, entertainment, and even surgery will have immersive internet-connected dimensions.</p>
-        </div>
-      </div>
-      <div class="future-card">
-        <div class="future-icon">🔗</div>
-        <div>
-          <h4>Web3 &amp; Decentralization</h4>
-          <p>Blockchain-based systems aim to shift power away from centralized platforms like Google and Meta. Decentralized identity, ownership of digital assets, and censorship-resistant communication could fundamentally restructure who controls the internet.</p>
-        </div>
-      </div>
-      <div class="future-card">
-        <div class="future-icon">🌐</div>
-        <div>
-          <h4>Internet of Things (IoT)</h4>
-          <p>By 2030, an estimated 50 billion devices will be connected to the internet — from fridges and traffic lights to medical implants and farm sensors. The internet will become environmental infrastructure, invisibly embedded in the fabric of daily life.</p>
-        </div>
-      </div>
-      <div class="future-card">
-        <div class="future-icon">⚡</div>
-        <div>
-          <h4>6G &amp; Near-Zero Latency</h4>
-          <p>6G networks (expected ~2030) will achieve speeds up to 1 terabit per second with near-zero latency. This will enable real-time haptic feedback, remote surgery, autonomous vehicle coordination, and experiences currently impossible with today's infrastructure.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<section id="faq">
-  <div class="section-wrap">
-    <div class="section-header reveal">
-      <div class="section-eyebrow" style="color:var(--neon-cyan)">// CHAPTER_05</div>
-      <h2 class="section-title">Frequently Asked <span style="color:var(--neon-cyan)">Questions</span></h2>
-      <p class="section-desc">Everything you wanted to know about the internet and its place in history — answered in depth.</p>
-    </div>
-    <div class="faq-list reveal">
-
-      <div class="faq-item" style="--f-accent:var(--neon-cyan)">
-        <button class="faq-q">Why is the internet considered the most important technology ever created? <span class="faq-arrow">+</span></button>
-        <div class="faq-a">The internet is unique because it didn't just improve one aspect of life — it transformed almost every domain of human activity simultaneously and at extraordinary speed. Communication, commerce, science, entertainment, education, politics, healthcare, and culture were all fundamentally changed within just a few decades. No prior technology — not the printing press, not electricity, not the telephone, not the automobile — penetrated so many aspects of civilization so quickly. The printing press took over 300 years to reshape European culture. The internet reshaped global culture in under 30.</div>
-      </div>
-
-      <div class="faq-item" style="--f-accent:var(--neon-green)">
-        <button class="faq-q">When was the internet invented and who invented it? <span class="faq-arrow">+</span></button>
-        <div class="faq-a">There's no single inventor. The internet evolved from ARPANET (1969), a U.S. Defense Department project. Vint Cerf and Bob Kahn created TCP/IP in 1974 — the protocol language that allowed different networks to communicate. Tim Berners-Lee invented the World Wide Web in 1989–91 at CERN — the graphical, hyperlinked layer most people mean when they say "the internet." Berners-Lee crucially made the web patent-free and open, enabling its explosive global adoption. Without that decision, the web might have become a privatized toll road rather than the open commons it is today.</div>
-      </div>
-
-      <div class="faq-item" style="--f-accent:var(--neon-yellow)">
-        <button class="faq-q">Is the internet more important than electricity or the printing press? <span class="faq-arrow">+</span></button>
-        <div class="faq-a">This is genuinely debated among historians and technologists. Electricity is foundational infrastructure — without it, the internet doesn't exist. The printing press democratized knowledge and arguably ignited the Renaissance, Reformation, and Scientific Revolution. However, the internet combined, accelerated, and extended the effects of both — and added real-time global two-way communication, e-commerce, and instantaneous knowledge sharing at zero marginal cost. Many experts argue the internet's transformative velocity is unmatched. The printing press changed things over centuries; the internet changed things within a single generation.</div>
-      </div>
-
-      <div class="faq-item" style="--f-accent:var(--neon-orange)">
-        <button class="faq-q">Can the internet actually be shut down? <span class="faq-arrow">+</span></button>
-        <div class="faq-a">The internet was deliberately designed to survive nuclear conflict — it has no single point of failure, routing around damage automatically. A total global shutdown is virtually impossible. However, authoritarian governments have demonstrated the ability to block or throttle access within their borders (China's Great Firewall, Iran's National Internet, Russia's ongoing censorship regime). Regional outages can occur via undersea cable cuts — about 95% of international internet traffic travels through submarine cables. A coordinated attack on major internet exchange points could cause significant disruption, but full global shutdown remains effectively impossible.</div>
-      </div>
-
-      <div class="faq-item" style="--f-accent:var(--neon-purple)">
-        <button class="faq-q">What would the world look like without the internet? <span class="faq-arrow">+</span></button>
-        <div class="faq-a">A world without the internet would be unrecognizable to anyone under 40. Global supply chains would collapse — most logistics, banking, and inventory systems run on internet-connected infrastructure. Scientific research would take decades longer; international collaboration would revert to postal mail and conferences. Billions of jobs simply wouldn't exist. Daily tasks like banking, shopping, navigation, and communication would require significant time and physical effort. Modern medicine, emergency services, and government administration all depend critically on internet connectivity.</div>
-      </div>
-
-      <div class="faq-item" style="--f-accent:var(--neon-pink)">
-        <button class="faq-q">What are the biggest dangers of the internet right now? <span class="faq-arrow">+</span></button>
-        <div class="faq-a">The most serious threats include: (1) AI-powered misinformation and deepfakes — indistinguishable synthetic content spreading faster than truth; (2) Mass surveillance capitalism — the systematic harvesting and exploitation of personal data by both corporations and governments; (3) Cybercrime costing trillions annually and state-sponsored cyber warfare targeting critical infrastructure; (4) Algorithmic radicalization — recommendation engines that nudge users toward increasingly extreme content; and (5) Mental health impacts, particularly on adolescents, linked to social media comparison dynamics and attention fragmentation.</div>
-      </div>
-
-      <div class="faq-item" style="--f-accent:var(--neon-cyan)">
-        <button class="faq-q">What is Web3 and is it actually the future of the internet? <span class="faq-arrow">+</span></button>
-        <div class="faq-a">Web3 refers to a vision of a decentralized internet built on blockchain technology, where users own their data and digital assets rather than corporations. Web1 was read-only (static pages). Web2 is read-write but centralized (Google, Facebook, Amazon). Web3 aims to be read-write-own. In practice, blockchain-based systems like Ethereum enable smart contracts, NFTs, and decentralized finance (DeFi). Whether Web3 becomes the dominant internet paradigm is hotly debated — skeptics point to scalability, usability, and environmental concerns, while proponents argue it's the only path to breaking Big Tech's monopoly on digital infrastructure.</div>
-      </div>
-
-      <div class="faq-item" style="--f-accent:var(--neon-green)">
-        <button class="faq-q">How did the internet change politics and democracy? <span class="faq-arrow">+</span></button>
-        <div class="faq-a">The internet has profoundly and contradictorily reshaped politics. On one hand, it enabled unprecedented civic organization — the Arab Spring, Occupy, Black Lives Matter, and countless other movements mobilized through social media. Whistleblowers used the internet to expose government overreach. On the other hand, targeted political advertising, algorithmic filter bubbles, state-sponsored disinformation, and the collapse of local journalism have contributed to severe political polarization. The internet simultaneously strengthened and threatened democratic systems — and that tension is still very much unresolved.</div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
+<!-- FOOTER -->
 <footer>
-  <div class="footer-logo">THE<span>NET</span></div>
-  <p>Built with <span class="heart">♥</span> to celebrate the greatest technology humanity has ever created.</p>
-  <p>The Internet — connecting humanity since 1991.</p>
+  <div class="footer-inner">
+    <div class="footer-logo">Layer<span>Up</span> 3D</div>
+    <div class="footer-badges">
+      <span class="fbadge">Small · $2</span>
+    </div>
+    <div class="footer-links">
+      <a href="#printing">Technology</
+              <a href="#categories">Sizes</a>
+      <a href="#products">Products</a>
+      <a href="#contact">Order</a>
+    </div>
+    <div class="footer-copy">© 2025 LayerUp 3D. All rights reserved.</div>
+  </div>
 </footer>
 
 <script>
-  // Custom cursor
-  const cursor = document.getElementById('cursor');
-  const trail = document.getElementById('cursor-trail');
-  let mx = 0, my = 0, tx = 0, ty = 0;
-  document.addEventListener('mousemove', e => {
-    mx = e.clientX; my = e.clientY;
-    cursor.style.left = mx + 'px';
-    cursor.style.top = my + 'px';
-  });
-  setInterval(() => {
-    tx += (mx - tx) * 0.12;
-    ty += (my - ty) * 0.12;
-    trail.style.left = tx + 'px';
-    trail.style.top = ty + 'px';
-  }, 16);
+/* SMALL PRODUCTS ONLY */
+const products = [
+  {
+    name:"Infinity Cube",
+    desc:"A satisfying fidget cube with 8 hinged sections that fold endlessly.",
+    icon:"🔀",
+    size:"S",
+    weight:"~28g",
+    price:"$2"
+  },
+  {
+    name:"Articulated Dragon",
+    desc:"A fully flexible dragon printed in one piece — every scale moves.",
+    icon:"🐉",
+    size:"S",
+    weight:"~35g",
+    price:"$2"
+  },
+  {
+    name:"Spiral Cone",
+    desc:"A geometric spiral cone that doubles as decor and a fun spinner.",
+    icon:"🌀",
+    size:"S",
+    weight:"~20g",
+    price:"$2"
+  },
+  {
+    name:"Universal Phone Stand",
+    desc:"Slim, sturdy stand that holds any phone upright at a perfect angle.",
+    icon:"📱",
+    size:"S",
+    weight:"~30g",
+    price:"$2"
+  },
+  {
+    name:"Cable Organizer",
+    desc:"Keep your cables tangle‑free with this compact desk clip.",
+    icon:"🔌",
+    size:"S",
+    weight:"~18g",
+    price:"$2"
+  },
+  {
+    name:"Snack Box",
+    desc:"A compact lidded box for snacks, pills, or tiny items.",
+    icon:"🍬",
+    size:"S",
+    weight:"~42g",
+    price:"$2"
+  }
+];
 
-  // FAQ accordion
-  document.querySelectorAll('.faq-q').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const item = btn.closest('.faq-item');
-      const isOpen = item.classList.contains('open');
-      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-      if (!isOpen) item.classList.add('open');
-    });
-  });
+function renderProducts() {
+  const grid = document.getElementById('prodGrid');
+  grid.innerHTML = products.map(p => `
+    <div class="pc">
+      <div class="thumb">
+        <span>${p.icon}</span>
+        <span class="size-pip">S · ${p.price}</span>
+      </div>
+      <div class="pbody">
+        <div class="pname">${p.name}</div>
+        <div class="pdesc">${p.desc}</div>
+        <div class="pmeta">
+          <span class="pweight">${p.weight} filament</span>
+          <span class="pprice">${p.price}</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
 
-  // Scroll reveal
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.08 });
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+renderProducts();
 </script>
+
 </body>
 </html>
