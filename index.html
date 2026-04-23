@@ -4,321 +4,1490 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LayerUp 3D — Printed for Life</title>
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 
 <style>
-/* RESET + ROOT */
+/*──────────────────────────────────────────────
+  ROOT / RESET
+──────────────────────────────────────────────*/
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 :root{
-  --black:#09090b;--surface:#111116;--card:#16161c;--border:rgba(255,255,255,0.07);
-  --border-hi:rgba(255,255,255,0.14);
-  --cyan:#00e5c3;--cyan-dim:rgba(0,229,195,0.1);--cyan-glow:rgba(0,229,195,0.25);
-  --text:#ededf0;--muted:#7a7a86;--subtle:#3d3d48;--radius:14px;
+  --bg:#050508;
+  --surface:#0a0a10;
+  --card:#0d0d15;
+  --border:rgba(255,255,255,0.06);
+  --border-hi:rgba(255,255,255,0.13);
+
+  --green:#39ff14;
+  --green-dim:rgba(57,255,20,0.10);
+  --green-glow:rgba(57,255,20,0.30);
+
+  --blue:#00d4ff;
+  --blue-dim:rgba(0,212,255,0.10);
+  --blue-glow:rgba(0,212,255,0.30);
+
+  --red:#ff2d55;
+  --red-dim:rgba(255,45,85,0.10);
+  --red-glow:rgba(255,45,85,0.30);
+
+  --pink:#ff00c8;
+  --pink-dim:rgba(255,0,200,0.10);
+
+  --text:#f0f0f8;
+  --muted:#606080;
+  --subtle:#282838;
+  --radius:14px;
+  --font-display:'Bebas Neue',sans-serif;
+  --font-body:'Rajdhani',sans-serif;
+  --font-mono:'Share Tech Mono',monospace;
 }
-body{font-family:'DM Sans',sans-serif;background:var(--black);color:var(--text);overflow-x:hidden;line-height:1.6;}
+
 html{scroll-behavior:smooth;}
+body{
+  font-family:var(--font-body);
+  background:var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
+  line-height:1.6;
+  font-size:16px;
+}
 
-/* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;height:62px;background:rgba(9,9,11,0.9);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);}
-.logo{font-family:'Bebas Neue',sans-serif;font-size:1.65rem;letter-spacing:0.05em;color:var(--text);text-decoration:none;}
-.logo span{color:var(--cyan);}
-nav ul{display:flex;gap:2rem;list-style:none;}
-nav a{color:var(--muted);text-decoration:none;font-size:0.875rem;font-weight:500;letter-spacing:0.02em;transition:color .2s;}
-nav a:hover{color:var(--text);}
-.nav-cta{background:var(--cyan)!important;color:var(--black)!important;padding:.4rem 1.1rem;border-radius:50px;font-weight:700!important;}
+/* SCANLINE OVERLAY */
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background:repeating-linear-gradient(
+    0deg,
+    transparent,transparent 2px,
+    rgba(0,0,0,0.07) 2px,rgba(0,0,0,0.07) 4px
+  );
+  pointer-events:none;z-index:9999;
+}
 
-/* HERO */
-.hero{min-height:100vh;display:flex;align-items:center;padding:7rem 2.5rem 4rem;position:relative;overflow:hidden;}
-.hero-grid{position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:52px 52px;mask-image:radial-gradient(ellipse 90% 90% at 50% 50%,black 20%,transparent 100%);}
-.hero-glow{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 55% 65% at 30% 55%,rgba(0,229,195,0.07) 0%,transparent 70%);}
-.hero-inner{position:relative;max-width:1200px;margin:0 auto;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;}
-.hero-tag{display:inline-flex;align-items:center;gap:.5rem;background:var(--cyan-dim);border:1px solid rgba(0,229,195,0.22);color:var(--cyan);font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:.35rem .9rem;border-radius:50px;margin-bottom:1.4rem;}
-.hero-tag::before{content:'';width:6px;height:6px;background:var(--cyan);border-radius:50%;}
-h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,7vw,5.8rem);line-height:.95;letter-spacing:.025em;margin-bottom:1.4rem;}
-h1 em{color:var(--cyan);font-style:normal;}
-.hero-sub{font-size:1rem;color:var(--muted);max-width:420px;margin-bottom:2.5rem;font-weight:300;line-height:1.75;}
-.btn-group{display:flex;gap:.9rem;flex-wrap:wrap;}
-.btn{display:inline-flex;align-items:center;gap:.45rem;padding:.75rem 1.7rem;border-radius:50px;font-size:.875rem;font-weight:600;text-decoration:none;cursor:pointer;border:none;transition:transform .2s,box-shadow .2s;}
-.btn:hover{transform:translateY(-2px);}
-.btn-primary{background:var(--cyan);color:var(--black);}
-.btn-primary:hover{box-shadow:0 8px 32px var(--cyan-glow);}
-.btn-ghost{background:transparent;color:var(--text);border:1px solid var(--border-hi);}
-.btn-ghost:hover{border-color:rgba(255,255,255,.3);}
+/*──────────────────────────────────────────────
+  NEON TEXT UTILITY
+──────────────────────────────────────────────*/
+.neon-g{color:var(--green);text-shadow:0 0 8px var(--green),0 0 24px var(--green-glow);}
+.neon-b{color:var(--blue);text-shadow:0 0 8px var(--blue),0 0 24px var(--blue-glow);}
+.neon-r{color:var(--red);text-shadow:0 0 8px var(--red),0 0 24px var(--red-glow);}
+
+/*──────────────────────────────────────────────
+  NAV
+──────────────────────────────────────────────*/
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 2.5rem;height:64px;
+  background:rgba(5,5,8,0.88);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(57,255,20,0.12);
+}
+.logo{
+  font-family:var(--font-display);
+  font-size:1.8rem;letter-spacing:.1em;
+  text-decoration:none;color:var(--text);
+}
+.logo .accent{
+  color:var(--green);
+  text-shadow:0 0 12px var(--green);
+}
+nav ul{display:flex;gap:1.8rem;list-style:none;align-items:center;}
+nav a{
+  color:var(--muted);text-decoration:none;
+  font-family:var(--font-mono);font-size:.78rem;
+  letter-spacing:.1em;text-transform:uppercase;
+  transition:color .2s,text-shadow .2s;
+}
+nav a:hover{color:var(--green);text-shadow:0 0 8px var(--green-glow);}
+.nav-cta{
+  background:var(--green)!important;
+  color:#050508!important;
+  padding:.4rem 1.2rem;
+  border-radius:4px;
+  font-weight:700!important;
+  text-shadow:none!important;
+  letter-spacing:.06em!important;
+  box-shadow:0 0 18px var(--green-glow);
+  transition:box-shadow .2s,transform .2s!important;
+}
+.nav-cta:hover{box-shadow:0 0 32px var(--green-glow);transform:translateY(-1px);}
+
+/*──────────────────────────────────────────────
+  HERO
+──────────────────────────────────────────────*/
+.hero{
+  min-height:100vh;
+  display:flex;align-items:center;
+  padding:7rem 2.5rem 4rem;
+  position:relative;overflow:hidden;
+}
+
+/* GRID */
+.hero-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(57,255,20,0.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(57,255,20,0.04) 1px,transparent 1px);
+  background-size:60px 60px;
+  animation:gridPulse 6s ease-in-out infinite;
+}
+@keyframes gridPulse{
+  0%,100%{opacity:1;}
+  50%{opacity:.5;}
+}
+
+/* FLOATING PARTICLES */
+.particles{position:absolute;inset:0;overflow:hidden;pointer-events:none;}
+.particle{
+  position:absolute;width:2px;height:2px;
+  border-radius:50%;
+  animation:float linear infinite;
+}
+@keyframes float{
+  0%{transform:translateY(100vh) translateX(0);opacity:0;}
+  10%{opacity:1;}
+  90%{opacity:1;}
+  100%{transform:translateY(-20px) translateX(var(--dx,0px));opacity:0;}
+}
+
+.hero-inner{
+  position:relative;
+  max-width:1300px;margin:0 auto;width:100%;
+  display:grid;grid-template-columns:1.1fr 0.9fr;
+  gap:5rem;align-items:center;
+}
+
+/* HERO TEXT */
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:.6rem;
+  background:rgba(57,255,20,0.08);
+  border:1px solid rgba(57,255,20,0.25);
+  color:var(--green);
+  font-family:var(--font-mono);font-size:.7rem;
+  letter-spacing:.15em;text-transform:uppercase;
+  padding:.35rem 1rem;border-radius:3px;
+  margin-bottom:1.5rem;
+  box-shadow:0 0 18px rgba(57,255,20,0.08);
+}
+.blink{animation:blink .8s step-end infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+
+h1{
+  font-family:var(--font-display);
+  font-size:clamp(4rem,8vw,7rem);
+  line-height:.92;letter-spacing:.02em;
+  margin-bottom:1.5rem;
+}
+h1 .line2{
+  -webkit-text-stroke:1px rgba(57,255,20,0.7);
+  color:transparent;
+  text-shadow:0 0 30px rgba(57,255,20,0.2);
+}
+
+.hero-sub{
+  font-size:1.05rem;color:var(--muted);
+  max-width:440px;margin-bottom:2.5rem;
+  line-height:1.8;font-weight:400;
+}
+
+.btn-row{display:flex;gap:1rem;flex-wrap:wrap;}
+.btn{
+  display:inline-flex;align-items:center;gap:.5rem;
+  padding:.8rem 2rem;border-radius:4px;
+  font-family:var(--font-mono);font-size:.82rem;
+  font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  text-decoration:none;cursor:pointer;border:none;
+  transition:transform .2s,box-shadow .2s;
+}
+.btn:hover{transform:translateY(-3px);}
+.btn-green{
+  background:var(--green);color:#050508;
+  box-shadow:0 0 24px var(--green-glow),inset 0 1px 0 rgba(255,255,255,.3);
+}
+.btn-green:hover{box-shadow:0 0 40px var(--green-glow);}
+.btn-outline{
+  background:transparent;color:var(--green);
+  border:1px solid rgba(57,255,20,0.45);
+  box-shadow:0 0 12px rgba(57,255,20,0.05);
+}
+.btn-outline:hover{background:rgba(57,255,20,0.06);box-shadow:0 0 24px rgba(57,255,20,0.15);}
+
+/* HERO VISUAL — 3D PRINTER ART */
 .hero-visual{display:flex;align-items:center;justify-content:center;}
-.print-art{width:320px;height:320px;position:relative;}
-.ring{position:absolute;border-radius:50%;border:1px solid;animation:spin linear infinite;}
-.r1{inset:0;border-color:rgba(0,229,195,.18);animation-duration:20s;}
-.r2{inset:28px;border-color:rgba(0,229,195,.13);animation-duration:14s;animation-direction:reverse;}
-.r3{inset:56px;border-color:rgba(0,229,195,.1);animation-duration:9s;}
-@keyframes spin{to{transform:rotate(360deg);}}
+.printer-scene{
+  width:340px;height:340px;
+  position:relative;
+  display:flex;align-items:center;justify-content:center;
+}
+.orbit{
+  position:absolute;border-radius:50%;
+  border:1px solid;
+  animation:orbit linear infinite;
+}
+.o1{inset:0;border-color:rgba(57,255,20,.25);animation-duration:22s;box-shadow:0 0 20px rgba(57,255,20,.08);}
+.o2{inset:36px;border-color:rgba(0,212,255,.2);animation-duration:15s;animation-direction:reverse;}
+.o3{inset:72px;border-color:rgba(255,45,85,.18);animation-duration:10s;}
+.o4{inset:108px;border-color:rgba(57,255,20,.15);animation-duration:7s;animation-direction:reverse;}
+@keyframes orbit{to{transform:rotate(360deg);}}
 
-/* STATS */
-.stats{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:2rem 2.5rem;background:var(--surface);}
-.stats-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);}
-.stat{text-align:center;padding:1rem;}
-.stat-num{font-family:'Bebas Neue',sans-serif;font-size:2.6rem;letter-spacing:.04em;line-height:1;}
-.c{color:var(--cyan);}
-.stat-label{font-size:.78rem;color:var(--muted);margin-top:.3rem;letter-spacing:.03em;}
+.orbit-dot{
+  position:absolute;top:50%;left:0;
+  width:8px;height:8px;border-radius:50%;
+  transform:translateY(-50%) translateX(-4px);
+}
+.d1{background:var(--green);box-shadow:0 0 12px var(--green);}
+.d2{background:var(--blue);box-shadow:0 0 12px var(--blue);}
+.d3{background:var(--red);box-shadow:0 0 12px var(--red);}
 
-/* SHARED */
-section{padding:5rem 2.5rem;}
-.section-inner{max-width:1200px;margin:0 auto;}
-.section-tag{font-family:'DM Mono',monospace;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:.7rem;}
-.section-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4vw,3rem);letter-spacing:.03em;line-height:1;margin-bottom:.5rem;}
-.section-sub{font-size:.95rem;color:var(--muted);font-weight:300;margin-bottom:2.5rem;}
+.printer-core{
+  width:140px;height:140px;
+  background:var(--card);
+  border:1px solid rgba(57,255,20,0.3);
+  border-radius:12px;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:.5rem;
+  box-shadow:0 0 40px rgba(57,255,20,0.12),inset 0 0 30px rgba(57,255,20,0.03);
+  position:relative;z-index:2;
+}
+.printer-icon{font-size:2.8rem;}
+.print-beam{
+  width:2px;height:24px;
+  background:linear-gradient(to bottom,var(--green),transparent);
+  animation:beam .8s ease-in-out infinite alternate;
+  box-shadow:0 0 8px var(--green);
+}
+@keyframes beam{from{opacity:.4;transform:scaleY(.6);}to{opacity:1;transform:scaleY(1);}}
+.print-label{
+  font-family:var(--font-mono);font-size:.6rem;
+  color:var(--green);letter-spacing:.15em;
+  animation:flicker 3s ease-in-out infinite;
+}
+@keyframes flicker{
+  0%,100%{opacity:1;}
+  92%{opacity:1;}93%{opacity:.3;}94%{opacity:1;}97%{opacity:.6;}98%{opacity:1;}
+}
 
-/* CATEGORIES — SMALL ONLY */
-.cat-grid{display:grid;grid-template-columns:1fr;gap:1.5rem;}
-.cat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:2rem;position:relative;overflow:hidden;transition:border-color .25s,transform .25s;}
-.cat-card:hover{transform:translateY(-5px);border-color:rgba(0,229,195,.4);}
-.cat-badge{display:inline-block;padding:.28rem .8rem;border-radius:50px;font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:1.2rem;background:var(--cyan-dim);color:var(--cyan);border:1px solid rgba(0,229,195,.25);}
-.cat-title{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;margin-bottom:.3rem;}
-.cat-sub{font-size:.82rem;color:var(--muted);margin-bottom:1.4rem;}
-.cat-price-row{display:flex;align-items:baseline;gap:.6rem;margin-bottom:1.4rem;padding:.75rem 1rem;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:8px;}
-.price-label{font-size:.7rem;font-family:'DM Mono',monospace;color:var(--muted);}
-.price-val{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--cyan);}
-.price-note{font-size:.7rem;color:var(--muted);margin-left:auto;}
-.cat-weight{font-family:'DM Mono',monospace;font-size:.8rem;color:var(--muted);margin-bottom:1.2rem;}
-.cat-list{list-style:none;}
-.cat-list li{font-size:.83rem;padding:.38rem 0;border-bottom:1px solid var(--border);color:rgba(0,229,195,.75);display:flex;align-items:center;gap:.6rem;}
-.cat-list li::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--cyan);}
+/*──────────────────────────────────────────────
+  STATS BAR
+──────────────────────────────────────────────*/
+.statsbar{
+  background:var(--surface);
+  border-top:1px solid rgba(57,255,20,0.1);
+  border-bottom:1px solid rgba(57,255,20,0.1);
+  padding:1.5rem 2.5rem;
+  overflow:hidden;position:relative;
+}
+.statsbar::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--green),transparent);
+  animation:scanLine 4s ease-in-out infinite;
+}
+@keyframes scanLine{
+  0%{transform:translateX(-100%);}100%{transform:translateX(100%);}
+}
+.stats-inner{
+  max-width:1300px;margin:0 auto;
+  display:grid;grid-template-columns:repeat(5,1fr);
+}
+.stat{text-align:center;padding:.8rem;}
+.stat-num{
+  font-family:var(--font-display);
+  font-size:2.4rem;letter-spacing:.04em;line-height:1;
+}
+.stat-label{font-family:var(--font-mono);font-size:.65rem;color:var(--muted);margin-top:.3rem;letter-spacing:.1em;text-transform:uppercase;}
 
-/* PRODUCTS — SMALL ONLY */
-.filter-bar{display:flex;gap:.7rem;margin-bottom:2.5rem;}
-.fbtn{padding:.45rem 1.15rem;border-radius:50px;border:1px solid var(--border);background:var(--cyan-dim);color:var(--cyan);font-size:.82rem;font-weight:500;}
-.prod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:1.2rem;}
-.pc{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:transform .2s,border-color .2s;}
-.pc:hover{transform:translateY(-4px);border-color:rgba(0,229,195,.35);}
-.thumb{height:150px;display:flex;align-items:center;justify-content:center;font-size:3.2rem;position:relative;border-bottom:1px solid var(--border);background:linear-gradient(135deg,rgba(0,229,195,.08),rgba(0,229,195,.02));}
-.size-pip{position:absolute;top:.65rem;right:.65rem;font-size:.62rem;font-weight:700;padding:.22rem .55rem;border-radius:50px;background:var(--cyan-dim);color:var(--cyan);border:1px solid rgba(0,229,195,.3);}
-.pbody{padding:.95rem 1.05rem;}
-.pname{font-weight:600;font-size:.92rem;margin-bottom:.25rem;}
-.pdesc{font-size:.78rem;color:var(--muted);margin-bottom:.9rem;line-height:1.5;}
+/*──────────────────────────────────────────────
+  HOW IT'S PRINTED
+──────────────────────────────────────────────*/
+#howit{padding:6rem 2.5rem;background:var(--surface);position:relative;}
+#howit::after{
+  content:'';
+  position:absolute;top:0;left:10%;right:10%;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(0,212,255,0.3),transparent);
+}
+.section-eye{
+  font-family:var(--font-mono);font-size:.65rem;
+  letter-spacing:.2em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:.6rem;
+}
+.section-title{
+  font-family:var(--font-display);
+  font-size:clamp(2.2rem,4vw,3.5rem);
+  letter-spacing:.03em;line-height:1;
+  margin-bottom:.5rem;
+}
+.section-sub{
+  font-size:.95rem;color:var(--muted);
+  margin-bottom:3rem;line-height:1.8;
+}
+
+.steps-grid{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:0;position:relative;
+}
+.steps-grid::after{
+  content:'';
+  position:absolute;top:56px;left:10%;right:10%;height:1px;
+  background:linear-gradient(90deg,
+    var(--green) 0%, var(--blue) 25%, var(--pink) 50%,var(--red) 75%,var(--green) 100%);
+  z-index:0;
+  box-shadow:0 0 12px rgba(57,255,20,0.3);
+}
+.step{
+  position:relative;z-index:1;
+  text-align:center;padding:0 1rem;
+}
+.step-num{
+  width:52px;height:52px;
+  border-radius:50%;
+  display:inline-flex;align-items:center;justify-content:center;
+  font-family:var(--font-mono);font-size:.75rem;font-weight:700;
+  border:2px solid;
+  margin:0 auto 1.5rem;
+  position:relative;background:var(--surface);
+  transition:transform .3s;
+}
+.step:hover .step-num{transform:scale(1.15);}
+.s1 .step-num{color:var(--green);border-color:var(--green);box-shadow:0 0 18px var(--green-glow);}
+.s2 .step-num{color:var(--blue);border-color:var(--blue);box-shadow:0 0 18px var(--blue-glow);}
+.s3 .step-num{color:var(--pink);border-color:var(--pink);box-shadow:0 0 18px rgba(255,0,200,.3);}
+.s4 .step-num{color:var(--red);border-color:var(--red);box-shadow:0 0 18px var(--red-glow);}
+.s5 .step-num{color:var(--green);border-color:var(--green);box-shadow:0 0 18px var(--green-glow);}
+.step-emoji{font-size:1.4rem;margin-bottom:.7rem;}
+.step-head{font-family:var(--font-display);font-size:1.15rem;letter-spacing:.05em;margin-bottom:.4rem;}
+.step-desc{font-size:.78rem;color:var(--muted);line-height:1.7;}
+
+/* LAYER ANIMATION */
+.layer-demo{
+  max-width:500px;margin:4rem auto 0;
+  border:1px solid rgba(57,255,20,0.2);
+  border-radius:8px;overflow:hidden;
+  background:rgba(5,5,8,.8);
+  padding:1.5rem;
+  box-shadow:0 0 30px rgba(57,255,20,0.07);
+}
+.layer-title{
+  font-family:var(--font-mono);font-size:.68rem;
+  letter-spacing:.15em;color:var(--green);
+  margin-bottom:1rem;
+}
+.layer-bars{display:flex;flex-direction:column;gap:3px;}
+.layer-bar{
+  height:6px;border-radius:1px;
+  background:linear-gradient(90deg,var(--green),var(--blue));
+  transform-origin:left;
+  animation:layerGrow 3s ease-in-out infinite;
+  opacity:0;
+}
+.layer-bar:nth-child(1){animation-delay:0s;width:100%;}
+.layer-bar:nth-child(2){animation-delay:.15s;width:98%;}
+.layer-bar:nth-child(3){animation-delay:.3s;width:95%;}
+.layer-bar:nth-child(4){animation-delay:.45s;width:92%;}
+.layer-bar:nth-child(5){animation-delay:.6s;width:88%;}
+.layer-bar:nth-child(6){animation-delay:.75s;width:84%;}
+.layer-bar:nth-child(7){animation-delay:.9s;width:80%;}
+.layer-bar:nth-child(8){animation-delay:1.05s;width:75%;}
+.layer-bar:nth-child(9){animation-delay:1.2s;width:68%;}
+.layer-bar:nth-child(10){animation-delay:1.35s;width:58%;}
+.layer-bar:nth-child(11){animation-delay:1.5s;width:45%;}
+.layer-bar:nth-child(12){animation-delay:1.65s;width:30%;}
+.layer-bar:nth-child(13){animation-delay:1.8s;width:16%;}
+.layer-bar:nth-child(14){animation-delay:1.95s;width:6%;}
+@keyframes layerGrow{
+  0%{opacity:0;transform:scaleX(0);}
+  20%{opacity:1;transform:scaleX(1);}
+  80%{opacity:1;}
+  100%{opacity:0;}
+}
+
+/*──────────────────────────────────────────────
+  CATALOG  
+──────────────────────────────────────────────*/
+#catalog{padding:6rem 2.5rem;}
+
+/* FILTER BAR */
+.filter-strip{
+  display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:1.5rem;
+  padding-bottom:1.5rem;
+  border-bottom:1px solid var(--border);
+}
+.fchip{
+  padding:.38rem 1rem;border-radius:3px;
+  font-family:var(--font-mono);font-size:.7rem;
+  letter-spacing:.08em;text-transform:uppercase;
+  cursor:pointer;border:1px solid var(--border);
+  background:transparent;color:var(--muted);
+  transition:all .2s;
+}
+.fchip:hover,.fchip.active{
+  border-color:var(--green);color:var(--green);
+  background:rgba(57,255,20,0.07);
+  box-shadow:0 0 12px rgba(57,255,20,0.12);
+}
+
+/* PRICE FILTER */
+.price-strip{
+  display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:2rem;
+}
+.pchip{
+  padding:.3rem .8rem;border-radius:3px;
+  font-family:var(--font-mono);font-size:.65rem;
+  letter-spacing:.08em;
+  cursor:pointer;border:1px solid var(--border);
+  background:transparent;color:var(--muted);
+  transition:all .2s;
+}
+.pchip:hover,.pchip.active{
+  border-color:var(--blue);color:var(--blue);
+  background:rgba(0,212,255,0.07);
+}
+
+/* RESULTS COUNT */
+.results-count{
+  font-family:var(--font-mono);font-size:.7rem;
+  color:var(--muted);margin-bottom:1.5rem;
+  letter-spacing:.08em;
+}
+.results-count span{color:var(--green);}
+
+/* PRODUCT GRID */
+.prod-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:1rem;
+}
+.pc{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  overflow:hidden;
+  cursor:pointer;
+  transition:transform .25s,border-color .25s,box-shadow .25s;
+  position:relative;
+}
+.pc:hover{
+  transform:translateY(-6px);
+  border-color:rgba(57,255,20,0.4);
+  box-shadow:0 12px 40px rgba(57,255,20,0.08);
+}
+.pc::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--green),transparent);
+  opacity:0;
+  transition:opacity .3s;
+}
+.pc:hover::before{opacity:1;}
+
+.thumb{
+  height:155px;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+  border-bottom:1px solid var(--border);
+  overflow:hidden;
+}
+.thumb-bg{
+  position:absolute;inset:0;
+  opacity:.08;
+  transition:opacity .3s;
+}
+.pc:hover .thumb-bg{opacity:.14;}
+
+.thumb-icon{font-size:3.5rem;position:relative;z-index:1;filter:drop-shadow(0 0 12px currentColor);}
+.pc:hover .thumb-icon{animation:iconPop .3s ease;}
+@keyframes iconPop{0%{transform:scale(1);}50%{transform:scale(1.18);}100%{transform:scale(1);}}
+
+/* PRICE BADGE */
+.price-badge{
+  position:absolute;top:.6rem;left:.6rem;
+  font-family:var(--font-display);font-size:1.1rem;
+  padding:.1rem .55rem .1rem;
+  border-radius:3px;
+  z-index:2;
+}
+.badge-2{background:rgba(57,255,20,.15);color:var(--green);border:1px solid rgba(57,255,20,.35);}
+.badge-4{background:rgba(0,212,255,.15);color:var(--blue);border:1px solid rgba(0,212,255,.35);}
+.badge-6{background:rgba(255,0,200,.12);color:var(--pink);border:1px solid rgba(255,0,200,.35);}
+.badge-8{background:rgba(255,45,85,.12);color:var(--red);border:1px solid rgba(255,45,85,.35);}
+.badge-10{background:rgba(255,165,0,.12);color:#ffa500;border:1px solid rgba(255,165,0,.35);}
+
+/* SIZE PIP */
+.size-pip{
+  position:absolute;top:.6rem;right:.6rem;
+  font-family:var(--font-mono);font-size:.58rem;
+  letter-spacing:.08em;
+  padding:.2rem .5rem;border-radius:2px;
+  border:1px solid var(--border);
+  color:var(--muted);z-index:2;
+}
+
+/* COLOR SWATCHES */
+.color-swatches{
+  position:absolute;bottom:.6rem;right:.6rem;
+  display:flex;gap:3px;z-index:2;
+}
+.swatch{
+  width:12px;height:12px;border-radius:50%;
+  border:1px solid rgba(255,255,255,.15);
+  cursor:pointer;
+  transition:transform .15s,box-shadow .15s;
+}
+.swatch:hover{transform:scale(1.35);}
+.sw-green{background:#39ff14;box-shadow:0 0 6px var(--green);}
+.sw-blue{background:#00d4ff;box-shadow:0 0 6px var(--blue);}
+.sw-red{background:#ff2d55;box-shadow:0 0 6px var(--red);}
+.sw-black{background:#1a1a22;border-color:rgba(255,255,255,.3);}
+
+.pbody{padding:.9rem 1rem;}
+.pname{font-family:var(--font-body);font-weight:700;font-size:.95rem;margin-bottom:.22rem;letter-spacing:.01em;}
+.ptag{
+  font-family:var(--font-mono);font-size:.6rem;
+  letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:.6rem;
+}
+.pdesc{font-size:.78rem;color:var(--muted);margin-bottom:.85rem;line-height:1.55;}
 .pmeta{display:flex;align-items:center;justify-content:space-between;}
-.pweight{font-family:'DM Mono',monospace;font-size:.68rem;color:var(--subtle);}
-.pprice{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;color:var(--cyan);}
+.pweight{font-family:var(--font-mono);font-size:.64rem;color:var(--subtle);}
+.add-btn{
+  padding:.28rem .75rem;
+  background:var(--green-dim);
+  border:1px solid rgba(57,255,20,.3);
+  color:var(--green);
+  border-radius:3px;
+  font-family:var(--font-mono);font-size:.62rem;
+  letter-spacing:.06em;cursor:pointer;
+  transition:all .2s;
+}
+.add-btn:hover{background:var(--green);color:#050508;box-shadow:0 0 14px var(--green-glow);}
 
-/* FOOTER */
-footer{padding:3rem 2.5rem;border-top:1px solid var(--border);}
-.footer-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5rem;}
-.footer-logo{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;}
-.footer-logo span{color:var(--cyan);}
-.footer-badges{display:flex;gap:.6rem;}
-.fbadge{font-size:.7rem;padding:.28rem .7rem;border-radius:50px;border:1px solid rgba(0,229,195,.25);font-family:'DM Mono',monospace;color:var(--cyan);}
-.footer-links{display:flex;gap:1.8rem;}
-.footer-links a{font-size:.82rem;color:var(--muted);text-decoration:none;}
-.footer-links a:hover{color:var(--text);}
-.footer-copy{font-size:.78rem;color:var(--subtle);}
+/* LOAD MORE */
+.load-more-wrap{text-align:center;margin-top:3rem;}
+.load-more{
+  padding:.75rem 2.5rem;
+  background:transparent;
+  border:1px solid rgba(57,255,20,.35);
+  color:var(--green);
+  border-radius:4px;
+  font-family:var(--font-mono);font-size:.78rem;
+  letter-spacing:.1em;text-transform:uppercase;
+  cursor:pointer;
+  transition:all .25s;
+}
+.load-more:hover{
+  background:rgba(57,255,20,0.08);
+  box-shadow:0 0 24px rgba(57,255,20,.15);
+}
+
+/*──────────────────────────────────────────────
+  COLOR SHOWCASE
+──────────────────────────────────────────────*/
+#colors{
+  padding:6rem 2.5rem;
+  background:var(--surface);
+  position:relative;
+  overflow:hidden;
+}
+#colors::before{
+  content:'';
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 80% at 50% 50%,
+    rgba(57,255,20,0.04) 0%,transparent 70%);
+}
+.color-showcase{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:1.5rem;
+  margin-top:3rem;
+}
+.color-block{
+  border-radius:var(--radius);
+  overflow:hidden;
+  border:1px solid var(--border);
+  transition:transform .3s,box-shadow .3s;
+}
+.color-block:hover{transform:translateY(-8px);}
+.cb-preview{
+  height:200px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:4rem;
+  position:relative;
+  overflow:hidden;
+}
+.cb-g{background:linear-gradient(135deg,#0a1a0a,#0d2a0d);}
+.cb-g:hover{box-shadow:0 20px 50px rgba(57,255,20,.25);}
+.cb-b{background:linear-gradient(135deg,#030d1a,#051520);}
+.cb-b:hover{box-shadow:0 20px 50px rgba(0,212,255,.25);}
+.cb-r{background:linear-gradient(135deg,#1a030a,#250510);}
+.cb-r:hover{box-shadow:0 20px 50px rgba(255,45,85,.25);}
+.cb-k{background:linear-gradient(135deg,#0a0a0f,#14141e);}
+.cb-k:hover{box-shadow:0 20px 50px rgba(255,255,255,.08);}
+.cb-glow{
+  position:absolute;inset:0;
+  border-radius:50%;
+  width:120px;height:120px;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  filter:blur(40px);
+  opacity:.5;
+}
+.cg-g{background:var(--green);}
+.cg-b{background:var(--blue);}
+.cg-r{background:var(--red);}
+.cg-k{background:#ffffff;}
+.cb-info{
+  padding:1.2rem 1.5rem;
+  background:var(--card);
+  border-top:1px solid var(--border);
+}
+.cb-name{
+  font-family:var(--font-display);
+  font-size:1.4rem;letter-spacing:.06em;
+  margin-bottom:.25rem;
+}
+.cb-desc{font-size:.78rem;color:var(--muted);line-height:1.6;}
+.cb-dot{
+  width:14px;height:14px;border-radius:50%;
+  display:inline-block;margin-right:.5rem;
+  vertical-align:middle;
+}
+
+/*──────────────────────────────────────────────
+  WHY US
+──────────────────────────────────────────────*/
+#why{padding:6rem 2.5rem;}
+.why-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1.5rem;margin-top:3rem;
+}
+.why-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:2rem;
+  position:relative;overflow:hidden;
+  transition:border-color .25s,transform .25s;
+}
+.why-card:hover{transform:translateY(-4px);}
+.why-card::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;height:2px;
+}
+.wc1::before{background:linear-gradient(90deg,var(--green),transparent);}
+.wc2::before{background:linear-gradient(90deg,var(--blue),transparent);}
+.wc3::before{background:linear-gradient(90deg,var(--red),transparent);}
+.wc4::before{background:linear-gradient(90deg,var(--pink),transparent);}
+.wc5::before{background:linear-gradient(90deg,#ffa500,transparent);}
+.wc6::before{background:linear-gradient(90deg,var(--green),transparent);}
+.wc1:hover{border-color:rgba(57,255,20,.35);}
+.wc2:hover{border-color:rgba(0,212,255,.35);}
+.wc3:hover{border-color:rgba(255,45,85,.35);}
+.wc4:hover{border-color:rgba(255,0,200,.35);}
+.wc5:hover{border-color:rgba(255,165,0,.35);}
+.wc6:hover{border-color:rgba(57,255,20,.35);}
+.why-icon{font-size:2rem;margin-bottom:1rem;}
+.why-head{font-family:var(--font-display);font-size:1.4rem;letter-spacing:.03em;margin-bottom:.5rem;}
+.why-desc{font-size:.83rem;color:var(--muted);line-height:1.7;}
+
+/*──────────────────────────────────────────────
+  CTA
+──────────────────────────────────────────────*/
+#cta{
+  padding:7rem 2.5rem;
+  text-align:center;
+  background:var(--surface);
+  border-top:1px solid rgba(57,255,20,0.1);
+  position:relative;overflow:hidden;
+}
+#cta::before{
+  content:'';
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse 70% 80% at 50% 50%,
+    rgba(57,255,20,0.05) 0%,transparent 70%);
+}
+.cta-inner{position:relative;}
+.cta-title{
+  font-family:var(--font-display);
+  font-size:clamp(3rem,6vw,5.5rem);
+  letter-spacing:.03em;line-height:.95;
+  margin-bottom:1.5rem;
+}
+.cta-sub{font-size:1rem;color:var(--muted);margin-bottom:2.5rem;max-width:480px;margin-left:auto;margin-right:auto;}
+.email-row{
+  display:flex;gap:.8rem;max-width:480px;
+  margin:0 auto 1.5rem;
+}
+.email-input{
+  flex:1;
+  padding:.8rem 1.2rem;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(57,255,20,0.25);
+  border-radius:4px;
+  color:var(--text);
+  font-family:var(--font-mono);font-size:.82rem;
+  outline:none;
+  transition:border-color .2s,box-shadow .2s;
+}
+.email-input:focus{
+  border-color:var(--green);
+  box-shadow:0 0 18px rgba(57,255,20,0.1);
+}
+.email-input::placeholder{color:var(--muted);}
+.cta-note{font-family:var(--font-mono);font-size:.65rem;color:var(--muted);letter-spacing:.08em;}
+
+/*──────────────────────────────────────────────
+  FOOTER
+──────────────────────────────────────────────*/
+footer{
+  padding:3rem 2.5rem;
+  border-top:1px solid var(--border);
+}
+.footer-inner{
+  max-width:1300px;margin:0 auto;
+  display:flex;align-items:center;
+  justify-content:space-between;flex-wrap:wrap;gap:1.5rem;
+}
+.footer-logo{
+  font-family:var(--font-display);font-size:1.5rem;letter-spacing:.08em;
+}
+.footer-logo .accent{color:var(--green);text-shadow:0 0 10px var(--green);}
+.footer-links{display:flex;gap:2rem;}
+.footer-links a{
+  font-family:var(--font-mono);font-size:.68rem;
+  color:var(--muted);text-decoration:none;
+  letter-spacing:.1em;text-transform:uppercase;
+  transition:color .2s;
+}
+.footer-links a:hover{color:var(--green);}
+.footer-copy{font-family:var(--font-mono);font-size:.65rem;color:var(--subtle);}
+
+/* CART NOTIFICATION */
+.toast{
+  position:fixed;bottom:2rem;right:2rem;
+  background:var(--card);
+  border:1px solid rgba(57,255,20,0.4);
+  border-radius:8px;
+  padding:1rem 1.5rem;
+  font-family:var(--font-mono);font-size:.78rem;
+  color:var(--green);
+  box-shadow:0 0 30px rgba(57,255,20,0.15);
+  transform:translateY(150%);
+  transition:transform .4s cubic-bezier(0.175,0.885,0.32,1.275);
+  z-index:1000;
+}
+.toast.show{transform:translateY(0);}
+
+/*──────────────────────────────────────────────
+  SECTION WRAPPER
+──────────────────────────────────────────────*/
+.section-inner{max-width:1300px;margin:0 auto;}
+
+/*──────────────────────────────────────────────
+  RESPONSIVE
+──────────────────────────────────────────────*/
+@media(max-width:900px){
+  .hero-inner{grid-template-columns:1fr;gap:2rem;}
+  .printer-scene{width:240px;height:240px;}
+  .stats-inner{grid-template-columns:repeat(3,1fr);}
+  .steps-grid{grid-template-columns:1fr 1fr;gap:2rem;}
+  .steps-grid::after{display:none;}
+  .color-showcase{grid-template-columns:1fr 1fr;}
+  .why-grid{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:600px){
+  nav ul{display:none;}
+  .stats-inner{grid-template-columns:repeat(2,1fr);}
+  .color-showcase{grid-template-columns:1fr;}
+  .why-grid{grid-template-columns:1fr;}
+  .email-row{flex-direction:column;}
+}
 </style>
 </head>
-
 <body>
 
 <!-- NAV -->
 <nav>
-  <a href="#" class="logo">Layer<span>Up</span></a>
+  <a href="#" class="logo">Layer<span class="accent">Up</span> 3D</a>
   <ul>
-    <li><a href="#printing">How It Works</a></li>
-    <li><a href="#categories">Sizes</a></li>
-    <li><a href="#products">Products</a></li>
-    <li><a href="#contact" class="nav-cta">Order Now</a></li>
+    <li><a href="#howit">How We Print</a></li>
+    <li><a href="#colors">Colors</a></li>
+    <li><a href="#catalog">Catalog</a></li>
+    <li><a href="#cta" class="nav-cta">Order Now</a></li>
   </ul>
 </nav>
 
-<!-- HERO -->
+<!-- PARTICLES -->
+<div class="particles" id="particles"></div>
+
+<!-- ════════════════ HERO ════════════════ -->
 <section class="hero">
   <div class="hero-grid"></div>
-  <div class="hero-glow"></div>
   <div class="hero-inner">
     <div>
-      <div class="hero-tag">3D Printed In-House</div>
-      <h1>Built Layer<br>by <em>Layer.</em></h1>
-      <p class="hero-sub">Custom 3D printed goods designed for your home, desk, and daily life — starting at just <strong style="color:var(--cyan)">$2</strong>.</p>
-      <div class="btn-group">
-        <a href="#products" class="btn btn-primary">Browse Products</a>
-        <a href="#printing" class="btn btn-ghost">How It Works</a>
+      <div class="hero-eyebrow">
+        <span class="blink">█</span>&nbsp;PRINTING NOW — LIVE ORDERS OPEN
+      </div>
+      <h1>
+        ENDLESS<br>
+        <span class="line2">DESIGNS.</span><br>
+        <span class="neon-g">ONE PRICE.</span>
+      </h1>
+      <p class="hero-sub">
+        Custom 3D‑printed goods for your home, desk, and life.
+        <strong style="color:var(--green)">1000+ designs</strong> across every category —
+        available in <strong style="color:var(--blue)">4 neon colors</strong>.
+        Starting at just <strong style="color:var(--green)">$2</strong>.
+      </p>
+      <div class="btn-row">
+        <a href="#catalog" class="btn btn-green">Browse 1000+ Designs</a>
+        <a href="#howit" class="btn btn-outline">▶ How It Works</a>
       </div>
     </div>
     <div class="hero-visual">
-      <div class="print-art">
-        <div class="ring r1"></div>
-        <div class="ring r2"></div>
-        <div class="ring r3"></div>
-        <div class="art-center">
-          <span class="art-icon">🖨️</span>
-          <span class="art-label">Printing…</span>
+      <div class="printer-scene">
+        <div class="orbit o1"><div class="orbit-dot d1"></div></div>
+        <div class="orbit o2"><div class="orbit-dot d2"></div></div>
+        <div class="orbit o3"><div class="orbit-dot d3"></div></div>
+        <div class="orbit o4"></div>
+        <div class="printer-core">
+          <div class="printer-icon">🖨️</div>
+          <div class="print-beam"></div>
+          <div class="print-label">PRINTING…</div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- STATS -->
-<div class="stats">
+<!-- STATS BAR -->
+<div class="statsbar">
   <div class="stats-inner">
-    <div class="stat"><div class="stat-num c">$2</div><div class="stat-label">Starting price</div></div>
-    <div class="stat"><div class="stat-num c">50g</div><div class="stat-label">Max filament</div></div>
-    <div class="stat"><div class="stat-num c">100%</div><div class="stat-label">Made to order</div></div>
-    <div class="stat"><div class="stat-num c">∞</div><div class="stat-label">Fun guaranteed</div></div>
+    <div class="stat">
+      <div class="stat-num neon-g">$2–$10</div>
+      <div class="stat-label">Price Range</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num neon-b">1000+</div>
+      <div class="stat-label">Designs</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num neon-r">4</div>
+      <div class="stat-label">Colors</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num neon-g">100%</div>
+      <div class="stat-label">Made to Order</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" style="color:#ffa500;text-shadow:0 0 12px rgba(255,165,0,.4);">∞</div>
+      <div class="stat-label">Possibilities</div>
+    </div>
   </div>
 </div>
 
-<!-- CATEGORIES — SMALL ONLY -->
-<section id="categories" style="background:var(--surface);">
+<!-- ════════════════ HOW IT'S PRINTED ════════════════ -->
+<section id="howit">
   <div class="section-inner">
-    <div class="section-tag">Pricing & Sizes</div>
-    <div class="section-title">Small Tier</div>
-    <p class="section-sub">Simple, fair, and always $2 — up to 50g of filament.</p>
+    <div class="section-eye">// Process</div>
+    <div class="section-title">HOW YOUR ITEM <span class="neon-b">COMES TO LIFE</span></div>
+    <p class="section-sub">Every product is printed fresh, layer by layer, in your chosen color — no inventory, no waste.</p>
 
-    <div class="cat-grid">
-      <div class="cat-card">
-        <span class="cat-badge">Small</span>
-        <div class="cat-title">Compact</div>
-        <div class="cat-sub">Tiny but mighty — perfect for fun fidgets and everyday helpers.</div>
+    <div class="steps-grid">
+      <div class="step s1">
+        <div class="step-num">01</div>
+        <div class="step-emoji">🛒</div>
+        <div class="step-head">PICK A DESIGN</div>
+        <div class="step-desc">Browse 1000+ products. Choose your design, color, and size tier. Every order is unique.</div>
+      </div>
+      <div class="step s2">
+        <div class="step-num">02</div>
+        <div class="step-emoji">🎨</div>
+        <div class="step-head">CHOOSE COLOR</div>
+        <div class="step-desc">Select Neon Green, Electric Blue, Flame Red, or Void Black filament for your print.</div>
+      </div>
+      <div class="step s3">
+        <div class="step-num">03</div>
+        <div class="step-emoji">⚙️</div>
+        <div class="step-head">SLICE & PREP</div>
+        <div class="step-desc">Your file is sliced into hundreds of ultra-thin layers by our slicer software for precision.</div>
+      </div>
+      <div class="step s4">
+        <div class="step-num">04</div>
+        <div class="step-emoji">🔥</div>
+        <div class="step-head">PRINT IT</div>
+        <div class="step-desc">Hot filament is deposited layer by layer at 0.2mm precision until your item is complete.</div>
+      </div>
+      <div class="step s5">
+        <div class="step-num">05</div>
+        <div class="step-emoji">📦</div>
+        <div class="step-head">SHIP IT</div>
+        <div class="step-desc">Cleaned, quality-checked, and shipped to your door. Fresh from the printer to your hands.</div>
+      </div>
+    </div>
 
-        <div class="cat-price-row">
-          <span class="price-label">Price</span>
-          <span class="price-val">$2</span>
-          <span class="price-note">Up to 50g</span>
+    <div class="layer-demo">
+      <div class="layer-title">▶ LIVE LAYER SIMULATION — FDM PRINTING</div>
+      <div class="layer-bars" id="layerBars"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ COLOR SHOWCASE ════════════════ -->
+<section id="colors">
+  <div class="section-inner" style="position:relative;">
+    <div class="section-eye">// Available Colors</div>
+    <div class="section-title">PICK YOUR <span class="neon-g">NEON</span></div>
+    <p class="section-sub">All designs available in 4 signature colors. Same price, your choice.</p>
+
+    <div class="color-showcase">
+      <!-- GREEN -->
+      <div class="color-block">
+        <div class="cb-preview cb-g">
+          <div class="cb-glow cg-g"></div>
+          <span style="position:relative;z-index:1;font-size:4rem;filter:drop-shadow(0 0 18px #39ff14)">🐉</span>
         </div>
-
-        <div class="cat-weight">⚖️ Up to 50g of filament used</div>
-
-        <ul class="cat-list">
-          <li>Infinity Cube</li>
-          <li>Articulated Dragon</li>
-          <li>Spiral Cone</li>
-          <li>Universal Phone Stand</li>
-          <li>Cable Organizer</li>
-          <li>Snack Box</li>
-        </ul>
+        <div class="cb-info">
+          <div class="cb-name neon-g"><span class="cb-dot" style="background:#39ff14;box-shadow:0 0 8px #39ff14;"></span>NEON GREEN</div>
+          <div class="cb-desc">Hyper-visible, electric glow under UV. The statement color. Turns any print into a centerpiece.</div>
+        </div>
+      </div>
+      <!-- BLUE -->
+      <div class="color-block">
+        <div class="cb-preview cb-b">
+          <div class="cb-glow cg-b"></div>
+          <span style="position:relative;z-index:1;font-size:4rem;filter:drop-shadow(0 0 18px #00d4ff)">🔷</span>
+        </div>
+        <div class="cb-info">
+          <div class="cb-name neon-b"><span class="cb-dot" style="background:#00d4ff;box-shadow:0 0 8px #00d4ff;"></span>ELECTRIC BLUE</div>
+          <div class="cb-desc">Ice-cold precision blue. Sleek, techy, and unmissable. Perfect for gadget-adjacent prints.</div>
+        </div>
+      </div>
+      <!-- RED -->
+      <div class="color-block">
+        <div class="cb-preview cb-r">
+          <div class="cb-glow cg-r"></div>
+          <span style="position:relative;z-index:1;font-size:4rem;filter:drop-shadow(0 0 18px #ff2d55)">🔺</span>
+        </div>
+        <div class="cb-info">
+          <div class="cb-name neon-r"><span class="cb-dot" style="background:#ff2d55;box-shadow:0 0 8px #ff2d55;"></span>FLAME RED</div>
+          <div class="cb-desc">Hot, urgent, fierce. Brings energy to every print. Demand attention — in red.</div>
+        </div>
+      </div>
+      <!-- BLACK -->
+      <div class="color-block">
+        <div class="cb-preview cb-k">
+          <div class="cb-glow cg-k"></div>
+          <span style="position:relative;z-index:1;font-size:4rem;filter:drop-shadow(0 0 18px rgba(255,255,255,.3))">🖤</span>
+        </div>
+        <div class="cb-info">
+          <div class="cb-name" style="color:#c0c0d0;"><span class="cb-dot" style="background:#1a1a22;border:1px solid rgba(255,255,255,.3);"></span>VOID BLACK</div>
+          <div class="cb-desc">Stealth mode on. Matte jet black that makes every print look sleek, professional, serious.</div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- PRODUCTS — SMALL ONLY -->
-<section id="products">
+<!-- ════════════════ CATALOG ════════════════ -->
+<section id="catalog">
   <div class="section-inner">
-    <div class="section-tag">Catalog</div>
-    <div class="section-title">Small Products</div>
-    <p class="section-sub">All items below are $2 and printed fresh for your order.</p>
+    <div class="section-eye">// Product Catalog</div>
+    <div class="section-title">BROWSE <span class="neon-g">1000+</span> DESIGNS</div>
+    <p class="section-sub">Every item is printed fresh in your chosen color. Filter by category or price.</p>
 
-    <div class="filter-bar">
-      <button class="fbtn">Small — $2</button>
-    </div>
+    <!-- CATEGORY FILTER -->
+    <div class="filter-strip" id="catFilter"></div>
 
+    <!-- PRICE FILTER -->
+    <div class="price-strip" id="priceFilter"></div>
+
+    <!-- RESULTS COUNT -->
+    <div class="results-count" id="resultsCount"></div>
+
+    <!-- GRID -->
     <div class="prod-grid" id="prodGrid"></div>
+
+    <div class="load-more-wrap">
+      <button class="load-more" id="loadMoreBtn" onclick="loadMore()">LOAD MORE DESIGNS ↓</button>
+    </div>
   </div>
 </section>
 
-<!-- CTA -->
-<section class="cta-sec" id="contact" style="text-align:center;background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:5rem 2.5rem;">
+<!-- ════════════════ WHY US ════════════════ -->
+<section id="why" style="background:var(--surface);">
   <div class="section-inner">
-    <div class="section-tag">Get Started</div>
-    <div class="section-title">Ready to Print<br>Something <em>Cool?</em></div>
-    <p style="color:var(--muted);margin-bottom:2rem;">From fidgets to helpers — everything is just $2.</p>
-    <div class="btn-group" style="justify-content:center;">
-      <a href="mailto:hello@layerup3d.com" class="btn btn-primary">📧 Send an Order</a>
-      <a href="#products" class="btn btn-ghost">View Products</a>
+    <div class="section-eye">// Why LayerUp</div>
+    <div class="section-title">BUILT DIFFERENT.<br><span class="neon-g">PRINTED BETTER.</span></div>
+    <div class="why-grid">
+      <div class="why-card wc1">
+        <div class="why-icon">⚡</div>
+        <div class="why-head">INSTANT PRICING</div>
+        <div class="why-desc">No hidden fees. No surprises. $2–$10 based purely on material used. See the price before you order.</div>
+      </div>
+      <div class="why-card wc2">
+        <div class="why-icon">🎨</div>
+        <div class="why-head">4 NEON COLORS</div>
+        <div class="why-desc">Every single design available in Neon Green, Electric Blue, Flame Red, and Void Black.</div>
+      </div>
+      <div class="why-card wc3">
+        <div class="why-icon">♻️</div>
+        <div class="why-head">ZERO WASTE</div>
+        <div class="why-desc">Printed only when you order. No overstock, no warehouses. Made-to-order = zero waste manufacturing.</div>
+      </div>
+      <div class="why-card wc4">
+        <div class="why-icon">🛠️</div>
+        <div class="why-head">CUSTOM REQUESTS</div>
+        <div class="why-desc">Don't see what you need? Email us a reference and we'll model and print it for you at the same rates.</div>
+      </div>
+      <div class="why-card wc5">
+        <div class="why-icon">📦</div>
+        <div class="why-head">FAST TURNAROUND</div>
+        <div class="why-desc">Most small prints complete in under 3 hours. Orders ship within 1–2 business days of payment.</div>
+      </div>
+      <div class="why-card wc6">
+        <div class="why-icon">💎</div>
+        <div class="why-head">PRECISION QUALITY</div>
+        <div class="why-desc">0.2mm layer resolution on premium PLA filament. Every print passes our quality check before shipping.</div>
+      </div>
     </div>
+  </div>
+</section>
+
+<!-- ════════════════ CTA ════════════════ -->
+<section id="cta">
+  <div class="section-inner cta-inner">
+    <div class="section-eye">// Order</div>
+    <div class="cta-title">READY TO<br><span class="neon-g">PRINT?</span></div>
+    <p class="cta-sub">Tell us what you want, your color, and your quantity. We'll quote it in minutes.</p>
+    <div class="email-row">
+      <input class="email-input" type="email" placeholder="your@email.com" id="emailInput">
+      <a href="#" class="btn btn-green" onclick="handleOrder()">GET STARTED</a>
+    </div>
+    <div class="cta-note">Or email us directly at hello@layerup3d.com — we reply fast.</div>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
   <div class="footer-inner">
-    <div class="footer-logo">Layer<span>Up</span> 3D</div>
-    <div class="footer-badges">
-      <span class="fbadge">Small · $2</span>
-    </div>
+    <div class="footer-logo">Layer<span class="accent">Up</span> 3D</div>
     <div class="footer-links">
-      <a href="#printing">Technology</
-              <a href="#categories">Sizes</a>
-      <a href="#products">Products</a>
-      <a href="#contact">Order</a>
+      <a href="#howit">Process</a>
+      <a href="#colors">Colors</a>
+      <a href="#catalog">Catalog</a>
+      <a href="#cta">Order</a>
     </div>
-    <div class="footer-copy">© 2025 LayerUp 3D. All rights reserved.</div>
+    <div class="footer-copy">© 2025 LayerUp 3D · All rights reserved · hello@layerup3d.com</div>
   </div>
 </footer>
 
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
 <script>
-/* SMALL PRODUCTS ONLY */
-const products = [
-  {
-    name:"Infinity Cube",
-    desc:"A satisfying fidget cube with 8 hinged sections that fold endlessly.",
-    icon:"🔀",
-    size:"S",
-    weight:"~28g",
-    price:"$2"
-  },
-  {
-    name:"Articulated Dragon",
-    desc:"A fully flexible dragon printed in one piece — every scale moves.",
-    icon:"🐉",
-    size:"S",
-    weight:"~35g",
-    price:"$2"
-  },
-  {
-    name:"Spiral Cone",
-    desc:"A geometric spiral cone that doubles as decor and a fun spinner.",
-    icon:"🌀",
-    size:"S",
-    weight:"~20g",
-    price:"$2"
-  },
-  {
-    name:"Universal Phone Stand",
-    desc:"Slim, sturdy stand that holds any phone upright at a perfect angle.",
-    icon:"📱",
-    size:"S",
-    weight:"~30g",
-    price:"$2"
-  },
-  {
-    name:"Cable Organizer",
-    desc:"Keep your cables tangle‑free with this compact desk clip.",
-    icon:"🔌",
-    size:"S",
-    weight:"~18g",
-    price:"$2"
-  },
-  {
-    name:"Snack Box",
-    desc:"A compact lidded box for snacks, pills, or tiny items.",
-    icon:"🍬",
-    size:"S",
-    weight:"~42g",
-    price:"$2"
+/*────────────────────────────────────────────────
+  PARTICLES
+────────────────────────────────────────────────*/
+(function(){
+  const container = document.getElementById('particles');
+  const colors = ['#39ff14','#00d4ff','#ff2d55','#ff00c8'];
+  for(let i=0;i<40;i++){
+    const p = document.createElement('div');
+    p.className='particle';
+    const c = colors[Math.floor(Math.random()*colors.length)];
+    p.style.cssText=`
+      left:${Math.random()*100}%;
+      background:${c};
+      box-shadow:0 0 6px ${c};
+      animation-duration:${8+Math.random()*18}s;
+      animation-delay:${Math.random()*10}s;
+      --dx:${(Math.random()-.5)*120}px;
+      width:${1+Math.random()*2}px;
+      height:${1+Math.random()*2}px;
+    `;
+    container.appendChild(p);
   }
+})();
+
+/*────────────────────────────────────────────────
+  LAYER ANIMATION BUILD
+────────────────────────────────────────────────*/
+(function(){
+  const container = document.getElementById('layerBars');
+  for(let i=0;i<14;i++){
+    const bar = document.createElement('div');
+    bar.className='layer-bar';
+    container.appendChild(bar);
+  }
+})();
+
+/*────────────────────────────────────────────────
+  PRODUCT DATA
+────────────────────────────────────────────────*/
+const CATEGORIES = [
+  'All','Fidgets & Toys','Home & Decor','Desk & Office',
+  'Gaming & Geek','Kitchen & Food','Tools & Utility',
+  'Fashion & Wearables','Nature & Animals','Seasonal & Gifts','Custom & Novelty'
 ];
 
-function renderProducts() {
+const PRICES = ['All','$2','$4','$6','$8','$10'];
+
+const RAW_PRODUCTS = [
+  // FIDGETS & TOYS
+  {name:'Infinity Cube',cat:'Fidgets & Toys',price:2,weight:'28g',icon:'🔀',desc:'8 hinged sections that fold forever. The ultimate desk fidget.'},
+  {name:'Articulated Dragon',cat:'Fidgets & Toys',price:4,weight:'45g',icon:'🐉',desc:'Fully jointed dragon printed in one piece — every scale flexes.'},
+  {name:'Spiral Spinner',cat:'Fidgets & Toys',price:2,weight:'22g',icon:'🌀',desc:'Geometric spiral that balances on a fingertip and spins silently.'},
+  {name:'Snake Cube',cat:'Fidgets & Toys',price:4,weight:'50g',icon:'🐍',desc:'27-segment twisting cube puzzle — 3D printed for satisfying clicks.'},
+  {name:'Flexi Octopus',cat:'Fidgets & Toys',price:4,weight:'38g',icon:'🐙',desc:'All 8 legs articulate independently. Sits, hangs, and fidgets perfectly.'},
+  {name:'Gyroscope Ring',cat:'Fidgets & Toys',price:6,weight:'65g',icon:'⚙️',desc:'Triple-axis spinning gyroscope. Mesmerizing desk physics demo.'},
+  {name:'Lattice Ball',cat:'Fidgets & Toys',price:2,weight:'18g',icon:'⚽',desc:'Open-lattice stress ball you can squeeze, roll, and stare at forever.'},
+  {name:'Fidget Gear Set',cat:'Fidgets & Toys',price:4,weight:'42g',icon:'⚙️',desc:'Interlocking gears that spin together on a base. Hypnotic in motion.'},
+  {name:'Pop-It Tile',cat:'Fidgets & Toys',price:2,weight:'24g',icon:'🟩',desc:'Printable pop-it style tile with satisfying dome clicks.'},
+  {name:'Caterpillar Flexi',cat:'Fidgets & Toys',price:2,weight:'26g',icon:'🐛',desc:'20-segment articulated caterpillar that wiggles in your hand.'},
+  {name:'Spinning Top Pro',cat:'Fidgets & Toys',price:2,weight:'16g',icon:'🌪️',desc:'Precision-balanced top that spins for 45+ seconds on any surface.'},
+  {name:'Maze Cube',cat:'Fidgets & Toys',price:6,weight:'70g',icon:'🎮',desc:'3D maze trapped inside a transparent cube. Navigate the ball inside.'},
+  {name:'DNA Model',cat:'Fidgets & Toys',price:6,weight:'55g',icon:'🧬',desc:'Double-helix DNA model with rotating base. Educational meets cool.'},
+
+  // HOME & DECOR
+  {name:'Voronoi Vase',cat:'Home & Decor',price:8,weight:'95g',icon:'🏺',desc:'Mathematical voronoi pattern vase. Statement piece for any shelf.'},
+  {name:'Geometric Planter',cat:'Home & Decor',price:6,weight:'72g',icon:'🌿',desc:'Hexagonal low-poly planter for succulents and small plants.'},
+  {name:'Wall Art Tile',cat:'Home & Decor',price:4,weight:'40g',icon:'🖼️',desc:'Textured geometric wall tile. Mix and match for infinite patterns.'},
+  {name:'Icosahedron Lamp Shade',cat:'Home & Decor',price:10,weight:'120g',icon:'💡',desc:'20-face geometric shade that casts geometric light patterns.'},
+  {name:'Honeycomb Frame',cat:'Home & Decor',price:6,weight:'58g',icon:'🍯',desc:'Modular hex frame for photos or botanical displays on walls.'},
+  {name:'Name Plaque',cat:'Home & Decor',price:4,weight:'35g',icon:'🔤',desc:'Custom raised-letter name sign for doors, desks, or shelves.'},
+  {name:'Crystal Cluster',cat:'Home & Decor',price:4,weight:'44g',icon:'💎',desc:'3D printed faux crystal cluster — stunning on any surface or shelf.'},
+  {name:'Minimal Clock Stand',cat:'Home & Decor',price:6,weight:'60g',icon:'🕐',desc:'Angled stand for any 60mm round clock insert. Clean and modern.'},
+  {name:'Bookend Set',cat:'Home & Decor',price:8,weight:'100g',icon:'📚',desc:'Geometric bookend pair that look like architecture slices.'},
+  {name:'Coaster Set x4',cat:'Home & Decor',price:6,weight:'80g',icon:'🧊',desc:'Four geometric coasters with grip ribs on the bottom — no sliding.'},
+  {name:'Floating Shelf Hook',cat:'Home & Decor',price:4,weight:'32g',icon:'🪝',desc:'Wall-mount hook system that looks like floating magic on any wall.'},
+  {name:'Picture Easel',cat:'Home & Decor',price:4,weight:'38g',icon:'🖼️',desc:'Folding mini easel for 4x6 photos or small artwork. Gift-ready.'},
+
+  // DESK & OFFICE
+  {name:'Universal Phone Stand',cat:'Desk & Office',price:2,weight:'30g',icon:'📱',desc:'Holds any phone at perfect viewing angle. Thin, sturdy, silent.'},
+  {name:'Cable Organizer',cat:'Desk & Office',price:2,weight:'18g',icon:'🔌',desc:'Clip-on cable manager to keep USB, HDMI, and audio wires tidy.'},
+  {name:'Pen Cup',cat:'Desk & Office',price:4,weight:'50g',icon:'✏️',desc:'Hexagonal pen cup with internal dividers for perfect organization.'},
+  {name:'Monitor Riser Block',cat:'Desk & Office',price:8,weight:'110g',icon:'🖥️',desc:'Elevate your monitor 3 inches with this solid, vibration-free riser.'},
+  {name:'Headphone Hook',cat:'Desk & Office',price:4,weight:'36g',icon:'🎧',desc:'Under-desk headphone hanger. No screws — friction grip on any desk.'},
+  {name:'Sticky Note Tray',cat:'Desk & Office',price:2,weight:'22g',icon:'📝',desc:'Angled tray for sticky note pads — always within reach.'},
+  {name:'Business Card Holder',cat:'Desk & Office',price:4,weight:'34g',icon:'💼',desc:'Angled card holder for 20 business cards. Professional and minimal.'},
+  {name:'Webcam Clip',cat:'Desk & Office',price:4,weight:'28g',icon:'📷',desc:'Clip-on ring light holder / webcam mount for monitor tops.'},
+  {name:'Laptop Stand',cat:'Desk & Office',price:10,weight:'130g',icon:'💻',desc:'Foldable laptop riser that brings screen to eye level. Anti-slip feet.'},
+  {name:'Desk Tray Organizer',cat:'Desk & Office',price:6,weight:'78g',icon:'📂',desc:'Modular multi-compartment desk tray for small office supplies.'},
+  {name:'Mouse Bungee',cat:'Desk & Office',price:4,weight:'42g',icon:'🖱️',desc:'Spring-arm bungee keeps your mouse cable off the desk surface.'},
+  {name:'Key Hook Station',cat:'Desk & Office',price:4,weight:'38g',icon:'🗝️',desc:'Wall-mount 3-hook key station with tiny tray for coins and cards.'},
+
+  // GAMING & GEEK
+  {name:'Controller Stand',cat:'Gaming & Geek',price:6,weight:'68g',icon:'🎮',desc:'Display your PS5/Xbox controller at a perfect angle on your desk.'},
+  {name:'Dice Tower',cat:'Gaming & Geek',price:8,weight:'90g',icon:'🎲',desc:'Tabletop RPG dice tower with random baffle cascade and tray.'},
+  {name:'D20 Display',cat:'Gaming & Geek',price:4,weight:'40g',icon:'⚄',desc:'Cradle display for your favorite D20 die — or use it as a paperweight.'},
+  {name:'Cable Management Spine',cat:'Gaming & Geek',price:6,weight:'55g',icon:'🐍',desc:'Articulated cable spine that hides your PC power strip cables.'},
+  {name:'SD Card Holder',cat:'Gaming & Geek',price:2,weight:'16g',icon:'💾',desc:'Holds 8 SD/MicroSD cards in a slim, pocketable case.'},
+  {name:'Cartridge Display',cat:'Gaming & Geek',price:4,weight:'36g',icon:'🕹️',desc:'Angled display rack for 6 game cartridges — Switch, GBA, DS.'},
+  {name:'Pi Zero Case',cat:'Gaming & Geek',price:4,weight:'42g',icon:'🖥️',desc:'Snap-fit Raspberry Pi Zero case with GPIO cutout and ventilation.'},
+  {name:'Bat Signal Light Ring',cat:'Gaming & Geek',price:4,weight:'32g',icon:'🦇',desc:'Clip onto your LED strip for a geometric shadow diffuser.'},
+  {name:'Mini Arcade Joystick',cat:'Gaming & Geek',price:6,weight:'62g',icon:'🕹️',desc:'Desk-size 8-directional arcade joystick enclosure for USB boards.'},
+  {name:'USB Hub Stand',cat:'Gaming & Geek',price:6,weight:'55g',icon:'⚡',desc:'Angled USB hub holder that keeps ports accessible on your desk.'},
+
+  // KITCHEN & FOOD
+  {name:'Snack Box',cat:'Kitchen & Food',price:2,weight:'42g',icon:'🍬',desc:'Compact lidded box for snacks, vitamins, or tiny items on the go.'},
+  {name:'Cookie Cutter Set',cat:'Kitchen & Food',price:4,weight:'48g',icon:'⭐',desc:'5 geometric cookie cutters — star, hex, diamond, circle, wave.'},
+  {name:'Egg Cup',cat:'Kitchen & Food',price:2,weight:'20g',icon:'🥚',desc:'Minimal egg cup that makes soft-boiled eggs look like a design object.'},
+  {name:'Herb Label Stakes',cat:'Kitchen & Food',price:2,weight:'24g',icon:'🌿',desc:'6-pack of plant label stakes for your herb garden or window box.'},
+  {name:'Spice Jar Funnel',cat:'Kitchen & Food',price:2,weight:'14g',icon:'🌶️',desc:'Mini funnel that fits standard spice jar openings. No more mess.'},
+  {name:'Tea Bag Holder',cat:'Kitchen & Food',price:2,weight:'18g',icon:'🍵',desc:'Hang your tea bag on the edge of any cup — no drips on the table.'},
+  {name:'Bag Clip Set x4',cat:'Kitchen & Food',price:4,weight:'36g',icon:'📎',desc:'Strong spring-loaded bag clips. For chips, bread, coffee — anything.'},
+  {name:'Citrus Squeezer',cat:'Kitchen & Food',price:4,weight:'46g',icon:'🍋',desc:'Manual lemon/lime squeezer with drip grid and reservoir tray.'},
+  {name:'Napkin Ring Set',cat:'Kitchen & Food',price:4,weight:'40g',icon:'💫',desc:'4 geometric napkin rings for dinner table style. Great gift.'},
+  {name:'Recipe Card Stand',cat:'Kitchen & Food',price:4,weight:'34g',icon:'📋',desc:'Angled stand for recipe cards or a small tablet at the perfect reading angle.'},
+
+  // TOOLS & UTILITY
+  {name:'Cable Clip Strip',cat:'Tools & Utility',price:2,weight:'12g',icon:'🗜️',desc:'Adhesive-mount cable clip strip for 5 cables on any surface.'},
+  {name:'Wrench Key Holder',cat:'Tools & Utility',price:4,weight:'36g',icon:'🔧',desc:'Mini wrench shaped key organizer that holds 4 keys in a fan.'},
+  {name:'Door Stopper',cat:'Tools & Utility',price:2,weight:'28g',icon:'🚪',desc:'Heavy-duty wedge door stopper. Works on carpet and hardwood.'},
+  {name:'Nail Sorting Tray',cat:'Tools & Utility',price:4,weight:'42g',icon:'🔩',desc:'Magnetic-bottom parts tray for screws, nails, and small hardware.'},
+  {name:'Wall Anchor Guide',cat:'Tools & Utility',price:2,weight:'10g',icon:'📐',desc:'Drill spacing guide for perfectly aligned wall anchors every time.'},
+  {name:'Pencil Drill Bit Holder',cat:'Tools & Utility',price:4,weight:'38g',icon:'🔩',desc:'Bench-top holder for 12 twist drill bits in order of size.'},
+  {name:'Phone Case Universal',cat:'Tools & Utility',price:6,weight:'60g',icon:'📱',desc:'Printable universal phone case in 4 sizes. Grippy matte finish.'},
+  {name:'Measuring Spoon Set',cat:'Tools & Utility',price:4,weight:'32g',icon:'🥄',desc:'1/4 tsp to 1 tbsp set — dishwasher safe PLA. Stackable.'},
+  {name:'Zip Tie Base',cat:'Tools & Utility',price:2,weight:'8g',icon:'🔗',desc:'Adhesive-mount zip tie anchor base for cable routing. Pack of 10.'},
+  {name:'Wall Cable Channel',cat:'Tools & Utility',price:6,weight:'58g',icon:'📏',desc:'Snap-fit cable channel that mounts flush to any wall. 30cm length.'},
+
+  // FASHION & WEARABLES
+  {name:'Geometric Earrings',cat:'Fashion & Wearables',price:4,weight:'6g',icon:'💍',desc:'Lightweight geometric drop earrings — triangle, hex, and diamond options.'},
+  {name:'Bracelet Bangle',cat:'Fashion & Wearables',price:4,weight:'18g',icon:'⭕',desc:'Open-weave lattice bangle in 3 sizes. Pairs with anything.'},
+  {name:'Brooch Pin',cat:'Fashion & Wearables',price:2,weight:'8g',icon:'📍',desc:'Custom shape brooch pin with backing. Minimalist or maximalist.'},
+  {name:'Keychain Tag',cat:'Fashion & Wearables',price:2,weight:'10g',icon:'🏷️',desc:'Custom word or shape keychain tag. Personalized at no extra cost.'},
+  {name:'Cuff Link Set',cat:'Fashion & Wearables',price:6,weight:'16g',icon:'👔',desc:'Geometric cufflinks for dress shirts — modern hexagonal face.'},
+  {name:'Hair Clip Set x3',cat:'Fashion & Wearables',price:4,weight:'14g',icon:'💇',desc:'Three geometric hair clips — bow, diamond, and arc shapes.'},
+  {name:'Ring Display Stand',cat:'Fashion & Wearables',price:4,weight:'28g',icon:'💍',desc:'Cone-and-bar ring display for jewelry photography or storage.'},
+
+  // NATURE & ANIMALS
+  {name:'Flexi Shark',cat:'Nature & Animals',price:4,weight:'36g',icon:'🦈',desc:'Articulated great white shark that moves like it\'s swimming.'},
+  {name:'Dinosaur Pack',cat:'Nature & Animals',price:6,weight:'68g',icon:'🦕',desc:'3 mini dino figures — T-Rex, Triceratops, Brachiosaurus. Gift-ready.'},
+  {name:'Flexi Cat',cat:'Nature & Animals',price:4,weight:'32g',icon:'🐱',desc:'Poseable cat figure with fully jointed spine and tail.'},
+  {name:'Butterfly Wall Art',cat:'Nature & Animals',price:4,weight:'28g',icon:'🦋',desc:'Detailed open-wing butterfly for wall mounting. Natural gift.'},
+  {name:'Turtle Flexi',cat:'Nature & Animals',price:4,weight:'38g',icon:'🐢',desc:'Articulated turtle with flexible legs and wiggling shell dome.'},
+  {name:'Mini Terrarium Base',cat:'Nature & Animals',price:6,weight:'70g',icon:'🌱',desc:'Geometric terrarium platform for glass domes or small arrangements.'},
+  {name:'Bee Hive Planter',cat:'Nature & Animals',price:6,weight:'64g',icon:'🐝',desc:'Honeycomb-pattern succulent planter that stacks and expands.'},
+  {name:'Whale Paperweight',cat:'Nature & Animals',price:4,weight:'44g',icon:'🐋',desc:'Humpback whale silhouette paperweight — beautiful and functional.'},
+  {name:'Fern Leaf Dish',cat:'Nature & Animals',price:4,weight:'36g',icon:'🌿',desc:'Fern-pattern trinket dish for keys, rings, or small jewelry.'},
+
+  // SEASONAL & GIFTS
+  {name:'Snowflake Ornament',cat:'Seasonal & Gifts',price:2,weight:'12g',icon:'❄️',desc:'Intricate snowflake Christmas ornament with hanging loop.'},
+  {name:'Pumpkin Tealight',cat:'Seasonal & Gifts',price:4,weight:'46g',icon:'🎃',desc:'Hollowed pumpkin with carved face designed for a tealight.'},
+  {name:'Gift Tag Set x6',cat:'Seasonal & Gifts',price:4,weight:'18g',icon:'🎁',desc:'Six shaped gift tags with string holes. Stars, hearts, and trees.'},
+  {name:'Easter Egg Holder',cat:'Seasonal & Gifts',price:2,weight:'14g',icon:'🐣',desc:'Display stand for painted Easter eggs — geometric cone base.'},
+  {name:'Heart Box',cat:'Seasonal & Gifts',price:4,weight:'48g',icon:'❤️',desc:'Hinged heart-shaped box for chocolates, rings, or tiny gifts.'},
+  {name:'Star Lantern',cat:'Seasonal & Gifts',price:6,weight:'62g',icon:'⭐',desc:'5-point star lantern for LED candles — casts star-shaped shadows.'},
+  {name:'Party Favor Capsule',cat:'Seasonal & Gifts',price:2,weight:'16g',icon:'🎉',desc:'Screw-top capsule for small surprises, candy, or folded notes.'},
+  {name:'Advent Calendar Box',cat:'Seasonal & Gifts',price:10,weight:'140g',icon:'📅',desc:'24-door printable advent calendar base for holiday gifting.'},
+  {name:'Trophy Base',cat:'Seasonal & Gifts',price:6,weight:'72g',icon:'🏆',desc:'Custom trophy plinth with name plate. Perfect for any achievement.'},
+
+  // CUSTOM & NOVELTY
+  {name:'Mini Chess Set',cat:'Custom & Novelty',price:10,weight:'148g',icon:'♟️',desc:'Full 32-piece mini chess set with board-base. Portable and printable.'},
+  {name:'Domino Set',cat:'Custom & Novelty',price:8,weight:'96g',icon:'🁡',desc:'28-tile double-six domino set with carrying tray.'},
+  {name:'Tic Tac Toe Travel',cat:'Custom & Novelty',price:4,weight:'40g',icon:'⭕',desc:'Travel tic-tac-toe set with magnetic pieces and folding board base.'},
+  {name:'Mini Succulent Pot',cat:'Custom & Novelty',price:2,weight:'22g',icon:'🌵',desc:'Perfect-size pot for tiny succulents. Drainage hole included.'},
+  {name:'Pen Nib Stylus',cat:'Custom & Novelty',price:2,weight:'8g',icon:'✍️',desc:'Touch-screen stylus that looks like a classic fountain pen nib.'},
+  {name:'Pill Organizer',cat:'Custom & Novelty',price:4,weight:'44g',icon:'💊',desc:'7-day weekly pill organizer with snap-close daily compartments.'},
+  {name:'Bookmark Set x3',cat:'Custom & Novelty',price:2,weight:'12g',icon:'📖',desc:'Three page-clip style bookmarks — dragon, hand, and arrow designs.'},
+  {name:'Dice Jail',cat:'Custom & Novelty',price:4,weight:'36g',icon:'⚄',desc:'Tiny prison cell for your bad-rolling dice. Tabletop RPG essential.'},
+  {name:'Mini Zen Garden',cat:'Custom & Novelty',price:6,weight:'66g',icon:'🧘',desc:'Desktop sand garden tray with mini rake and 3 stone shapes.'},
+  {name:'Knob Replacement Set',cat:'Custom & Novelty',price:4,weight:'28g',icon:'🔘',desc:'Replacement knobs for drawers, cabinets, and furniture. 4-pack.'},
+  {name:'Magnetic Perpetual Spinner',cat:'Custom & Novelty',price:8,weight:'88g',icon:'🌀',desc:'Bearing-spin platform + magnetic levitation base for endless spin.'},
+  {name:'Labyrinth Game',cat:'Custom & Novelty',price:8,weight:'92g',icon:'🎯',desc:'Classic tilt labyrinth ball maze with 2-axis control knobs.'},
+];
+
+// GENERATE EXTENDED PRODUCTS (fill to 1000+ feel)
+const PRODUCT_VARIANTS = ['Classic','Pro','Mini','Deluxe','Slim','Bold','Elite','Ultra'];
+const EXTENDED_PRODUCTS = [...RAW_PRODUCTS];
+
+// Double the catalog with slight variations
+RAW_PRODUCTS.forEach((p, idx) => {
+  if(idx % 2 === 0){
+    const v = PRODUCT_VARIANTS[idx % PRODUCT_VARIANTS.length];
+    EXTENDED_PRODUCTS.push({
+      ...p,
+      name:`${p.name} ${v}`,
+      price: Math.min(10, p.price + 2),
+      weight: `${parseInt(p.weight)+10}g`,
+    });
+  }
+});
+
+// Triple — more categories fill
+RAW_PRODUCTS.forEach((p, idx) => {
+  if(idx % 3 === 0){
+    EXTENDED_PRODUCTS.push({
+      ...p,
+      name:`${p.name} XL`,
+      price: Math.min(10, p.price + 4),
+      weight: `${parseInt(p.weight)+20}g`,
+      desc: p.desc + ' Larger format for bigger impact.'
+    });
+  }
+});
+
+/*────────────────────────────────────────────────
+  FILTER STATE
+────────────────────────────────────────────────*/
+let activeCat = 'All';
+let activePrice = 'All';
+let visibleCount = 24;
+
+/*────────────────────────────────────────────────
+  BUILD FILTERS
+────────────────────────────────────────────────*/
+function buildFilters(){
+  const cf = document.getElementById('catFilter');
+  CATEGORIES.forEach(c => {
+    const btn = document.createElement('button');
+    btn.className = 'fchip' + (c==='All'?' active':'');
+    btn.textContent = c;
+    btn.onclick = () => {
+      activeCat = c;
+      visibleCount = 24;
+      cf.querySelectorAll('.fchip').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      renderGrid();
+    };
+    cf.appendChild(btn);
+  });
+
+  const pf = document.getElementById('priceFilter');
+  PRICES.forEach(p => {
+    const btn = document.createElement('button');
+    btn.className = 'pchip' + (p==='All'?' active':'');
+    btn.textContent = p === 'All' ? 'All Prices' : p;
+    btn.onclick = () => {
+      activePrice = p;
+      visibleCount = 24;
+      pf.querySelectorAll('.pchip').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      renderGrid();
+    };
+    pf.appendChild(btn);
+  });
+}
+
+/*────────────────────────────────────────────────
+  FILTER PRODUCTS
+────────────────────────────────────────────────*/
+function getFiltered(){
+  return EXTENDED_PRODUCTS.filter(p => {
+    const catOk = activeCat === 'All' || p.cat === activeCat;
+    const priceOk = activePrice === 'All' || p.price === parseInt(activePrice.replace('$',''));
+    return catOk && priceOk;
+  });
+}
+
+/*────────────────────────────────────────────────
+  PRICE BADGE CLASS
+────────────────────────────────────────────────*/
+function priceBadgeClass(price){
+  const map = {2:'badge-2',4:'badge-4',6:'badge-6',8:'badge-8',10:'badge-10'};
+  return map[price] || 'badge-2';
+}
+
+function priceColor(price){
+  const map = {2:'var(--green)',4:'var(--blue)',6:'var(--pink)',8:'var(--red)',10:'#ffa500'};
+  return map[price] || 'var(--green)';
+}
+
+function thumbGradient(price){
+  const map = {
+    2:'rgba(57,255,20,0.15),rgba(57,255,20,0.04)',
+    4:'rgba(0,212,255,0.15),rgba(0,212,255,0.04)',
+    6:'rgba(255,0,200,0.12),rgba(255,0,200,0.03)',
+    8:'rgba(255,45,85,0.12),rgba(255,45,85,0.03)',
+    10:'rgba(255,165,0,0.12),rgba(255,165,0,0.03)'
+  };
+  return map[price] || map[2];
+}
+
+function sizeLabel(price){
+  const map = {2:'XS',4:'S',6:'M',8:'L',10:'XL'};
+  return map[price] || 'S';
+}
+
+/*────────────────────────────────────────────────
+  RENDER GRID
+────────────────────────────────────────────────*/
+function renderGrid(){
+  const filtered = getFiltered();
   const grid = document.getElementById('prodGrid');
-  grid.innerHTML = products.map(p => `
-    <div class="pc">
+  const count = document.getElementById('resultsCount');
+  const btn = document.getElementById('loadMoreBtn');
+
+  count.innerHTML = `Showing <span>${Math.min(visibleCount, filtered.length)}</span> of <span>${filtered.length}</span> designs`;
+
+  const slice = filtered.slice(0, visibleCount);
+  grid.innerHTML = slice.map((p, i) => `
+    <div class="pc" style="animation:fadeIn .4s ease ${(i%12)*0.04}s both;" onclick="addToCart('${p.name.replace(/'/g,"\\'")}')">
       <div class="thumb">
-        <span>${p.icon}</span>
-        <span class="size-pip">S · ${p.price}</span>
+        <div class="thumb-bg" style="background:linear-gradient(135deg,${thumbGradient(p.price)});"></div>
+        <div class="thumb-icon">${p.icon}</div>
+        <div class="price-badge ${priceBadgeClass(p.price)}">$${p.price}</div>
+        <div class="size-pip">${sizeLabel(p.price)}</div>
+        <div class="color-swatches">
+          <div class="swatch sw-green" title="Neon Green" onclick="event.stopPropagation();selectColor(this,'green')"></div>
+          <div class="swatch sw-blue" title="Electric Blue" onclick="event.stopPropagation();selectColor(this,'blue')"></div>
+          <div class="swatch sw-red" title="Flame Red" onclick="event.stopPropagation();selectColor(this,'red')"></div>
+          <div class="swatch sw-black" title="Void Black" onclick="event.stopPropagation();selectColor(this,'black')"></div>
+        </div>
       </div>
       <div class="pbody">
         <div class="pname">${p.name}</div>
+        <div class="ptag">${p.cat} · ${sizeLabel(p.price)}</div>
         <div class="pdesc">${p.desc}</div>
         <div class="pmeta">
-          <span class="pweight">${p.weight} filament</span>
-          <span class="pprice">${p.price}</span>
+          <span class="pweight">~${p.weight} filament</span>
+          <button class="add-btn" onclick="event.stopPropagation();addToCart('${p.name.replace(/'/g,"\\'")}')">ORDER →</button>
         </div>
       </div>
     </div>
   `).join('');
+
+  btn.style.display = filtered.length > visibleCount ? 'inline-block' : 'none';
 }
 
-renderProducts();
-</script>
+function loadMore(){
+  visibleCount += 24;
+  renderGrid();
+  showToast(`📦 Loaded more designs — ${visibleCount} visible`);
+}
 
+/*────────────────────────────────────────────────
+  FADE IN ANIMATION
+────────────────────────────────────────────────*/
+const style = document.createElement('style');
+style.textContent = '@keyframes fadeIn{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}';
+document.head.appendChild(style);
+
+/*────────────────────────────────────────────────
+  TOAST
+────────────────────────────────────────────────*/
+let toastTimer;
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>t.classList.remove('show'), 3000);
+}
+
+/*────────────────────────────────────────────────
+  ADD TO CART
+────────────────────────────────────────────────*/
+function addToCart(name){
+  showToast(`✅ ${name} added! Email us to finalize your order →`);
+}
+
+function selectColor(swatch, color){
+  const colorNames = {green:'Neon Green',blue:'Electric Blue',red:'Flame Red',black:'Void Black'};
+  showToast(`🎨 Color set to ${colorNames[color]}!`);
+}
+
+function handleOrder(){
+  const email = document.getElementById('emailInput').value;
+  if(email){
+    showToast(`🚀 Got it! We'll reach out to ${email} shortly.`);
+  } else {
+    showToast('✉️ Enter your email to get started!');
+  }
+}
+
+/*────────────────────────────────────────────────
+  INIT
+────────────────────────────────────────────────*/
+buildFilters();
+renderGrid();
+
+// COUNTER ANIMATION
+function animateCounters(){
+  document.querySelectorAll('.stat-num').forEach(el => {
+    const text = el.textContent;
+    if(text.includes('1000')){
+      let n = 0;
+      const target = 1000;
+      const step = () => {
+        n = Math.min(n+17, target);
+        el.textContent = n + '+';
+        if(n < target) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    }
+  });
+}
+
+// Trigger on scroll into view
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) animateCounters(); });
+},{threshold:.5});
+const statsEl = document.querySelector('.statsbar');
+if(statsEl) observer.observe(statsEl);
+</script>
 </body>
 </html>
