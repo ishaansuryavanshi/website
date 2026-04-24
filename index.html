@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,350 +7,269 @@
 <title>LayerUp 3D — Printed for Life</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-
 <style>
-/*──────────────────────────────────────────────
-  ROOT / RESET
-──────────────────────────────────────────────*/
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 :root{
-  --bg:#050508;
-  --surface:#0a0a10;
-  --card:#0d0d15;
-  --border:rgba(255,255,255,0.06);
-  --border-hi:rgba(255,255,255,0.13);
-
-  --green:#39ff14;
-  --green-dim:rgba(57,255,20,0.10);
-  --green-glow:rgba(57,255,20,0.30);
-
-  --blue:#00d4ff;
-  --blue-dim:rgba(0,212,255,0.10);
-  --blue-glow:rgba(0,212,255,0.30);
-
-  --red:#ff2d55;
-  --red-dim:rgba(255,45,85,0.10);
-  --red-glow:rgba(255,45,85,0.30);
-
-  --pink:#ff00c8;
-  --pink-dim:rgba(255,0,200,0.10);
-
-  --text:#f0f0f8;
-  --muted:#606080;
-  --subtle:#282838;
+  --bg:#050508;--surface:#0a0a10;--card:#0d0d15;
+  --border:rgba(255,255,255,0.06);--border-hi:rgba(255,255,255,0.13);
+  --green:#39ff14;--green-dim:rgba(57,255,20,0.10);--green-glow:rgba(57,255,20,0.30);
+  --blue:#00d4ff;--blue-dim:rgba(0,212,255,0.10);--blue-glow:rgba(0,212,255,0.30);
+  --red:#ff2d55;--red-dim:rgba(255,45,85,0.10);--red-glow:rgba(255,45,85,0.30);
+  --pink:#ff00c8;--pink-dim:rgba(255,0,200,0.10);
+  --orange:#ffa500;
+  --text:#f0f0f8;--muted:#606080;--subtle:#282838;
   --radius:14px;
   --font-display:'Bebas Neue',sans-serif;
   --font-body:'Rajdhani',sans-serif;
   --font-mono:'Share Tech Mono',monospace;
 }
-
 html{scroll-behavior:smooth;}
-body{
-  font-family:var(--font-body);
-  background:var(--bg);
-  color:var(--text);
-  overflow-x:hidden;
-  line-height:1.6;
-  font-size:16px;
-}
-
-/* SCANLINE OVERLAY */
-body::before{
-  content:'';
-  position:fixed;inset:0;
-  background:repeating-linear-gradient(
-    0deg,
-    transparent,transparent 2px,
-    rgba(0,0,0,0.07) 2px,rgba(0,0,0,0.07) 4px
-  );
-  pointer-events:none;z-index:9999;
-}
-
-/*──────────────────────────────────────────────
-  NEON TEXT UTILITY
-──────────────────────────────────────────────*/
+body{font-family:var(--font-body);background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.6;font-size:16px;}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.07) 2px,rgba(0,0,0,0.07) 4px);pointer-events:none;z-index:9999;}
 .neon-g{color:var(--green);text-shadow:0 0 8px var(--green),0 0 24px var(--green-glow);}
 .neon-b{color:var(--blue);text-shadow:0 0 8px var(--blue),0 0 24px var(--blue-glow);}
 .neon-r{color:var(--red);text-shadow:0 0 8px var(--red),0 0 24px var(--red-glow);}
 
-/*──────────────────────────────────────────────
-  NAV
-──────────────────────────────────────────────*/
-nav{
-  position:fixed;top:0;left:0;right:0;z-index:500;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 2.5rem;height:64px;
-  background:rgba(5,5,8,0.88);
-  backdrop-filter:blur(20px);
-  border-bottom:1px solid rgba(57,255,20,0.12);
-}
-.logo{
-  font-family:var(--font-display);
-  font-size:1.8rem;letter-spacing:.1em;
-  text-decoration:none;color:var(--text);
-}
-.logo .accent{
-  color:var(--green);
-  text-shadow:0 0 12px var(--green);
-}
+/*── NAV ──*/
+nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;height:64px;background:rgba(5,5,8,0.88);backdrop-filter:blur(20px);border-bottom:1px solid rgba(57,255,20,0.12);}
+.logo{font-family:var(--font-display);font-size:1.8rem;letter-spacing:.1em;text-decoration:none;color:var(--text);}
+.logo .accent{color:var(--green);text-shadow:0 0 12px var(--green);}
 nav ul{display:flex;gap:1.8rem;list-style:none;align-items:center;}
-nav a{
-  color:var(--muted);text-decoration:none;
-  font-family:var(--font-mono);font-size:.78rem;
-  letter-spacing:.1em;text-transform:uppercase;
-  transition:color .2s,text-shadow .2s;
-}
+nav a{color:var(--muted);text-decoration:none;font-family:var(--font-mono);font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;transition:color .2s,text-shadow .2s;}
 nav a:hover{color:var(--green);text-shadow:0 0 8px var(--green-glow);}
-.nav-cta{
-  background:var(--green)!important;
-  color:#050508!important;
-  padding:.4rem 1.2rem;
-  border-radius:4px;
-  font-weight:700!important;
-  text-shadow:none!important;
-  letter-spacing:.06em!important;
-  box-shadow:0 0 18px var(--green-glow);
-  transition:box-shadow .2s,transform .2s!important;
-}
+.nav-cta{background:var(--green)!important;color:#050508!important;padding:.4rem 1.2rem;border-radius:4px;font-weight:700!important;text-shadow:none!important;letter-spacing:.06em!important;box-shadow:0 0 18px var(--green-glow);transition:box-shadow .2s,transform .2s!important;}
 .nav-cta:hover{box-shadow:0 0 32px var(--green-glow);transform:translateY(-1px);}
 
-/*──────────────────────────────────────────────
-  HERO
-──────────────────────────────────────────────*/
-.hero{
-  min-height:100vh;
-  display:flex;align-items:center;
-  padding:7rem 2.5rem 4rem;
-  position:relative;overflow:hidden;
-}
-
-/* GRID */
-.hero-grid{
-  position:absolute;inset:0;
-  background-image:
-    linear-gradient(rgba(57,255,20,0.04) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(57,255,20,0.04) 1px,transparent 1px);
-  background-size:60px 60px;
-  animation:gridPulse 6s ease-in-out infinite;
-}
-@keyframes gridPulse{
-  0%,100%{opacity:1;}
-  50%{opacity:.5;}
-}
-
-/* FLOATING PARTICLES */
+/*── HERO ──*/
+.hero{min-height:100vh;display:flex;align-items:center;padding:7rem 2.5rem 4rem;position:relative;overflow:hidden;}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(57,255,20,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(57,255,20,0.04) 1px,transparent 1px);background-size:60px 60px;animation:gridPulse 6s ease-in-out infinite;}
+@keyframes gridPulse{0%,100%{opacity:1;}50%{opacity:.5;}}
 .particles{position:absolute;inset:0;overflow:hidden;pointer-events:none;}
-.particle{
-  position:absolute;width:2px;height:2px;
-  border-radius:50%;
-  animation:float linear infinite;
-}
-@keyframes float{
-  0%{transform:translateY(100vh) translateX(0);opacity:0;}
-  10%{opacity:1;}
-  90%{opacity:1;}
-  100%{transform:translateY(-20px) translateX(var(--dx,0px));opacity:0;}
-}
-
-.hero-inner{
-  position:relative;
-  max-width:1300px;margin:0 auto;width:100%;
-  display:grid;grid-template-columns:1.1fr 0.9fr;
-  gap:5rem;align-items:center;
-}
-
-/* HERO TEXT */
-.hero-eyebrow{
-  display:inline-flex;align-items:center;gap:.6rem;
-  background:rgba(57,255,20,0.08);
-  border:1px solid rgba(57,255,20,0.25);
-  color:var(--green);
-  font-family:var(--font-mono);font-size:.7rem;
-  letter-spacing:.15em;text-transform:uppercase;
-  padding:.35rem 1rem;border-radius:3px;
-  margin-bottom:1.5rem;
-  box-shadow:0 0 18px rgba(57,255,20,0.08);
-}
+.particle{position:absolute;width:2px;height:2px;border-radius:50%;animation:float linear infinite;}
+@keyframes float{0%{transform:translateY(100vh) translateX(0);opacity:0;}10%{opacity:1;}90%{opacity:1;}100%{transform:translateY(-20px) translateX(var(--dx,0px));opacity:0;}}
+.hero-inner{position:relative;max-width:1300px;margin:0 auto;width:100%;display:grid;grid-template-columns:1.1fr 0.9fr;gap:5rem;align-items:center;}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:.6rem;background:rgba(57,255,20,0.08);border:1px solid rgba(57,255,20,0.25);color:var(--green);font-family:var(--font-mono);font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;padding:.35rem 1rem;border-radius:3px;margin-bottom:1.5rem;box-shadow:0 0 18px rgba(57,255,20,0.08);}
 .blink{animation:blink .8s step-end infinite;}
 @keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
-
-h1{
-  font-family:var(--font-display);
-  font-size:clamp(4rem,8vw,7rem);
-  line-height:.92;letter-spacing:.02em;
-  margin-bottom:1.5rem;
-}
-h1 .line2{
-  -webkit-text-stroke:1px rgba(57,255,20,0.7);
-  color:transparent;
-  text-shadow:0 0 30px rgba(57,255,20,0.2);
-}
-
-.hero-sub{
-  font-size:1.05rem;color:var(--muted);
-  max-width:440px;margin-bottom:2.5rem;
-  line-height:1.8;font-weight:400;
-}
-
+h1{font-family:var(--font-display);font-size:clamp(4rem,8vw,7rem);line-height:.92;letter-spacing:.02em;margin-bottom:1.5rem;}
+h1 .line2{-webkit-text-stroke:1px rgba(57,255,20,0.7);color:transparent;text-shadow:0 0 30px rgba(57,255,20,0.2);}
+.hero-sub{font-size:1.05rem;color:var(--muted);max-width:440px;margin-bottom:2.5rem;line-height:1.8;font-weight:400;}
 .btn-row{display:flex;gap:1rem;flex-wrap:wrap;}
-.btn{
-  display:inline-flex;align-items:center;gap:.5rem;
-  padding:.8rem 2rem;border-radius:4px;
-  font-family:var(--font-mono);font-size:.82rem;
-  font-weight:700;letter-spacing:.08em;text-transform:uppercase;
-  text-decoration:none;cursor:pointer;border:none;
-  transition:transform .2s,box-shadow .2s;
-}
+.btn{display:inline-flex;align-items:center;gap:.5rem;padding:.8rem 2rem;border-radius:4px;font-family:var(--font-mono);font-size:.82rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;cursor:pointer;border:none;transition:transform .2s,box-shadow .2s;}
 .btn:hover{transform:translateY(-3px);}
-.btn-green{
-  background:var(--green);color:#050508;
-  box-shadow:0 0 24px var(--green-glow),inset 0 1px 0 rgba(255,255,255,.3);
-}
+.btn-green{background:var(--green);color:#050508;box-shadow:0 0 24px var(--green-glow),inset 0 1px 0 rgba(255,255,255,.3);}
 .btn-green:hover{box-shadow:0 0 40px var(--green-glow);}
-.btn-outline{
-  background:transparent;color:var(--green);
-  border:1px solid rgba(57,255,20,0.45);
-  box-shadow:0 0 12px rgba(57,255,20,0.05);
-}
+.btn-outline{background:transparent;color:var(--green);border:1px solid rgba(57,255,20,0.45);box-shadow:0 0 12px rgba(57,255,20,0.05);}
 .btn-outline:hover{background:rgba(57,255,20,0.06);box-shadow:0 0 24px rgba(57,255,20,0.15);}
-
-/* HERO VISUAL — 3D PRINTER ART */
 .hero-visual{display:flex;align-items:center;justify-content:center;}
-.printer-scene{
-  width:340px;height:340px;
-  position:relative;
-  display:flex;align-items:center;justify-content:center;
-}
-.orbit{
-  position:absolute;border-radius:50%;
-  border:1px solid;
-  animation:orbit linear infinite;
-}
+.printer-scene{width:340px;height:340px;position:relative;display:flex;align-items:center;justify-content:center;}
+.orbit{position:absolute;border-radius:50%;border:1px solid;animation:orbit linear infinite;}
 .o1{inset:0;border-color:rgba(57,255,20,.25);animation-duration:22s;box-shadow:0 0 20px rgba(57,255,20,.08);}
 .o2{inset:36px;border-color:rgba(0,212,255,.2);animation-duration:15s;animation-direction:reverse;}
 .o3{inset:72px;border-color:rgba(255,45,85,.18);animation-duration:10s;}
 .o4{inset:108px;border-color:rgba(57,255,20,.15);animation-duration:7s;animation-direction:reverse;}
 @keyframes orbit{to{transform:rotate(360deg);}}
-
-.orbit-dot{
-  position:absolute;top:50%;left:0;
-  width:8px;height:8px;border-radius:50%;
-  transform:translateY(-50%) translateX(-4px);
-}
+.orbit-dot{position:absolute;top:50%;left:0;width:8px;height:8px;border-radius:50%;transform:translateY(-50%) translateX(-4px);}
 .d1{background:var(--green);box-shadow:0 0 12px var(--green);}
 .d2{background:var(--blue);box-shadow:0 0 12px var(--blue);}
 .d3{background:var(--red);box-shadow:0 0 12px var(--red);}
-
-.printer-core{
-  width:140px;height:140px;
-  background:var(--card);
-  border:1px solid rgba(57,255,20,0.3);
-  border-radius:12px;
-  display:flex;flex-direction:column;
-  align-items:center;justify-content:center;gap:.5rem;
-  box-shadow:0 0 40px rgba(57,255,20,0.12),inset 0 0 30px rgba(57,255,20,0.03);
-  position:relative;z-index:2;
-}
+.printer-core{width:140px;height:140px;background:var(--card);border:1px solid rgba(57,255,20,0.3);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;box-shadow:0 0 40px rgba(57,255,20,0.12),inset 0 0 30px rgba(57,255,20,0.03);position:relative;z-index:2;}
 .printer-icon{font-size:2.8rem;}
-.print-beam{
-  width:2px;height:24px;
-  background:linear-gradient(to bottom,var(--green),transparent);
-  animation:beam .8s ease-in-out infinite alternate;
-  box-shadow:0 0 8px var(--green);
-}
+.print-beam{width:2px;height:24px;background:linear-gradient(to bottom,var(--green),transparent);animation:beam .8s ease-in-out infinite alternate;box-shadow:0 0 8px var(--green);}
 @keyframes beam{from{opacity:.4;transform:scaleY(.6);}to{opacity:1;transform:scaleY(1);}}
-.print-label{
-  font-family:var(--font-mono);font-size:.6rem;
-  color:var(--green);letter-spacing:.15em;
-  animation:flicker 3s ease-in-out infinite;
-}
-@keyframes flicker{
-  0%,100%{opacity:1;}
-  92%{opacity:1;}93%{opacity:.3;}94%{opacity:1;}97%{opacity:.6;}98%{opacity:1;}
-}
+.print-label{font-family:var(--font-mono);font-size:.6rem;color:var(--green);letter-spacing:.15em;animation:flicker 3s ease-in-out infinite;}
+@keyframes flicker{0%,100%{opacity:1;}92%{opacity:1;}93%{opacity:.3;}94%{opacity:1;}97%{opacity:.6;}98%{opacity:1;}}
 
-/*──────────────────────────────────────────────
-  STATS BAR
-──────────────────────────────────────────────*/
-.statsbar{
-  background:var(--surface);
-  border-top:1px solid rgba(57,255,20,0.1);
-  border-bottom:1px solid rgba(57,255,20,0.1);
-  padding:1.5rem 2.5rem;
-  overflow:hidden;position:relative;
-}
-.statsbar::before{
-  content:'';
-  position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,var(--green),transparent);
-  animation:scanLine 4s ease-in-out infinite;
-}
-@keyframes scanLine{
-  0%{transform:translateX(-100%);}100%{transform:translateX(100%);}
-}
-.stats-inner{
-  max-width:1300px;margin:0 auto;
-  display:grid;grid-template-columns:repeat(5,1fr);
-}
+/*── STATS BAR ──*/
+.statsbar{background:var(--surface);border-top:1px solid rgba(57,255,20,0.1);border-bottom:1px solid rgba(57,255,20,0.1);padding:1.5rem 2.5rem;overflow:hidden;position:relative;}
+.statsbar::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--green),transparent);animation:scanLine 4s ease-in-out infinite;}
+@keyframes scanLine{0%{transform:translateX(-100%);}100%{transform:translateX(100%);}}
+.stats-inner{max-width:1300px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr);}
 .stat{text-align:center;padding:.8rem;}
-.stat-num{
-  font-family:var(--font-display);
-  font-size:2.4rem;letter-spacing:.04em;line-height:1;
-}
+.stat-num{font-family:var(--font-display);font-size:2.4rem;letter-spacing:.04em;line-height:1;}
 .stat-label{font-family:var(--font-mono);font-size:.65rem;color:var(--muted);margin-top:.3rem;letter-spacing:.1em;text-transform:uppercase;}
 
-/*──────────────────────────────────────────────
-  HOW IT'S PRINTED
-──────────────────────────────────────────────*/
-#howit{padding:6rem 2.5rem;background:var(--surface);position:relative;}
-#howit::after{
-  content:'';
-  position:absolute;top:0;left:10%;right:10%;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(0,212,255,0.3),transparent);
+/*── LIVE PRINT QUEUE (NEW) ──*/
+#livequeue{
+  background:rgba(57,255,20,0.04);
+  border-top:1px solid rgba(57,255,20,0.15);
+  border-bottom:1px solid rgba(57,255,20,0.15);
+  padding:.7rem 0;
+  overflow:hidden;
+  position:relative;
 }
-.section-eye{
-  font-family:var(--font-mono);font-size:.65rem;
-  letter-spacing:.2em;text-transform:uppercase;
-  color:var(--muted);margin-bottom:.6rem;
+#livequeue::before{
+  content:'🖨 LIVE QUEUE';
+  position:absolute;left:0;top:0;bottom:0;
+  background:var(--green);
+  color:#050508;
+  font-family:var(--font-mono);font-size:.65rem;font-weight:700;
+  letter-spacing:.1em;
+  padding:0 1.2rem;
+  display:flex;align-items:center;
+  z-index:2;
+  white-space:nowrap;
 }
-.section-title{
-  font-family:var(--font-display);
-  font-size:clamp(2.2rem,4vw,3.5rem);
-  letter-spacing:.03em;line-height:1;
-  margin-bottom:.5rem;
+.queue-track{
+  display:flex;gap:0;
+  animation:queueScroll 40s linear infinite;
+  will-change:transform;
+  padding-left:160px;
 }
-.section-sub{
-  font-size:.95rem;color:var(--muted);
-  margin-bottom:3rem;line-height:1.8;
+@keyframes queueScroll{
+  0%{transform:translateX(0);}
+  100%{transform:translateX(-50%);}
 }
+.queue-item{
+  display:inline-flex;align-items:center;gap:.5rem;
+  white-space:nowrap;
+  padding:0 2.5rem;
+  font-family:var(--font-mono);font-size:.68rem;
+  color:var(--muted);
+  border-right:1px solid rgba(57,255,20,0.15);
+}
+.queue-dot{width:6px;height:6px;border-radius:50%;animation:qpulse 1s ease-in-out infinite;}
+@keyframes qpulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+.qdot-g{background:var(--green);box-shadow:0 0 6px var(--green);}
+.qdot-b{background:var(--blue);box-shadow:0 0 6px var(--blue);}
+.qdot-r{background:var(--red);box-shadow:0 0 6px var(--red);}
+.qdot-k{background:#aaa;}
+.queue-name{color:var(--text);}
+.queue-color-tag{font-size:.6rem;padding:.1rem .4rem;border-radius:2px;}
+.qtag-g{background:rgba(57,255,20,.15);color:var(--green);border:1px solid rgba(57,255,20,.3);}
+.qtag-b{background:rgba(0,212,255,.12);color:var(--blue);border:1px solid rgba(0,212,255,.3);}
+.qtag-r{background:rgba(255,45,85,.12);color:var(--red);border:1px solid rgba(255,45,85,.3);}
+.qtag-k{background:rgba(255,255,255,.07);color:#aaa;border:1px solid rgba(255,255,255,.15);}
 
-.steps-grid{
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:0;position:relative;
+/*── SECTION COMMON ──*/
+.section-inner{max-width:1300px;margin:0 auto;}
+.section-eye{font-family:var(--font-mono);font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:.6rem;}
+.section-title{font-family:var(--font-display);font-size:clamp(2.2rem,4vw,3.5rem);letter-spacing:.03em;line-height:1;margin-bottom:.5rem;}
+.section-sub{font-size:.95rem;color:var(--muted);margin-bottom:3rem;line-height:1.8;}
+
+/*── BESTSELLERS (NEW) ──*/
+#bestsellers{padding:6rem 2.5rem;position:relative;}
+#bestsellers::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(57,255,20,0.04) 0%,transparent 70%);pointer-events:none;}
+.bestseller-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:1.5rem;}
+.bs-hero{
+  background:var(--card);
+  border:1px solid rgba(57,255,20,0.25);
+  border-radius:var(--radius);
+  overflow:hidden;
+  position:relative;
+  display:flex;flex-direction:column;
+  box-shadow:0 0 40px rgba(57,255,20,0.06);
+  transition:transform .3s,box-shadow .3s;
 }
-.steps-grid::after{
-  content:'';
-  position:absolute;top:56px;left:10%;right:10%;height:1px;
-  background:linear-gradient(90deg,
-    var(--green) 0%, var(--blue) 25%, var(--pink) 50%,var(--red) 75%,var(--green) 100%);
-  z-index:0;
-  box-shadow:0 0 12px rgba(57,255,20,0.3);
+.bs-hero:hover{transform:translateY(-6px);box-shadow:0 20px 60px rgba(57,255,20,0.1);}
+.bs-thumb{
+  height:240px;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+  background:linear-gradient(135deg,rgba(57,255,20,0.12),rgba(57,255,20,0.03));
 }
-.step{
-  position:relative;z-index:1;
-  text-align:center;padding:0 1rem;
+.bs-thumb-icon{font-size:5rem;filter:drop-shadow(0 0 20px currentColor);}
+.bs-badge{
+  position:absolute;top:1rem;left:1rem;
+  background:var(--green);color:#050508;
+  font-family:var(--font-mono);font-size:.6rem;font-weight:700;letter-spacing:.1em;
+  padding:.3rem .8rem;border-radius:3px;
+  box-shadow:0 0 16px var(--green-glow);
 }
-.step-num{
-  width:52px;height:52px;
-  border-radius:50%;
-  display:inline-flex;align-items:center;justify-content:center;
-  font-family:var(--font-mono);font-size:.75rem;font-weight:700;
-  border:2px solid;
-  margin:0 auto 1.5rem;
-  position:relative;background:var(--surface);
-  transition:transform .3s;
+.bs-body{padding:1.5rem;flex:1;display:flex;flex-direction:column;}
+.bs-name{font-family:var(--font-display);font-size:1.8rem;letter-spacing:.04em;margin-bottom:.4rem;}
+.bs-desc{font-size:.85rem;color:var(--muted);line-height:1.7;flex:1;margin-bottom:1.2rem;}
+.bs-foot{display:flex;align-items:center;justify-content:space-between;}
+.bs-price{font-family:var(--font-display);font-size:2rem;color:var(--green);text-shadow:0 0 12px var(--green-glow);}
+.bs-order{
+  padding:.5rem 1.4rem;background:var(--green-dim);border:1px solid rgba(57,255,20,.35);
+  color:var(--green);border-radius:4px;font-family:var(--font-mono);font-size:.72rem;
+  letter-spacing:.06em;cursor:pointer;transition:all .2s;
 }
+.bs-order:hover{background:var(--green);color:#050508;box-shadow:0 0 18px var(--green-glow);}
+
+.bs-side{display:flex;flex-direction:column;gap:1.5rem;}
+.bs-card{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  overflow:hidden;display:flex;
+  transition:transform .25s,border-color .25s;
+  flex:1;
+}
+.bs-card:hover{transform:translateY(-4px);border-color:rgba(0,212,255,.3);}
+.bs-card-thumb{
+  width:100px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:2.5rem;
+}
+.bs-card-body{padding:1rem;flex:1;display:flex;flex-direction:column;justify-content:space-between;}
+.bs-card-name{font-weight:700;font-size:.95rem;margin-bottom:.2rem;}
+.bs-card-desc{font-size:.75rem;color:var(--muted);line-height:1.5;flex:1;margin-bottom:.6rem;}
+.bs-card-foot{display:flex;align-items:center;justify-content:space-between;}
+.bs-card-price{font-family:var(--font-display);font-size:1.4rem;color:var(--blue);text-shadow:0 0 10px var(--blue-glow);}
+.bs-mini-btn{
+  padding:.25rem .7rem;background:var(--blue-dim);border:1px solid rgba(0,212,255,.3);
+  color:var(--blue);border-radius:3px;font-family:var(--font-mono);font-size:.6rem;
+  cursor:pointer;transition:all .2s;
+}
+.bs-mini-btn:hover{background:var(--blue);color:#050508;}
+
+/*── PRICE GUIDE (NEW) ──*/
+#priceguide{
+  padding:6rem 2.5rem;
+  background:var(--surface);
+  position:relative;overflow:hidden;
+}
+#priceguide::after{content:'';position:absolute;top:0;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,rgba(0,212,255,0.3),transparent);}
+.tiers{display:grid;grid-template-columns:repeat(5,1fr);gap:1rem;margin-top:3rem;}
+.tier{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:1.5rem 1rem;
+  text-align:center;position:relative;overflow:hidden;
+  transition:transform .3s,border-color .3s;cursor:pointer;
+}
+.tier:hover{transform:translateY(-8px);}
+.tier.t2:hover{border-color:rgba(57,255,20,.4);}
+.tier.t4:hover{border-color:rgba(0,212,255,.4);}
+.tier.t6:hover{border-color:rgba(255,0,200,.4);}
+.tier.t8:hover{border-color:rgba(255,45,85,.4);}
+.tier.t10:hover{border-color:rgba(255,165,0,.4);}
+.tier::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.t2::before{background:var(--green);}
+.t4::before{background:var(--blue);}
+.t6::before{background:var(--pink);}
+.t8::before{background:var(--red);}
+.t10::before{background:var(--orange);}
+.tier-price{font-family:var(--font-display);font-size:3rem;line-height:1;margin-bottom:.5rem;}
+.t2 .tier-price{color:var(--green);text-shadow:0 0 16px var(--green-glow);}
+.t4 .tier-price{color:var(--blue);text-shadow:0 0 16px var(--blue-glow);}
+.t6 .tier-price{color:var(--pink);text-shadow:0 0 16px rgba(255,0,200,.4);}
+.t8 .tier-price{color:var(--red);text-shadow:0 0 16px var(--red-glow);}
+.t10 .tier-price{color:var(--orange);text-shadow:0 0 16px rgba(255,165,0,.4);}
+.tier-size{font-family:var(--font-mono);font-size:.62rem;letter-spacing:.12em;color:var(--muted);margin-bottom:1rem;text-transform:uppercase;}
+.tier-items{list-style:none;text-align:left;font-size:.78rem;color:var(--muted);line-height:2;}
+.tier-items li::before{content:'→ ';}
+.tier-weight{
+  margin-top:1rem;padding-top:.8rem;border-top:1px solid var(--border);
+  font-family:var(--font-mono);font-size:.6rem;color:var(--subtle);letter-spacing:.08em;
+}
+.tier-bar{
+  width:100%;height:4px;border-radius:2px;margin-top:.8rem;
+  overflow:hidden;background:rgba(255,255,255,.05);
+}
+.tier-bar-fill{height:100%;border-radius:2px;transition:width .4s ease;}
+.t2 .tier-bar-fill{width:20%;background:var(--green);box-shadow:0 0 6px var(--green);}
+.t4 .tier-bar-fill{width:40%;background:var(--blue);box-shadow:0 0 6px var(--blue);}
+.t6 .tier-bar-fill{width:60%;background:var(--pink);box-shadow:0 0 6px var(--pink);}
+.t8 .tier-bar-fill{width:80%;background:var(--red);box-shadow:0 0 6px var(--red);}
+.t10 .tier-bar-fill{width:100%;background:var(--orange);box-shadow:0 0 6px var(--orange);}
+
+/*── HOW IT'S PRINTED ──*/
+#howit{padding:6rem 2.5rem;position:relative;}
+#howit::after{content:'';position:absolute;top:0;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,rgba(0,212,255,0.3),transparent);}
+.steps-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:0;position:relative;}
+.steps-grid::after{content:'';position:absolute;top:56px;left:10%;right:10%;height:1px;background:linear-gradient(90deg,var(--green) 0%,var(--blue) 25%,var(--pink) 50%,var(--red) 75%,var(--green) 100%);z-index:0;box-shadow:0 0 12px rgba(57,255,20,0.3);}
+.step{position:relative;z-index:1;text-align:center;padding:0 1rem;}
+.step-num{width:52px;height:52px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:.75rem;font-weight:700;border:2px solid;margin:0 auto 1.5rem;position:relative;background:var(--surface);transition:transform .3s;}
 .step:hover .step-num{transform:scale(1.15);}
 .s1 .step-num{color:var(--green);border-color:var(--green);box-shadow:0 0 18px var(--green-glow);}
 .s2 .step-num{color:var(--blue);border-color:var(--blue);box-shadow:0 0 18px var(--blue-glow);}
@@ -359,29 +279,10 @@ h1 .line2{
 .step-emoji{font-size:1.4rem;margin-bottom:.7rem;}
 .step-head{font-family:var(--font-display);font-size:1.15rem;letter-spacing:.05em;margin-bottom:.4rem;}
 .step-desc{font-size:.78rem;color:var(--muted);line-height:1.7;}
-
-/* LAYER ANIMATION */
-.layer-demo{
-  max-width:500px;margin:4rem auto 0;
-  border:1px solid rgba(57,255,20,0.2);
-  border-radius:8px;overflow:hidden;
-  background:rgba(5,5,8,.8);
-  padding:1.5rem;
-  box-shadow:0 0 30px rgba(57,255,20,0.07);
-}
-.layer-title{
-  font-family:var(--font-mono);font-size:.68rem;
-  letter-spacing:.15em;color:var(--green);
-  margin-bottom:1rem;
-}
+.layer-demo{max-width:500px;margin:4rem auto 0;border:1px solid rgba(57,255,20,0.2);border-radius:8px;overflow:hidden;background:rgba(5,5,8,.8);padding:1.5rem;box-shadow:0 0 30px rgba(57,255,20,0.07);}
+.layer-title{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.15em;color:var(--green);margin-bottom:1rem;}
 .layer-bars{display:flex;flex-direction:column;gap:3px;}
-.layer-bar{
-  height:6px;border-radius:1px;
-  background:linear-gradient(90deg,var(--green),var(--blue));
-  transform-origin:left;
-  animation:layerGrow 3s ease-in-out infinite;
-  opacity:0;
-}
+.layer-bar{height:6px;border-radius:1px;background:linear-gradient(90deg,var(--green),var(--blue));transform-origin:left;animation:layerGrow 3s ease-in-out infinite;opacity:0;}
 .layer-bar:nth-child(1){animation-delay:0s;width:100%;}
 .layer-bar:nth-child(2){animation-delay:.15s;width:98%;}
 .layer-bar:nth-child(3){animation-delay:.3s;width:95%;}
@@ -396,226 +297,54 @@ h1 .line2{
 .layer-bar:nth-child(12){animation-delay:1.65s;width:30%;}
 .layer-bar:nth-child(13){animation-delay:1.8s;width:16%;}
 .layer-bar:nth-child(14){animation-delay:1.95s;width:6%;}
-@keyframes layerGrow{
-  0%{opacity:0;transform:scaleX(0);}
-  20%{opacity:1;transform:scaleX(1);}
-  80%{opacity:1;}
-  100%{opacity:0;}
-}
+@keyframes layerGrow{0%{opacity:0;transform:scaleX(0);}20%{opacity:1;transform:scaleX(1);}80%{opacity:1;}100%{opacity:0;}}
 
-/*──────────────────────────────────────────────
-  CATALOG  
-──────────────────────────────────────────────*/
-#catalog{padding:6rem 2.5rem;}
-
-/* FILTER BAR */
-.filter-strip{
-  display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:1.5rem;
-  padding-bottom:1.5rem;
-  border-bottom:1px solid var(--border);
+/*── TESTIMONIALS (NEW) ──*/
+#reviews{padding:6rem 2.5rem;background:var(--surface);position:relative;}
+#reviews::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 60% at 50% 100%,rgba(0,212,255,0.04) 0%,transparent 70%);pointer-events:none;}
+.reviews-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:3rem;}
+.review-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:1.5rem;
+  position:relative;overflow:hidden;
+  transition:transform .25s,border-color .25s;
 }
-.fchip{
-  padding:.38rem 1rem;border-radius:3px;
-  font-family:var(--font-mono);font-size:.7rem;
-  letter-spacing:.08em;text-transform:uppercase;
-  cursor:pointer;border:1px solid var(--border);
-  background:transparent;color:var(--muted);
-  transition:all .2s;
-}
-.fchip:hover,.fchip.active{
-  border-color:var(--green);color:var(--green);
-  background:rgba(57,255,20,0.07);
-  box-shadow:0 0 12px rgba(57,255,20,0.12);
-}
-
-/* PRICE FILTER */
-.price-strip{
-  display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:2rem;
-}
-.pchip{
-  padding:.3rem .8rem;border-radius:3px;
-  font-family:var(--font-mono);font-size:.65rem;
-  letter-spacing:.08em;
-  cursor:pointer;border:1px solid var(--border);
-  background:transparent;color:var(--muted);
-  transition:all .2s;
-}
-.pchip:hover,.pchip.active{
-  border-color:var(--blue);color:var(--blue);
-  background:rgba(0,212,255,0.07);
-}
-
-/* RESULTS COUNT */
-.results-count{
-  font-family:var(--font-mono);font-size:.7rem;
-  color:var(--muted);margin-bottom:1.5rem;
-  letter-spacing:.08em;
-}
-.results-count span{color:var(--green);}
-
-/* PRODUCT GRID */
-.prod-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
-  gap:1rem;
-}
-.pc{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:var(--radius);
-  overflow:hidden;
-  cursor:pointer;
-  transition:transform .25s,border-color .25s,box-shadow .25s;
-  position:relative;
-}
-.pc:hover{
-  transform:translateY(-6px);
-  border-color:rgba(57,255,20,0.4);
-  box-shadow:0 12px 40px rgba(57,255,20,0.08);
-}
-.pc::before{
-  content:'';
-  position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,var(--green),transparent);
-  opacity:0;
-  transition:opacity .3s;
-}
-.pc:hover::before{opacity:1;}
-
-.thumb{
-  height:155px;
+.review-card:hover{transform:translateY(-4px);}
+.review-card:nth-child(1):hover,.review-card:nth-child(4):hover{border-color:rgba(57,255,20,.3);}
+.review-card:nth-child(2):hover,.review-card:nth-child(5):hover{border-color:rgba(0,212,255,.3);}
+.review-card:nth-child(3):hover,.review-card:nth-child(6):hover{border-color:rgba(255,45,85,.3);}
+.review-card::before{content:'"';position:absolute;top:-10px;right:1rem;font-size:8rem;font-family:var(--font-display);opacity:.05;line-height:1;}
+.review-stars{display:flex;gap:3px;margin-bottom:.8rem;}
+.star{color:var(--orange);font-size:.9rem;}
+.review-text{font-size:.87rem;color:var(--text);line-height:1.75;margin-bottom:1.2rem;opacity:.85;}
+.review-author{display:flex;align-items:center;gap:.75rem;}
+.review-avatar{
+  width:38px;height:38px;border-radius:50%;
   display:flex;align-items:center;justify-content:center;
-  position:relative;
-  border-bottom:1px solid var(--border);
-  overflow:hidden;
+  font-family:var(--font-display);font-size:1rem;font-weight:700;
+  border:1px solid;
+  flex-shrink:0;
 }
-.thumb-bg{
-  position:absolute;inset:0;
-  opacity:.08;
-  transition:opacity .3s;
+.av-g{background:rgba(57,255,20,.1);color:var(--green);border-color:rgba(57,255,20,.3);}
+.av-b{background:rgba(0,212,255,.1);color:var(--blue);border-color:rgba(0,212,255,.3);}
+.av-r{background:rgba(255,45,85,.1);color:var(--red);border-color:rgba(255,45,85,.3);}
+.review-name{font-weight:700;font-size:.85rem;}
+.review-meta{font-family:var(--font-mono);font-size:.58rem;color:var(--muted);margin-top:.1rem;letter-spacing:.06em;}
+.review-product{
+  display:inline-flex;align-items:center;gap:.3rem;
+  margin-top:.6rem;
+  font-family:var(--font-mono);font-size:.6rem;letter-spacing:.08em;
+  color:var(--muted);
 }
-.pc:hover .thumb-bg{opacity:.14;}
+.review-product span{color:var(--green);}
 
-.thumb-icon{font-size:3.5rem;position:relative;z-index:1;filter:drop-shadow(0 0 12px currentColor);}
-.pc:hover .thumb-icon{animation:iconPop .3s ease;}
-@keyframes iconPop{0%{transform:scale(1);}50%{transform:scale(1.18);}100%{transform:scale(1);}}
-
-/* PRICE BADGE */
-.price-badge{
-  position:absolute;top:.6rem;left:.6rem;
-  font-family:var(--font-display);font-size:1.1rem;
-  padding:.1rem .55rem .1rem;
-  border-radius:3px;
-  z-index:2;
-}
-.badge-2{background:rgba(57,255,20,.15);color:var(--green);border:1px solid rgba(57,255,20,.35);}
-.badge-4{background:rgba(0,212,255,.15);color:var(--blue);border:1px solid rgba(0,212,255,.35);}
-.badge-6{background:rgba(255,0,200,.12);color:var(--pink);border:1px solid rgba(255,0,200,.35);}
-.badge-8{background:rgba(255,45,85,.12);color:var(--red);border:1px solid rgba(255,45,85,.35);}
-.badge-10{background:rgba(255,165,0,.12);color:#ffa500;border:1px solid rgba(255,165,0,.35);}
-
-/* SIZE PIP */
-.size-pip{
-  position:absolute;top:.6rem;right:.6rem;
-  font-family:var(--font-mono);font-size:.58rem;
-  letter-spacing:.08em;
-  padding:.2rem .5rem;border-radius:2px;
-  border:1px solid var(--border);
-  color:var(--muted);z-index:2;
-}
-
-/* COLOR SWATCHES */
-.color-swatches{
-  position:absolute;bottom:.6rem;right:.6rem;
-  display:flex;gap:3px;z-index:2;
-}
-.swatch{
-  width:12px;height:12px;border-radius:50%;
-  border:1px solid rgba(255,255,255,.15);
-  cursor:pointer;
-  transition:transform .15s,box-shadow .15s;
-}
-.swatch:hover{transform:scale(1.35);}
-.sw-green{background:#39ff14;box-shadow:0 0 6px var(--green);}
-.sw-blue{background:#00d4ff;box-shadow:0 0 6px var(--blue);}
-.sw-red{background:#ff2d55;box-shadow:0 0 6px var(--red);}
-.sw-black{background:#1a1a22;border-color:rgba(255,255,255,.3);}
-
-.pbody{padding:.9rem 1rem;}
-.pname{font-family:var(--font-body);font-weight:700;font-size:.95rem;margin-bottom:.22rem;letter-spacing:.01em;}
-.ptag{
-  font-family:var(--font-mono);font-size:.6rem;
-  letter-spacing:.1em;text-transform:uppercase;
-  color:var(--muted);margin-bottom:.6rem;
-}
-.pdesc{font-size:.78rem;color:var(--muted);margin-bottom:.85rem;line-height:1.55;}
-.pmeta{display:flex;align-items:center;justify-content:space-between;}
-.pweight{font-family:var(--font-mono);font-size:.64rem;color:var(--subtle);}
-.add-btn{
-  padding:.28rem .75rem;
-  background:var(--green-dim);
-  border:1px solid rgba(57,255,20,.3);
-  color:var(--green);
-  border-radius:3px;
-  font-family:var(--font-mono);font-size:.62rem;
-  letter-spacing:.06em;cursor:pointer;
-  transition:all .2s;
-}
-.add-btn:hover{background:var(--green);color:#050508;box-shadow:0 0 14px var(--green-glow);}
-
-/* LOAD MORE */
-.load-more-wrap{text-align:center;margin-top:3rem;}
-.load-more{
-  padding:.75rem 2.5rem;
-  background:transparent;
-  border:1px solid rgba(57,255,20,.35);
-  color:var(--green);
-  border-radius:4px;
-  font-family:var(--font-mono);font-size:.78rem;
-  letter-spacing:.1em;text-transform:uppercase;
-  cursor:pointer;
-  transition:all .25s;
-}
-.load-more:hover{
-  background:rgba(57,255,20,0.08);
-  box-shadow:0 0 24px rgba(57,255,20,.15);
-}
-
-/*──────────────────────────────────────────────
-  COLOR SHOWCASE
-──────────────────────────────────────────────*/
-#colors{
-  padding:6rem 2.5rem;
-  background:var(--surface);
-  position:relative;
-  overflow:hidden;
-}
-#colors::before{
-  content:'';
-  position:absolute;inset:0;
-  background:radial-gradient(ellipse 60% 80% at 50% 50%,
-    rgba(57,255,20,0.04) 0%,transparent 70%);
-}
-.color-showcase{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:1.5rem;
-  margin-top:3rem;
-}
-.color-block{
-  border-radius:var(--radius);
-  overflow:hidden;
-  border:1px solid var(--border);
-  transition:transform .3s,box-shadow .3s;
-}
+/*── COLOR SHOWCASE ──*/
+#colors{padding:6rem 2.5rem;position:relative;overflow:hidden;}
+#colors::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 50% 50%,rgba(57,255,20,0.04) 0%,transparent 70%);}
+.color-showcase{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;margin-top:3rem;}
+.color-block{border-radius:var(--radius);overflow:hidden;border:1px solid var(--border);transition:transform .3s,box-shadow .3s;}
 .color-block:hover{transform:translateY(-8px);}
-.cb-preview{
-  height:200px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:4rem;
-  position:relative;
-  overflow:hidden;
-}
+.cb-preview{height:200px;display:flex;align-items:center;justify-content:center;font-size:4rem;position:relative;overflow:hidden;}
 .cb-g{background:linear-gradient(135deg,#0a1a0a,#0d2a0d);}
 .cb-g:hover{box-shadow:0 20px 50px rgba(57,255,20,.25);}
 .cb-b{background:linear-gradient(135deg,#030d1a,#051520);}
@@ -624,57 +353,69 @@ h1 .line2{
 .cb-r:hover{box-shadow:0 20px 50px rgba(255,45,85,.25);}
 .cb-k{background:linear-gradient(135deg,#0a0a0f,#14141e);}
 .cb-k:hover{box-shadow:0 20px 50px rgba(255,255,255,.08);}
-.cb-glow{
-  position:absolute;inset:0;
-  border-radius:50%;
-  width:120px;height:120px;
-  top:50%;left:50%;
-  transform:translate(-50%,-50%);
-  filter:blur(40px);
-  opacity:.5;
-}
+.cb-glow{position:absolute;inset:0;border-radius:50%;width:120px;height:120px;top:50%;left:50%;transform:translate(-50%,-50%);filter:blur(40px);opacity:.5;}
 .cg-g{background:var(--green);}
 .cg-b{background:var(--blue);}
 .cg-r{background:var(--red);}
 .cg-k{background:#ffffff;}
-.cb-info{
-  padding:1.2rem 1.5rem;
-  background:var(--card);
-  border-top:1px solid var(--border);
-}
-.cb-name{
-  font-family:var(--font-display);
-  font-size:1.4rem;letter-spacing:.06em;
-  margin-bottom:.25rem;
-}
+.cb-info{padding:1.2rem 1.5rem;background:var(--card);border-top:1px solid var(--border);}
+.cb-name{font-family:var(--font-display);font-size:1.4rem;letter-spacing:.06em;margin-bottom:.25rem;}
 .cb-desc{font-size:.78rem;color:var(--muted);line-height:1.6;}
-.cb-dot{
-  width:14px;height:14px;border-radius:50%;
-  display:inline-block;margin-right:.5rem;
-  vertical-align:middle;
-}
+.cb-dot{width:14px;height:14px;border-radius:50%;display:inline-block;margin-right:.5rem;vertical-align:middle;}
 
-/*──────────────────────────────────────────────
-  WHY US
-──────────────────────────────────────────────*/
+/*── CATALOG ──*/
+#catalog{padding:6rem 2.5rem;}
+.filter-strip{display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:1.5rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border);}
+.fchip{padding:.38rem 1rem;border-radius:3px;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--muted);transition:all .2s;}
+.fchip:hover,.fchip.active{border-color:var(--green);color:var(--green);background:rgba(57,255,20,0.07);box-shadow:0 0 12px rgba(57,255,20,0.12);}
+.price-strip{display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:2rem;}
+.pchip{padding:.3rem .8rem;border-radius:3px;font-family:var(--font-mono);font-size:.65rem;letter-spacing:.08em;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--muted);transition:all .2s;}
+.pchip:hover,.pchip.active{border-color:var(--blue);color:var(--blue);background:rgba(0,212,255,0.07);}
+.results-count{font-family:var(--font-mono);font-size:.7rem;color:var(--muted);margin-bottom:1.5rem;letter-spacing:.08em;}
+.results-count span{color:var(--green);}
+.prod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;}
+.pc{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;cursor:pointer;transition:transform .25s,border-color .25s,box-shadow .25s;position:relative;}
+.pc:hover{transform:translateY(-6px);border-color:rgba(57,255,20,0.4);box-shadow:0 12px 40px rgba(57,255,20,0.08);}
+.pc::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--green),transparent);opacity:0;transition:opacity .3s;}
+.pc:hover::before{opacity:1;}
+.thumb{height:155px;display:flex;align-items:center;justify-content:center;position:relative;border-bottom:1px solid var(--border);overflow:hidden;}
+.thumb-bg{position:absolute;inset:0;opacity:.08;transition:opacity .3s;}
+.pc:hover .thumb-bg{opacity:.14;}
+.thumb-icon{font-size:3.5rem;position:relative;z-index:1;filter:drop-shadow(0 0 12px currentColor);}
+.pc:hover .thumb-icon{animation:iconPop .3s ease;}
+@keyframes iconPop{0%{transform:scale(1);}50%{transform:scale(1.18);}100%{transform:scale(1);}}
+.price-badge{position:absolute;top:.6rem;left:.6rem;font-family:var(--font-display);font-size:1.1rem;padding:.1rem .55rem .1rem;border-radius:3px;z-index:2;}
+.badge-2{background:rgba(57,255,20,.15);color:var(--green);border:1px solid rgba(57,255,20,.35);}
+.badge-4{background:rgba(0,212,255,.15);color:var(--blue);border:1px solid rgba(0,212,255,.35);}
+.badge-6{background:rgba(255,0,200,.12);color:var(--pink);border:1px solid rgba(255,0,200,.35);}
+.badge-8{background:rgba(255,45,85,.12);color:var(--red);border:1px solid rgba(255,45,85,.35);}
+.badge-10{background:rgba(255,165,0,.12);color:#ffa500;border:1px solid rgba(255,165,0,.35);}
+.size-pip{position:absolute;top:.6rem;right:.6rem;font-family:var(--font-mono);font-size:.58rem;letter-spacing:.08em;padding:.2rem .5rem;border-radius:2px;border:1px solid var(--border);color:var(--muted);z-index:2;}
+.color-swatches{position:absolute;bottom:.6rem;right:.6rem;display:flex;gap:3px;z-index:2;}
+.swatch{width:12px;height:12px;border-radius:50%;border:1px solid rgba(255,255,255,.15);cursor:pointer;transition:transform .15s,box-shadow .15s;}
+.swatch:hover{transform:scale(1.35);}
+.sw-green{background:#39ff14;box-shadow:0 0 6px var(--green);}
+.sw-blue{background:#00d4ff;box-shadow:0 0 6px var(--blue);}
+.sw-red{background:#ff2d55;box-shadow:0 0 6px var(--red);}
+.sw-black{background:#1a1a22;border-color:rgba(255,255,255,.3);}
+.pbody{padding:.9rem 1rem;}
+.pname{font-family:var(--font-body);font-weight:700;font-size:.95rem;margin-bottom:.22rem;letter-spacing:.01em;}
+.ptag{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.6rem;}
+.pdesc{font-size:.78rem;color:var(--muted);margin-bottom:.85rem;line-height:1.55;}
+.pmeta{display:flex;align-items:center;justify-content:space-between;}
+.pweight{font-family:var(--font-mono);font-size:.64rem;color:var(--subtle);}
+.add-btn{padding:.28rem .75rem;background:var(--green-dim);border:1px solid rgba(57,255,20,.3);color:var(--green);border-radius:3px;font-family:var(--font-mono);font-size:.62rem;letter-spacing:.06em;cursor:pointer;transition:all .2s;}
+.add-btn:hover{background:var(--green);color:#050508;box-shadow:0 0 14px var(--green-glow);}
+.load-more-wrap{text-align:center;margin-top:3rem;}
+.load-more{padding:.75rem 2.5rem;background:transparent;border:1px solid rgba(57,255,20,.35);color:var(--green);border-radius:4px;font-family:var(--font-mono);font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .25s;}
+.load-more:hover{background:rgba(57,255,20,0.08);box-shadow:0 0 24px rgba(57,255,20,.15);}
+
+/*── WHY US ──*/
 #why{padding:6rem 2.5rem;}
-.why-grid{
-  display:grid;grid-template-columns:repeat(3,1fr);
-  gap:1.5rem;margin-top:3rem;
-}
-.why-card{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:var(--radius);
-  padding:2rem;
-  position:relative;overflow:hidden;
-  transition:border-color .25s,transform .25s;
-}
+.why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem;}
+.why-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:2rem;position:relative;overflow:hidden;transition:border-color .25s,transform .25s;}
 .why-card:hover{transform:translateY(-4px);}
-.why-card::before{
-  content:'';
-  position:absolute;top:0;left:0;right:0;height:2px;
-}
+.why-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
 .wc1::before{background:linear-gradient(90deg,var(--green),transparent);}
 .wc2::before{background:linear-gradient(90deg,var(--blue),transparent);}
 .wc3::before{background:linear-gradient(90deg,var(--red),transparent);}
@@ -691,102 +432,112 @@ h1 .line2{
 .why-head{font-family:var(--font-display);font-size:1.4rem;letter-spacing:.03em;margin-bottom:.5rem;}
 .why-desc{font-size:.83rem;color:var(--muted);line-height:1.7;}
 
-/*──────────────────────────────────────────────
-  CTA
-──────────────────────────────────────────────*/
-#cta{
-  padding:7rem 2.5rem;
-  text-align:center;
+/*── CUSTOM ORDER BUILDER (NEW) ──*/
+#builder{
+  padding:6rem 2.5rem;
   background:var(--surface);
-  border-top:1px solid rgba(57,255,20,0.1);
   position:relative;overflow:hidden;
 }
-#cta::before{
-  content:'';
-  position:absolute;inset:0;
-  background:radial-gradient(ellipse 70% 80% at 50% 50%,
-    rgba(57,255,20,0.05) 0%,transparent 70%);
+#builder::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 70% at 50% 50%,rgba(57,255,20,0.03) 0%,transparent 70%);}
+.builder-wrap{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:4rem;align-items:start;
+  margin-top:3rem;
 }
+.builder-form{position:relative;}
+.build-step{margin-bottom:2rem;}
+.build-label{
+  font-family:var(--font-mono);font-size:.65rem;
+  letter-spacing:.2em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:.8rem;
+  display:flex;align-items:center;gap:.6rem;
+}
+.build-label::after{content:'';flex:1;height:1px;background:var(--border);}
+.build-options{display:flex;gap:.6rem;flex-wrap:wrap;}
+.bopt{
+  padding:.45rem 1rem;border-radius:4px;
+  font-family:var(--font-mono);font-size:.72rem;letter-spacing:.08em;
+  border:1px solid var(--border);background:transparent;color:var(--muted);
+  cursor:pointer;transition:all .2s;
+}
+.bopt:hover{border-color:rgba(57,255,20,.4);color:var(--green);}
+.bopt.selected{border-color:var(--green);color:var(--green);background:rgba(57,255,20,.08);box-shadow:0 0 12px rgba(57,255,20,.12);}
+.bopt-color{padding:.45rem .9rem;}
+.bopt-green.selected{border-color:var(--green);color:var(--green);background:rgba(57,255,20,.1);}
+.bopt-blue.selected{border-color:var(--blue);color:var(--blue);background:rgba(0,212,255,.1);}
+.bopt-red.selected{border-color:var(--red);color:var(--red);background:rgba(255,45,85,.1);}
+.bopt-black.selected{border-color:#aaa;color:#aaa;background:rgba(255,255,255,.05);}
+.build-qty{
+  display:flex;align-items:center;gap:1rem;
+}
+.qty-btn{
+  width:36px;height:36px;border-radius:4px;
+  border:1px solid rgba(57,255,20,.3);background:transparent;
+  color:var(--green);font-size:1.2rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .2s;
+}
+.qty-btn:hover{background:rgba(57,255,20,.1);}
+.qty-display{font-family:var(--font-display);font-size:2rem;color:var(--text);min-width:40px;text-align:center;}
+.build-summary{
+  background:var(--card);
+  border:1px solid rgba(57,255,20,.2);
+  border-radius:var(--radius);
+  padding:2rem;
+  position:sticky;top:80px;
+}
+.summary-title{font-family:var(--font-display);font-size:1.6rem;letter-spacing:.04em;margin-bottom:1.5rem;color:var(--green);text-shadow:0 0 10px var(--green-glow);}
+.summary-line{display:flex;justify-content:space-between;align-items:center;padding:.6rem 0;border-bottom:1px solid var(--border);font-size:.85rem;}
+.summary-line:last-of-type{border-bottom:none;}
+.summary-key{color:var(--muted);font-family:var(--font-mono);font-size:.68rem;letter-spacing:.08em;}
+.summary-val{font-weight:700;color:var(--text);}
+.summary-total{
+  display:flex;justify-content:space-between;align-items:baseline;
+  margin-top:1.5rem;padding-top:1.2rem;
+  border-top:1px solid rgba(57,255,20,.2);
+}
+.summary-total-label{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.15em;color:var(--muted);text-transform:uppercase;}
+.summary-total-price{font-family:var(--font-display);font-size:3rem;color:var(--green);text-shadow:0 0 16px var(--green-glow);}
+.summary-cta{
+  width:100%;margin-top:1.5rem;
+  padding:1rem;
+  background:var(--green);color:#050508;
+  border:none;border-radius:4px;
+  font-family:var(--font-mono);font-size:.85rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  cursor:pointer;
+  box-shadow:0 0 24px var(--green-glow);
+  transition:box-shadow .2s,transform .2s;
+}
+.summary-cta:hover{box-shadow:0 0 40px var(--green-glow);transform:translateY(-2px);}
+.summary-note{text-align:center;font-family:var(--font-mono);font-size:.6rem;color:var(--muted);margin-top:.8rem;letter-spacing:.06em;}
+
+/*── CTA ──*/
+#cta{padding:7rem 2.5rem;text-align:center;background:var(--bg);border-top:1px solid rgba(57,255,20,0.1);position:relative;overflow:hidden;}
+#cta::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 80% at 50% 50%,rgba(57,255,20,0.05) 0%,transparent 70%);}
 .cta-inner{position:relative;}
-.cta-title{
-  font-family:var(--font-display);
-  font-size:clamp(3rem,6vw,5.5rem);
-  letter-spacing:.03em;line-height:.95;
-  margin-bottom:1.5rem;
-}
+.cta-title{font-family:var(--font-display);font-size:clamp(3rem,6vw,5.5rem);letter-spacing:.03em;line-height:.95;margin-bottom:1.5rem;}
 .cta-sub{font-size:1rem;color:var(--muted);margin-bottom:2.5rem;max-width:480px;margin-left:auto;margin-right:auto;}
-.email-row{
-  display:flex;gap:.8rem;max-width:480px;
-  margin:0 auto 1.5rem;
-}
-.email-input{
-  flex:1;
-  padding:.8rem 1.2rem;
-  background:rgba(255,255,255,0.04);
-  border:1px solid rgba(57,255,20,0.25);
-  border-radius:4px;
-  color:var(--text);
-  font-family:var(--font-mono);font-size:.82rem;
-  outline:none;
-  transition:border-color .2s,box-shadow .2s;
-}
-.email-input:focus{
-  border-color:var(--green);
-  box-shadow:0 0 18px rgba(57,255,20,0.1);
-}
+.email-row{display:flex;gap:.8rem;max-width:480px;margin:0 auto 1.5rem;}
+.email-input{flex:1;padding:.8rem 1.2rem;background:rgba(255,255,255,0.04);border:1px solid rgba(57,255,20,0.25);border-radius:4px;color:var(--text);font-family:var(--font-mono);font-size:.82rem;outline:none;transition:border-color .2s,box-shadow .2s;}
+.email-input:focus{border-color:var(--green);box-shadow:0 0 18px rgba(57,255,20,0.1);}
 .email-input::placeholder{color:var(--muted);}
 .cta-note{font-family:var(--font-mono);font-size:.65rem;color:var(--muted);letter-spacing:.08em;}
 
-/*──────────────────────────────────────────────
-  FOOTER
-──────────────────────────────────────────────*/
-footer{
-  padding:3rem 2.5rem;
-  border-top:1px solid var(--border);
-}
-.footer-inner{
-  max-width:1300px;margin:0 auto;
-  display:flex;align-items:center;
-  justify-content:space-between;flex-wrap:wrap;gap:1.5rem;
-}
-.footer-logo{
-  font-family:var(--font-display);font-size:1.5rem;letter-spacing:.08em;
-}
+/*── FOOTER ──*/
+footer{padding:3rem 2.5rem;border-top:1px solid var(--border);}
+.footer-inner{max-width:1300px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5rem;}
+.footer-logo{font-family:var(--font-display);font-size:1.5rem;letter-spacing:.08em;}
 .footer-logo .accent{color:var(--green);text-shadow:0 0 10px var(--green);}
 .footer-links{display:flex;gap:2rem;}
-.footer-links a{
-  font-family:var(--font-mono);font-size:.68rem;
-  color:var(--muted);text-decoration:none;
-  letter-spacing:.1em;text-transform:uppercase;
-  transition:color .2s;
-}
+.footer-links a{font-family:var(--font-mono);font-size:.68rem;color:var(--muted);text-decoration:none;letter-spacing:.1em;text-transform:uppercase;transition:color .2s;}
 .footer-links a:hover{color:var(--green);}
 .footer-copy{font-family:var(--font-mono);font-size:.65rem;color:var(--subtle);}
 
-/* CART NOTIFICATION */
-.toast{
-  position:fixed;bottom:2rem;right:2rem;
-  background:var(--card);
-  border:1px solid rgba(57,255,20,0.4);
-  border-radius:8px;
-  padding:1rem 1.5rem;
-  font-family:var(--font-mono);font-size:.78rem;
-  color:var(--green);
-  box-shadow:0 0 30px rgba(57,255,20,0.15);
-  transform:translateY(150%);
-  transition:transform .4s cubic-bezier(0.175,0.885,0.32,1.275);
-  z-index:1000;
-}
+/*── TOAST ──*/
+.toast{position:fixed;bottom:2rem;right:2rem;background:var(--card);border:1px solid rgba(57,255,20,0.4);border-radius:8px;padding:1rem 1.5rem;font-family:var(--font-mono);font-size:.78rem;color:var(--green);box-shadow:0 0 30px rgba(57,255,20,0.15);transform:translateY(150%);transition:transform .4s cubic-bezier(0.175,0.885,0.32,1.275);z-index:1000;}
 .toast.show{transform:translateY(0);}
 
-/*──────────────────────────────────────────────
-  SECTION WRAPPER
-──────────────────────────────────────────────*/
-.section-inner{max-width:1300px;margin:0 auto;}
-
-/*──────────────────────────────────────────────
-  RESPONSIVE
-──────────────────────────────────────────────*/
+/*── RESPONSIVE ──*/
 @media(max-width:900px){
   .hero-inner{grid-template-columns:1fr;gap:2rem;}
   .printer-scene{width:240px;height:240px;}
@@ -795,6 +546,10 @@ footer{
   .steps-grid::after{display:none;}
   .color-showcase{grid-template-columns:1fr 1fr;}
   .why-grid{grid-template-columns:1fr 1fr;}
+  .bestseller-grid{grid-template-columns:1fr;}
+  .tiers{grid-template-columns:1fr 1fr;}
+  .reviews-grid{grid-template-columns:1fr 1fr;}
+  .builder-wrap{grid-template-columns:1fr;}
 }
 @media(max-width:600px){
   nav ul{display:none;}
@@ -802,6 +557,8 @@ footer{
   .color-showcase{grid-template-columns:1fr;}
   .why-grid{grid-template-columns:1fr;}
   .email-row{flex-direction:column;}
+  .tiers{grid-template-columns:1fr;}
+  .reviews-grid{grid-template-columns:1fr;}
 }
 </style>
 </head>
@@ -811,17 +568,17 @@ footer{
 <nav>
   <a href="#" class="logo">Layer<span class="accent">Up</span> 3D</a>
   <ul>
-    <li><a href="#howit">How We Print</a></li>
-    <li><a href="#colors">Colors</a></li>
+    <li><a href="#howit">Process</a></li>
+    <li><a href="#priceguide">Pricing</a></li>
     <li><a href="#catalog">Catalog</a></li>
+    <li><a href="#builder">Custom Order</a></li>
     <li><a href="#cta" class="nav-cta">Order Now</a></li>
   </ul>
 </nav>
 
-<!-- PARTICLES -->
 <div class="particles" id="particles"></div>
 
-<!-- ════════════════ HERO ════════════════ -->
+<!-- HERO -->
 <section class="hero">
   <div class="hero-grid"></div>
   <div class="hero-inner">
@@ -836,13 +593,13 @@ footer{
       </h1>
       <p class="hero-sub">
         Custom 3D‑printed goods for your home, desk, and life.
-        <strong style="color:var(--green)">1000+ designs</strong> across every category —
+        <strong style="color:var(--green)">100+ designs</strong> across every category —
         available in <strong style="color:var(--blue)">4 neon colors</strong>.
         Starting at just <strong style="color:var(--green)">$2</strong>.
       </p>
       <div class="btn-row">
-        <a href="#catalog" class="btn btn-green">Browse 1000+ Designs</a>
-        <a href="#howit" class="btn btn-outline">▶ How It Works</a>
+        <a href="#catalog" class="btn btn-green">Browse All Designs</a>
+        <a href="#builder" class="btn btn-outline">⚙ Build Your Order</a>
       </div>
     </div>
     <div class="hero-visual">
@@ -864,69 +621,87 @@ footer{
 <!-- STATS BAR -->
 <div class="statsbar">
   <div class="stats-inner">
-    <div class="stat">
-      <div class="stat-num neon-g">$2–$10</div>
-      <div class="stat-label">Price Range</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num neon-b">1000+</div>
-      <div class="stat-label">Designs</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num neon-r">4</div>
-      <div class="stat-label">Colors</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num neon-g">100%</div>
-      <div class="stat-label">Made to Order</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num" style="color:#ffa500;text-shadow:0 0 12px rgba(255,165,0,.4);">∞</div>
-      <div class="stat-label">Possibilities</div>
-    </div>
+    <div class="stat"><div class="stat-num neon-g">$2–$10</div><div class="stat-label">Price Range</div></div>
+    <div class="stat"><div class="stat-num neon-b" id="designCount">100+</div><div class="stat-label">Designs</div></div>
+    <div class="stat"><div class="stat-num neon-r">4</div><div class="stat-label">Colors</div></div>
+    <div class="stat"><div class="stat-num neon-g">100%</div><div class="stat-label">Made to Order</div></div>
+    <div class="stat"><div class="stat-num" style="color:#ffa500;text-shadow:0 0 12px rgba(255,165,0,.4);">∞</div><div class="stat-label">Possibilities</div></div>
   </div>
 </div>
 
-<!-- ════════════════ HOW IT'S PRINTED ════════════════ -->
-<section id="howit">
+<!-- ═══ LIVE PRINT QUEUE ═══ -->
+<div id="livequeue">
+  <div class="queue-track" id="queueTrack"></div>
+</div>
+
+<!-- ═══ BESTSELLERS ═══ -->
+<section id="bestsellers">
+  <div class="section-inner">
+    <div class="section-eye">// Fan Favorites</div>
+    <div class="section-title">THIS WEEK'S <span class="neon-g">HOT PRINTS</span></div>
+    <p class="section-sub">Our most-ordered items — tried, tested, and loved.</p>
+    <div class="bestseller-grid">
+      <!-- HERO PICK -->
+      <div class="bs-hero">
+        <div class="bs-thumb">
+          <div class="bs-badge">🔥 #1 BESTSELLER</div>
+          <div class="bs-thumb-icon" style="color:var(--green)">🐉</div>
+        </div>
+        <div class="bs-body">
+          <div class="bs-name neon-g">ARTICULATED DRAGON</div>
+          <div class="bs-desc">Fully jointed dragon printed in one single piece — every scale flexes, every joint moves. The piece that makes people stop and say "wait, that's printed?" Available in all 4 colors.</div>
+          <div class="bs-foot">
+            <div class="bs-price">$4</div>
+            <button class="bs-order" onclick="addToCart('Articulated Dragon')">ORDER NOW →</button>
+          </div>
+        </div>
+      </div>
+      <!-- SIDE PICKS -->
+      <div class="bs-side">
+        <div class="bs-card" style="background:linear-gradient(135deg,rgba(0,212,255,0.05),var(--card));">
+          <div class="bs-card-thumb" style="background:rgba(0,212,255,0.06)">🌀</div>
+          <div class="bs-card-body">
+            <div>
+              <div class="bs-card-name">Voronoi Vase</div>
+              <div class="bs-card-desc">Mathematical beauty — this vase stops conversations. Perfect centerpiece print.</div>
+            </div>
+            <div class="bs-card-foot">
+              <div class="bs-card-price">$8</div>
+              <button class="bs-mini-btn" onclick="addToCart('Voronoi Vase')">ORDER →</button>
+            </div>
+          </div>
+        </div>
+        <div class="bs-card" style="background:linear-gradient(135deg,rgba(255,45,85,0.05),var(--card));">
+          <div class="bs-card-thumb" style="background:rgba(255,45,85,0.06)">♟️</div>
+          <div class="bs-card-body">
+            <div>
+              <div class="bs-card-name">Mini Chess Set</div>
+              <div class="bs-card-desc">Full 32-piece set with board base. Portable, printable, giftable.</div>
+            </div>
+            <div class="bs-card-foot">
+              <div class="bs-card-price" style="color:var(--red);text-shadow:0 0 10px var(--red-glow);">$10</div>
+              <button class="bs-mini-btn" style="background:rgba(255,45,85,.1);border-color:rgba(255,45,85,.3);color:var(--red);" onclick="addToCart('Mini Chess Set')">ORDER →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ HOW IT'S PRINTED ═══ -->
+<section id="howit" style="background:var(--surface);">
   <div class="section-inner">
     <div class="section-eye">// Process</div>
     <div class="section-title">HOW YOUR ITEM <span class="neon-b">COMES TO LIFE</span></div>
     <p class="section-sub">Every product is printed fresh, layer by layer, in your chosen color — no inventory, no waste.</p>
-
     <div class="steps-grid">
-      <div class="step s1">
-        <div class="step-num">01</div>
-        <div class="step-emoji">🛒</div>
-        <div class="step-head">PICK A DESIGN</div>
-        <div class="step-desc">Browse 1000+ products. Choose your design, color, and size tier. Every order is unique.</div>
-      </div>
-      <div class="step s2">
-        <div class="step-num">02</div>
-        <div class="step-emoji">🎨</div>
-        <div class="step-head">CHOOSE COLOR</div>
-        <div class="step-desc">Select Neon Green, Electric Blue, Flame Red, or Void Black filament for your print.</div>
-      </div>
-      <div class="step s3">
-        <div class="step-num">03</div>
-        <div class="step-emoji">⚙️</div>
-        <div class="step-head">SLICE & PREP</div>
-        <div class="step-desc">Your file is sliced into hundreds of ultra-thin layers by our slicer software for precision.</div>
-      </div>
-      <div class="step s4">
-        <div class="step-num">04</div>
-        <div class="step-emoji">🔥</div>
-        <div class="step-head">PRINT IT</div>
-        <div class="step-desc">Hot filament is deposited layer by layer at 0.2mm precision until your item is complete.</div>
-      </div>
-      <div class="step s5">
-        <div class="step-num">05</div>
-        <div class="step-emoji">📦</div>
-        <div class="step-head">SHIP IT</div>
-        <div class="step-desc">Cleaned, quality-checked, and shipped to your door. Fresh from the printer to your hands.</div>
-      </div>
+      <div class="step s1"><div class="step-num">01</div><div class="step-emoji">🛒</div><div class="step-head">PICK A DESIGN</div><div class="step-desc">Browse 100+ products. Choose your design, color, and size tier.</div></div>
+      <div class="step s2"><div class="step-num">02</div><div class="step-emoji">🎨</div><div class="step-head">CHOOSE COLOR</div><div class="step-desc">Select Neon Green, Electric Blue, Flame Red, or Void Black filament.</div></div>
+      <div class="step s3"><div class="step-num">03</div><div class="step-emoji">⚙️</div><div class="step-head">SLICE & PREP</div><div class="step-desc">Your file is sliced into hundreds of ultra-thin 0.2mm layers.</div></div>
+      <div class="step s4"><div class="step-num">04</div><div class="step-emoji">🔥</div><div class="step-head">PRINT IT</div><div class="step-desc">Hot filament deposited layer by layer until your item is complete.</div></div>
+      <div class="step s5"><div class="step-num">05</div><div class="step-emoji">📦</div><div class="step-head">SHIP IT</div><div class="step-desc">Cleaned, quality-checked, and shipped to your door within 1–2 days.</div></div>
     </div>
-
     <div class="layer-demo">
       <div class="layer-title">▶ LIVE LAYER SIMULATION — FDM PRINTING</div>
       <div class="layer-bars" id="layerBars"></div>
@@ -934,138 +709,229 @@ footer{
   </div>
 </section>
 
-<!-- ════════════════ COLOR SHOWCASE ════════════════ -->
-<section id="colors">
+<!-- ═══ PRICE TIER GUIDE ═══ -->
+<section id="priceguide">
+  <div class="section-inner" style="position:relative;">
+    <div class="section-eye">// Pricing</div>
+    <div class="section-title">SIMPLE PRICING. <span class="neon-g">ZERO SURPRISES.</span></div>
+    <p class="section-sub">Price is purely based on material used — the more filament, the bigger the item. That's it.</p>
+    <div class="tiers">
+      <div class="tier t2">
+        <div class="tier-price">$2</div>
+        <div class="tier-size">XS · 10–30g</div>
+        <ul class="tier-items">
+          <li>Fidget toys</li>
+          <li>Keychains</li>
+          <li>Small clips</li>
+          <li>Brooches</li>
+          <li>Egg cups</li>
+        </ul>
+        <div class="tier-bar"><div class="tier-bar-fill"></div></div>
+        <div class="tier-weight">~10–30g filament</div>
+      </div>
+      <div class="tier t4">
+        <div class="tier-price">$4</div>
+        <div class="tier-size">S · 30–55g</div>
+        <ul class="tier-items">
+          <li>Flexi animals</li>
+          <li>Pen cups</li>
+          <li>Wall tiles</li>
+          <li>Cookie cutters</li>
+          <li>Small planters</li>
+        </ul>
+        <div class="tier-bar"><div class="tier-bar-fill"></div></div>
+        <div class="tier-weight">~30–55g filament</div>
+      </div>
+      <div class="tier t6">
+        <div class="tier-price">$6</div>
+        <div class="tier-size">M · 55–80g</div>
+        <ul class="tier-items">
+          <li>Geometric planters</li>
+          <li>Desk organizers</li>
+          <li>Controller stands</li>
+          <li>Terrarium bases</li>
+          <li>Star lanterns</li>
+        </ul>
+        <div class="tier-bar"><div class="tier-bar-fill"></div></div>
+        <div class="tier-weight">~55–80g filament</div>
+      </div>
+      <div class="tier t8">
+        <div class="tier-price">$8</div>
+        <div class="tier-size">L · 80–110g</div>
+        <ul class="tier-items">
+          <li>Voronoi vases</li>
+          <li>Dice towers</li>
+          <li>Bookend sets</li>
+          <li>Domino sets</li>
+          <li>Laptop stands</li>
+        </ul>
+        <div class="tier-bar"><div class="tier-bar-fill"></div></div>
+        <div class="tier-weight">~80–110g filament</div>
+      </div>
+      <div class="tier t10">
+        <div class="tier-price">$10</div>
+        <div class="tier-size">XL · 110g+</div>
+        <ul class="tier-items">
+          <li>Chess sets</li>
+          <li>Lamp shades</li>
+          <li>Advent calendars</li>
+          <li>Full chess sets</li>
+          <li>Labyrinth games</li>
+        </ul>
+        <div class="tier-bar"><div class="tier-bar-fill"></div></div>
+        <div class="tier-weight">110g+ filament</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ COLOR SHOWCASE ═══ -->
+<section id="colors" style="background:var(--surface);">
   <div class="section-inner" style="position:relative;">
     <div class="section-eye">// Available Colors</div>
     <div class="section-title">PICK YOUR <span class="neon-g">NEON</span></div>
     <p class="section-sub">All designs available in 4 signature colors. Same price, your choice.</p>
-
     <div class="color-showcase">
-      <!-- GREEN -->
       <div class="color-block">
-        <div class="cb-preview cb-g">
-          <div class="cb-glow cg-g"></div>
-          <span style="position:relative;z-index:1;font-size:4rem;filter:drop-shadow(0 0 18px #39ff14)">🐉</span>
-        </div>
-        <div class="cb-info">
-          <div class="cb-name neon-g"><span class="cb-dot" style="background:#39ff14;box-shadow:0 0 8px #39ff14;"></span>NEON GREEN</div>
-          <div class="cb-desc">Hyper-visible, electric glow under UV. The statement color. Turns any print into a centerpiece.</div>
-        </div>
+        <div class="cb-preview cb-g"><div class="cb-glow cg-g"></div><span style="position:relative;z-index:1;font-size:4rem;filter:drop-shadow(0 0 18px #39ff14)">🐉</span></div>
+        <div class="cb-info"><div class="cb-name neon-g"><span class="cb-dot" style="background:#39ff14;box-shadow:0 0 8px #39ff14;"></span>NEON GREEN</div><div class="cb-desc">Hyper-visible, electric glow under UV. The statement color. Turns any print into a centerpiece.</div></div>
       </div>
-      <!-- BLUE -->
       <div class="color-block">
-        <div class="cb-preview cb-b">
-          <div class="cb-glow cg-b"></div>
-          <span style="position:relative;z-index:1;font-size:4rem;filter:drop-shadow(0 0 18px #00d4ff)">🔷</span>
-        </div>
-        <div class="cb-info">
-          <div class="cb-name neon-b"><span class="cb-dot" style="background:#00d4ff;box-shadow:0 0 8px #00d4ff;"></span>ELECTRIC BLUE</div>
-          <div class="cb-desc">Ice-cold precision blue. Sleek, techy, and unmissable. Perfect for gadget-adjacent prints.</div>
-        </div>
+        <div class="cb-preview cb-b"><div class="cb-glow cg-b"></div><span style="position:relative;z-index:1;font-size:4rem;filter:drop-shadow(0 0 18px #00d4ff)">🔷</span></div>
+        <div class="cb-info"><div class="cb-name neon-b"><span class="cb-dot" style="background:#00d4ff;box-shadow:0 0 8px #00d4ff;"></span>ELECTRIC BLUE</div><div class="cb-desc">Ice-cold precision blue. Sleek, techy, and unmissable. Perfect for gadget-adjacent prints.</div></div>
       </div>
-      <!-- RED -->
       <div class="color-block">
-        <div class="cb-preview cb-r">
-          <div class="cb-glow cg-r"></div>
-          <span style="position:relative;z-index:1;font-size:4rem;filter:drop-shadow(0 0 18px #ff2d55)">🔺</span>
-        </div>
-        <div class="cb-info">
-          <div class="cb-name neon-r"><span class="cb-dot" style="background:#ff2d55;box-shadow:0 0 8px #ff2d55;"></span>FLAME RED</div>
-          <div class="cb-desc">Hot, urgent, fierce. Brings energy to every print. Demand attention — in red.</div>
-        </div>
+        <div class="cb-preview cb-r"><div class="cb-glow cg-r"></div><span style="position:relative;z-index:1;font-size:4rem;filter:drop-shadow(0 0 18px #ff2d55)">🔺</span></div>
+        <div class="cb-info"><div class="cb-name neon-r"><span class="cb-dot" style="background:#ff2d55;box-shadow:0 0 8px #ff2d55;"></span>FLAME RED</div><div class="cb-desc">Hot, urgent, fierce. Brings energy to every print. Demand attention — in red.</div></div>
       </div>
-      <!-- BLACK -->
       <div class="color-block">
-        <div class="cb-preview cb-k">
-          <div class="cb-glow cg-k"></div>
-          <span style="position:relative;z-index:1;font-size:4rem;filter:drop-shadow(0 0 18px rgba(255,255,255,.3))">🖤</span>
-        </div>
-        <div class="cb-info">
-          <div class="cb-name" style="color:#c0c0d0;"><span class="cb-dot" style="background:#1a1a22;border:1px solid rgba(255,255,255,.3);"></span>VOID BLACK</div>
-          <div class="cb-desc">Stealth mode on. Matte jet black that makes every print look sleek, professional, serious.</div>
-        </div>
+        <div class="cb-preview cb-k"><div class="cb-glow cg-k"></div><span style="position:relative;z-index:1;font-size:4rem;filter:drop-shadow(0 0 18px rgba(255,255,255,.3))">🖤</span></div>
+        <div class="cb-info"><div class="cb-name" style="color:#c0c0d0;"><span class="cb-dot" style="background:#1a1a22;border:1px solid rgba(255,255,255,.3);"></span>VOID BLACK</div><div class="cb-desc">Stealth mode on. Matte jet black that makes every print look sleek, professional, serious.</div></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ════════════════ CATALOG ════════════════ -->
+<!-- ═══ CATALOG ═══ -->
 <section id="catalog">
   <div class="section-inner">
     <div class="section-eye">// Product Catalog</div>
-    <div class="section-title">BROWSE <span class="neon-g">1000+</span> DESIGNS</div>
+    <div class="section-title">BROWSE <span class="neon-g">ALL</span> DESIGNS</div>
     <p class="section-sub">Every item is printed fresh in your chosen color. Filter by category or price.</p>
-
-    <!-- CATEGORY FILTER -->
     <div class="filter-strip" id="catFilter"></div>
-
-    <!-- PRICE FILTER -->
     <div class="price-strip" id="priceFilter"></div>
-
-    <!-- RESULTS COUNT -->
     <div class="results-count" id="resultsCount"></div>
-
-    <!-- GRID -->
     <div class="prod-grid" id="prodGrid"></div>
-
-    <div class="load-more-wrap">
-      <button class="load-more" id="loadMoreBtn" onclick="loadMore()">LOAD MORE DESIGNS ↓</button>
-    </div>
+    <div class="load-more-wrap"><button class="load-more" id="loadMoreBtn" onclick="loadMore()">LOAD MORE DESIGNS ↓</button></div>
   </div>
 </section>
 
-<!-- ════════════════ WHY US ════════════════ -->
-<section id="why" style="background:var(--surface);">
+<!-- ═══ TESTIMONIALS ═══ -->
+<section id="reviews">
+  <div class="section-inner" style="position:relative;">
+    <div class="section-eye">// Verified Customers</div>
+    <div class="section-title">REAL PEOPLE. <span class="neon-b">REAL PRINTS.</span></div>
+    <p class="section-sub">Every review is from a real LayerUp customer. No fakes, no fluff.</p>
+    <div class="reviews-grid" id="reviewsGrid"></div>
+  </div>
+</section>
+
+<!-- ═══ WHY US ═══ -->
+<section id="why">
   <div class="section-inner">
     <div class="section-eye">// Why LayerUp</div>
     <div class="section-title">BUILT DIFFERENT.<br><span class="neon-g">PRINTED BETTER.</span></div>
     <div class="why-grid">
-      <div class="why-card wc1">
-        <div class="why-icon">⚡</div>
-        <div class="why-head">INSTANT PRICING</div>
-        <div class="why-desc">No hidden fees. No surprises. $2–$10 based purely on material used. See the price before you order.</div>
+      <div class="why-card wc1"><div class="why-icon">⚡</div><div class="why-head">INSTANT PRICING</div><div class="why-desc">No hidden fees. No surprises. $2–$10 based purely on material used. See the price before you order.</div></div>
+      <div class="why-card wc2"><div class="why-icon">🎨</div><div class="why-head">4 NEON COLORS</div><div class="why-desc">Every single design available in Neon Green, Electric Blue, Flame Red, and Void Black.</div></div>
+      <div class="why-card wc3"><div class="why-icon">♻️</div><div class="why-head">ZERO WASTE</div><div class="why-desc">Printed only when you order. No overstock, no warehouses. Made-to-order = zero waste manufacturing.</div></div>
+      <div class="why-card wc4"><div class="why-icon">🛠️</div><div class="why-head">CUSTOM REQUESTS</div><div class="why-desc">Don't see what you need? Email us a reference and we'll model and print it at the same rates.</div></div>
+      <div class="why-card wc5"><div class="why-icon">📦</div><div class="why-head">FAST TURNAROUND</div><div class="why-desc">Most small prints complete in under 3 hours. Orders ship within 1–2 business days of payment.</div></div>
+      <div class="why-card wc6"><div class="why-icon">💎</div><div class="why-head">PRECISION QUALITY</div><div class="why-desc">0.2mm layer resolution on premium PLA filament. Every print passes our quality check before shipping.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CUSTOM ORDER BUILDER ═══ -->
+<section id="builder">
+  <div class="section-inner" style="position:relative;">
+    <div class="section-eye">// Order Builder</div>
+    <div class="section-title">BUILD YOUR <span class="neon-g">ORDER</span></div>
+    <p class="section-sub">Configure exactly what you want. Get your quote instantly.</p>
+    <div class="builder-wrap">
+      <div class="builder-form">
+        <!-- CATEGORY -->
+        <div class="build-step">
+          <div class="build-label">01 — Category</div>
+          <div class="build-options" id="b-cats"></div>
+        </div>
+        <!-- COLOR -->
+        <div class="build-step">
+          <div class="build-label">02 — Filament Color</div>
+          <div class="build-options">
+            <button class="bopt bopt-color bopt-green selected" onclick="selectBuild('color','Neon Green',this)">🟢 Neon Green</button>
+            <button class="bopt bopt-color bopt-blue" onclick="selectBuild('color','Electric Blue',this)">🔵 Electric Blue</button>
+            <button class="bopt bopt-color bopt-red" onclick="selectBuild('color','Flame Red',this)">🔴 Flame Red</button>
+            <button class="bopt bopt-color bopt-black" onclick="selectBuild('color','Void Black',this)">⚫ Void Black</button>
+          </div>
+        </div>
+        <!-- SIZE -->
+        <div class="build-step">
+          <div class="build-label">03 — Size / Price Tier</div>
+          <div class="build-options">
+            <button class="bopt selected" onclick="selectBuild('size','$2 · XS',this,2)">$2 XS</button>
+            <button class="bopt" onclick="selectBuild('size','$4 · S',this,4)">$4 S</button>
+            <button class="bopt" onclick="selectBuild('size','$6 · M',this,6)">$6 M</button>
+            <button class="bopt" onclick="selectBuild('size','$8 · L',this,8)">$8 L</button>
+            <button class="bopt" onclick="selectBuild('size','$10 · XL',this,10)">$10 XL</button>
+          </div>
+        </div>
+        <!-- QUANTITY -->
+        <div class="build-step">
+          <div class="build-label">04 — Quantity</div>
+          <div class="build-qty">
+            <button class="qty-btn" onclick="changeQty(-1)">−</button>
+            <div class="qty-display" id="qtyDisplay">1</div>
+            <button class="qty-btn" onclick="changeQty(1)">+</button>
+            <span style="font-family:var(--font-mono);font-size:.65rem;color:var(--muted);margin-left:.5rem;">5+ items? We discount!</span>
+          </div>
+        </div>
+        <!-- NOTES -->
+        <div class="build-step">
+          <div class="build-label">05 — Special Notes (optional)</div>
+          <textarea id="buildNotes" placeholder="e.g. 'Please add a 3mm hole for hanging' or 'Custom text: Jake's Desk'" style="width:100%;background:var(--card);border:1px solid var(--border);border-radius:6px;padding:.8rem 1rem;color:var(--text);font-family:var(--font-mono);font-size:.75rem;resize:vertical;min-height:80px;outline:none;line-height:1.6;transition:border-color .2s;" onfocus="this.style.borderColor='rgba(57,255,20,.4)'" onblur="this.style.borderColor='var(--border)'"></textarea>
+        </div>
       </div>
-      <div class="why-card wc2">
-        <div class="why-icon">🎨</div>
-        <div class="why-head">4 NEON COLORS</div>
-        <div class="why-desc">Every single design available in Neon Green, Electric Blue, Flame Red, and Void Black.</div>
-      </div>
-      <div class="why-card wc3">
-        <div class="why-icon">♻️</div>
-        <div class="why-head">ZERO WASTE</div>
-        <div class="why-desc">Printed only when you order. No overstock, no warehouses. Made-to-order = zero waste manufacturing.</div>
-      </div>
-      <div class="why-card wc4">
-        <div class="why-icon">🛠️</div>
-        <div class="why-head">CUSTOM REQUESTS</div>
-        <div class="why-desc">Don't see what you need? Email us a reference and we'll model and print it for you at the same rates.</div>
-      </div>
-      <div class="why-card wc5">
-        <div class="why-icon">📦</div>
-        <div class="why-head">FAST TURNAROUND</div>
-        <div class="why-desc">Most small prints complete in under 3 hours. Orders ship within 1–2 business days of payment.</div>
-      </div>
-      <div class="why-card wc6">
-        <div class="why-icon">💎</div>
-        <div class="why-head">PRECISION QUALITY</div>
-        <div class="why-desc">0.2mm layer resolution on premium PLA filament. Every print passes our quality check before shipping.</div>
+      <!-- SUMMARY -->
+      <div class="build-summary">
+        <div class="summary-title">ORDER SUMMARY</div>
+        <div class="summary-line"><span class="summary-key">CATEGORY</span><span class="summary-val" id="s-cat">—</span></div>
+        <div class="summary-line"><span class="summary-key">COLOR</span><span class="summary-val" id="s-color">Neon Green</span></div>
+        <div class="summary-line"><span class="summary-key">SIZE TIER</span><span class="summary-val" id="s-size">$2 · XS</span></div>
+        <div class="summary-line"><span class="summary-key">QUANTITY</span><span class="summary-val" id="s-qty">1 item</span></div>
+        <div class="summary-line"><span class="summary-key">UNIT PRICE</span><span class="summary-val" id="s-unit">$2.00</span></div>
+        <div class="summary-total">
+          <span class="summary-total-label">TOTAL ESTIMATE</span>
+          <span class="summary-total-price" id="s-total">$2</span>
+        </div>
+        <button class="summary-cta" onclick="submitBuild()">SEND THIS ORDER →</button>
+        <div class="summary-note">We'll confirm & invoice within 24hrs · hello@layerup3d.com</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ════════════════ CTA ════════════════ -->
+<!-- ═══ CTA ═══ -->
 <section id="cta">
   <div class="section-inner cta-inner">
     <div class="section-eye">// Order</div>
     <div class="cta-title">READY TO<br><span class="neon-g">PRINT?</span></div>
-    <p class="cta-sub">Tell us what you want, your color, and your quantity. We'll quote it in minutes.</p>
+    <p class="cta-sub">Drop your email and we'll reach out to finalize your order in minutes.</p>
     <div class="email-row">
       <input class="email-input" type="email" placeholder="your@email.com" id="emailInput">
       <a href="#" class="btn btn-green" onclick="handleOrder()">GET STARTED</a>
     </div>
-    <div class="cta-note">Or email us directly at hello@layerup3d.com — we reply fast.</div>
+    <div class="cta-note">Or reach us directly at hello@layerup3d.com — we reply fast.</div>
   </div>
 </section>
 
@@ -1075,67 +941,66 @@ footer{
     <div class="footer-logo">Layer<span class="accent">Up</span> 3D</div>
     <div class="footer-links">
       <a href="#howit">Process</a>
+      <a href="#priceguide">Pricing</a>
       <a href="#colors">Colors</a>
       <a href="#catalog">Catalog</a>
-      <a href="#cta">Order</a>
+      <a href="#builder">Custom Order</a>
     </div>
     <div class="footer-copy">© 2025 LayerUp 3D · All rights reserved · hello@layerup3d.com</div>
   </div>
 </footer>
 
-<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <script>
-/*────────────────────────────────────────────────
-  PARTICLES
-────────────────────────────────────────────────*/
+/*── PARTICLES ──*/
 (function(){
-  const container = document.getElementById('particles');
-  const colors = ['#39ff14','#00d4ff','#ff2d55','#ff00c8'];
+  const c=document.getElementById('particles');
+  const colors=['#39ff14','#00d4ff','#ff2d55','#ff00c8'];
   for(let i=0;i<40;i++){
-    const p = document.createElement('div');
-    p.className='particle';
-    const c = colors[Math.floor(Math.random()*colors.length)];
-    p.style.cssText=`
-      left:${Math.random()*100}%;
-      background:${c};
-      box-shadow:0 0 6px ${c};
-      animation-duration:${8+Math.random()*18}s;
-      animation-delay:${Math.random()*10}s;
-      --dx:${(Math.random()-.5)*120}px;
-      width:${1+Math.random()*2}px;
-      height:${1+Math.random()*2}px;
-    `;
-    container.appendChild(p);
+    const p=document.createElement('div');p.className='particle';
+    const col=colors[Math.floor(Math.random()*colors.length)];
+    p.style.cssText=`left:${Math.random()*100}%;background:${col};box-shadow:0 0 6px ${col};animation-duration:${8+Math.random()*18}s;animation-delay:${Math.random()*10}s;--dx:${(Math.random()-.5)*120}px;width:${1+Math.random()*2}px;height:${1+Math.random()*2}px;`;
+    c.appendChild(p);
   }
 })();
 
-/*────────────────────────────────────────────────
-  LAYER ANIMATION BUILD
-────────────────────────────────────────────────*/
+/*── LAYER BARS ──*/
 (function(){
-  const container = document.getElementById('layerBars');
-  for(let i=0;i<14;i++){
-    const bar = document.createElement('div');
-    bar.className='layer-bar';
-    container.appendChild(bar);
-  }
+  const c=document.getElementById('layerBars');
+  for(let i=0;i<14;i++){const b=document.createElement('div');b.className='layer-bar';c.appendChild(b);}
 })();
 
-/*────────────────────────────────────────────────
-  PRODUCT DATA
-────────────────────────────────────────────────*/
-const CATEGORIES = [
-  'All','Fidgets & Toys','Home & Decor','Desk & Office',
-  'Gaming & Geek','Kitchen & Food','Tools & Utility',
-  'Fashion & Wearables','Nature & Animals','Seasonal & Gifts','Custom & Novelty'
-];
+/*── LIVE QUEUE ──*/
+(function(){
+  const orders=[
+    {name:'Articulated Dragon',color:'Neon Green',city:'Seattle',cls:'qdot-g',tag:'qtag-g'},
+    {name:'Voronoi Vase',color:'Electric Blue',city:'Austin',cls:'qdot-b',tag:'qtag-b'},
+    {name:'Flexi Octopus',color:'Flame Red',city:'Denver',cls:'qdot-r',tag:'qtag-r'},
+    {name:'Mini Chess Set',color:'Void Black',city:'Portland',cls:'qdot-k',tag:'qtag-k'},
+    {name:'Infinity Cube',color:'Neon Green',city:'Chicago',cls:'qdot-g',tag:'qtag-g'},
+    {name:'Dice Tower',color:'Electric Blue',city:'Miami',cls:'qdot-b',tag:'qtag-b'},
+    {name:'Geometric Planter',color:'Flame Red',city:'LA',cls:'qdot-r',tag:'qtag-r'},
+    {name:'Flexi Shark',color:'Neon Green',city:'Boston',cls:'qdot-g',tag:'qtag-g'},
+    {name:'Laptop Stand',color:'Void Black',city:'NYC',cls:'qdot-k',tag:'qtag-k'},
+    {name:'Controller Stand',color:'Electric Blue',city:'Dallas',cls:'qdot-b',tag:'qtag-b'},
+    {name:'Spiral Spinner',color:'Flame Red',city:'Phoenix',cls:'qdot-r',tag:'qtag-r'},
+    {name:'Star Lantern',color:'Neon Green',city:'Nashville',cls:'qdot-g',tag:'qtag-g'},
+  ];
+  const t=document.getElementById('queueTrack');
+  const all=[...orders,...orders];
+  all.forEach(o=>{
+    const el=document.createElement('div');
+    el.className='queue-item';
+    el.innerHTML=`<div class="queue-dot ${o.cls}"></div><span class="queue-name">${o.name}</span><span class="queue-color-tag ${o.tag}">${o.color}</span><span>→ ${o.city}</span>`;
+    t.appendChild(el);
+  });
+})();
 
-const PRICES = ['All','$2','$4','$6','$8','$10'];
-
-const RAW_PRODUCTS = [
-  // FIDGETS & TOYS
+/*── PRODUCTS ──*/
+const CATEGORIES=['All','Fidgets & Toys','Home & Decor','Desk & Office','Gaming & Geek','Kitchen & Food','Tools & Utility','Fashion & Wearables','Nature & Animals','Seasonal & Gifts','Custom & Novelty'];
+const PRICES=['All','$2','$4','$6','$8','$10'];
+const PRODUCTS=[
   {name:'Infinity Cube',cat:'Fidgets & Toys',price:2,weight:'28g',icon:'🔀',desc:'8 hinged sections that fold forever. The ultimate desk fidget.'},
   {name:'Articulated Dragon',cat:'Fidgets & Toys',price:4,weight:'45g',icon:'🐉',desc:'Fully jointed dragon printed in one piece — every scale flexes.'},
   {name:'Spiral Spinner',cat:'Fidgets & Toys',price:2,weight:'22g',icon:'🌀',desc:'Geometric spiral that balances on a fingertip and spins silently.'},
@@ -1147,24 +1012,20 @@ const RAW_PRODUCTS = [
   {name:'Pop-It Tile',cat:'Fidgets & Toys',price:2,weight:'24g',icon:'🟩',desc:'Printable pop-it style tile with satisfying dome clicks.'},
   {name:'Caterpillar Flexi',cat:'Fidgets & Toys',price:2,weight:'26g',icon:'🐛',desc:'20-segment articulated caterpillar that wiggles in your hand.'},
   {name:'Spinning Top Pro',cat:'Fidgets & Toys',price:2,weight:'16g',icon:'🌪️',desc:'Precision-balanced top that spins for 45+ seconds on any surface.'},
-  {name:'Maze Cube',cat:'Fidgets & Toys',price:6,weight:'70g',icon:'🎮',desc:'3D maze trapped inside a transparent cube. Navigate the ball inside.'},
+  {name:'Maze Cube',cat:'Fidgets & Toys',price:6,weight:'70g',icon:'🎮',desc:'3D maze trapped inside a cube. Navigate the ball inside.'},
   {name:'DNA Model',cat:'Fidgets & Toys',price:6,weight:'55g',icon:'🧬',desc:'Double-helix DNA model with rotating base. Educational meets cool.'},
-
-  // HOME & DECOR
   {name:'Voronoi Vase',cat:'Home & Decor',price:8,weight:'95g',icon:'🏺',desc:'Mathematical voronoi pattern vase. Statement piece for any shelf.'},
   {name:'Geometric Planter',cat:'Home & Decor',price:6,weight:'72g',icon:'🌿',desc:'Hexagonal low-poly planter for succulents and small plants.'},
   {name:'Wall Art Tile',cat:'Home & Decor',price:4,weight:'40g',icon:'🖼️',desc:'Textured geometric wall tile. Mix and match for infinite patterns.'},
   {name:'Icosahedron Lamp Shade',cat:'Home & Decor',price:10,weight:'120g',icon:'💡',desc:'20-face geometric shade that casts geometric light patterns.'},
   {name:'Honeycomb Frame',cat:'Home & Decor',price:6,weight:'58g',icon:'🍯',desc:'Modular hex frame for photos or botanical displays on walls.'},
   {name:'Name Plaque',cat:'Home & Decor',price:4,weight:'35g',icon:'🔤',desc:'Custom raised-letter name sign for doors, desks, or shelves.'},
-  {name:'Crystal Cluster',cat:'Home & Decor',price:4,weight:'44g',icon:'💎',desc:'3D printed faux crystal cluster — stunning on any surface or shelf.'},
+  {name:'Crystal Cluster',cat:'Home & Decor',price:4,weight:'44g',icon:'💎',desc:'3D printed faux crystal cluster — stunning on any surface.'},
   {name:'Minimal Clock Stand',cat:'Home & Decor',price:6,weight:'60g',icon:'🕐',desc:'Angled stand for any 60mm round clock insert. Clean and modern.'},
   {name:'Bookend Set',cat:'Home & Decor',price:8,weight:'100g',icon:'📚',desc:'Geometric bookend pair that look like architecture slices.'},
-  {name:'Coaster Set x4',cat:'Home & Decor',price:6,weight:'80g',icon:'🧊',desc:'Four geometric coasters with grip ribs on the bottom — no sliding.'},
-  {name:'Floating Shelf Hook',cat:'Home & Decor',price:4,weight:'32g',icon:'🪝',desc:'Wall-mount hook system that looks like floating magic on any wall.'},
+  {name:'Coaster Set x4',cat:'Home & Decor',price:6,weight:'80g',icon:'🧊',desc:'Four geometric coasters with grip ribs on the bottom.'},
+  {name:'Floating Shelf Hook',cat:'Home & Decor',price:4,weight:'32g',icon:'🪝',desc:'Wall-mount hook system that looks like floating magic.'},
   {name:'Picture Easel',cat:'Home & Decor',price:4,weight:'38g',icon:'🖼️',desc:'Folding mini easel for 4x6 photos or small artwork. Gift-ready.'},
-
-  // DESK & OFFICE
   {name:'Universal Phone Stand',cat:'Desk & Office',price:2,weight:'30g',icon:'📱',desc:'Holds any phone at perfect viewing angle. Thin, sturdy, silent.'},
   {name:'Cable Organizer',cat:'Desk & Office',price:2,weight:'18g',icon:'🔌',desc:'Clip-on cable manager to keep USB, HDMI, and audio wires tidy.'},
   {name:'Pen Cup',cat:'Desk & Office',price:4,weight:'50g',icon:'✏️',desc:'Hexagonal pen cup with internal dividers for perfect organization.'},
@@ -1177,20 +1038,15 @@ const RAW_PRODUCTS = [
   {name:'Desk Tray Organizer',cat:'Desk & Office',price:6,weight:'78g',icon:'📂',desc:'Modular multi-compartment desk tray for small office supplies.'},
   {name:'Mouse Bungee',cat:'Desk & Office',price:4,weight:'42g',icon:'🖱️',desc:'Spring-arm bungee keeps your mouse cable off the desk surface.'},
   {name:'Key Hook Station',cat:'Desk & Office',price:4,weight:'38g',icon:'🗝️',desc:'Wall-mount 3-hook key station with tiny tray for coins and cards.'},
-
-  // GAMING & GEEK
   {name:'Controller Stand',cat:'Gaming & Geek',price:6,weight:'68g',icon:'🎮',desc:'Display your PS5/Xbox controller at a perfect angle on your desk.'},
   {name:'Dice Tower',cat:'Gaming & Geek',price:8,weight:'90g',icon:'🎲',desc:'Tabletop RPG dice tower with random baffle cascade and tray.'},
-  {name:'D20 Display',cat:'Gaming & Geek',price:4,weight:'40g',icon:'⚄',desc:'Cradle display for your favorite D20 die — or use it as a paperweight.'},
+  {name:'D20 Display',cat:'Gaming & Geek',price:4,weight:'40g',icon:'⚄',desc:'Cradle display for your favorite D20 die — or use as a paperweight.'},
   {name:'Cable Management Spine',cat:'Gaming & Geek',price:6,weight:'55g',icon:'🐍',desc:'Articulated cable spine that hides your PC power strip cables.'},
   {name:'SD Card Holder',cat:'Gaming & Geek',price:2,weight:'16g',icon:'💾',desc:'Holds 8 SD/MicroSD cards in a slim, pocketable case.'},
   {name:'Cartridge Display',cat:'Gaming & Geek',price:4,weight:'36g',icon:'🕹️',desc:'Angled display rack for 6 game cartridges — Switch, GBA, DS.'},
   {name:'Pi Zero Case',cat:'Gaming & Geek',price:4,weight:'42g',icon:'🖥️',desc:'Snap-fit Raspberry Pi Zero case with GPIO cutout and ventilation.'},
-  {name:'Bat Signal Light Ring',cat:'Gaming & Geek',price:4,weight:'32g',icon:'🦇',desc:'Clip onto your LED strip for a geometric shadow diffuser.'},
   {name:'Mini Arcade Joystick',cat:'Gaming & Geek',price:6,weight:'62g',icon:'🕹️',desc:'Desk-size 8-directional arcade joystick enclosure for USB boards.'},
   {name:'USB Hub Stand',cat:'Gaming & Geek',price:6,weight:'55g',icon:'⚡',desc:'Angled USB hub holder that keeps ports accessible on your desk.'},
-
-  // KITCHEN & FOOD
   {name:'Snack Box',cat:'Kitchen & Food',price:2,weight:'42g',icon:'🍬',desc:'Compact lidded box for snacks, vitamins, or tiny items on the go.'},
   {name:'Cookie Cutter Set',cat:'Kitchen & Food',price:4,weight:'48g',icon:'⭐',desc:'5 geometric cookie cutters — star, hex, diamond, circle, wave.'},
   {name:'Egg Cup',cat:'Kitchen & Food',price:2,weight:'20g',icon:'🥚',desc:'Minimal egg cup that makes soft-boiled eggs look like a design object.'},
@@ -1201,8 +1057,6 @@ const RAW_PRODUCTS = [
   {name:'Citrus Squeezer',cat:'Kitchen & Food',price:4,weight:'46g',icon:'🍋',desc:'Manual lemon/lime squeezer with drip grid and reservoir tray.'},
   {name:'Napkin Ring Set',cat:'Kitchen & Food',price:4,weight:'40g',icon:'💫',desc:'4 geometric napkin rings for dinner table style. Great gift.'},
   {name:'Recipe Card Stand',cat:'Kitchen & Food',price:4,weight:'34g',icon:'📋',desc:'Angled stand for recipe cards or a small tablet at the perfect reading angle.'},
-
-  // TOOLS & UTILITY
   {name:'Cable Clip Strip',cat:'Tools & Utility',price:2,weight:'12g',icon:'🗜️',desc:'Adhesive-mount cable clip strip for 5 cables on any surface.'},
   {name:'Wrench Key Holder',cat:'Tools & Utility',price:4,weight:'36g',icon:'🔧',desc:'Mini wrench shaped key organizer that holds 4 keys in a fan.'},
   {name:'Door Stopper',cat:'Tools & Utility',price:2,weight:'28g',icon:'🚪',desc:'Heavy-duty wedge door stopper. Works on carpet and hardwood.'},
@@ -1213,8 +1067,6 @@ const RAW_PRODUCTS = [
   {name:'Measuring Spoon Set',cat:'Tools & Utility',price:4,weight:'32g',icon:'🥄',desc:'1/4 tsp to 1 tbsp set — dishwasher safe PLA. Stackable.'},
   {name:'Zip Tie Base',cat:'Tools & Utility',price:2,weight:'8g',icon:'🔗',desc:'Adhesive-mount zip tie anchor base for cable routing. Pack of 10.'},
   {name:'Wall Cable Channel',cat:'Tools & Utility',price:6,weight:'58g',icon:'📏',desc:'Snap-fit cable channel that mounts flush to any wall. 30cm length.'},
-
-  // FASHION & WEARABLES
   {name:'Geometric Earrings',cat:'Fashion & Wearables',price:4,weight:'6g',icon:'💍',desc:'Lightweight geometric drop earrings — triangle, hex, and diamond options.'},
   {name:'Bracelet Bangle',cat:'Fashion & Wearables',price:4,weight:'18g',icon:'⭕',desc:'Open-weave lattice bangle in 3 sizes. Pairs with anything.'},
   {name:'Brooch Pin',cat:'Fashion & Wearables',price:2,weight:'8g',icon:'📍',desc:'Custom shape brooch pin with backing. Minimalist or maximalist.'},
@@ -1222,8 +1074,6 @@ const RAW_PRODUCTS = [
   {name:'Cuff Link Set',cat:'Fashion & Wearables',price:6,weight:'16g',icon:'👔',desc:'Geometric cufflinks for dress shirts — modern hexagonal face.'},
   {name:'Hair Clip Set x3',cat:'Fashion & Wearables',price:4,weight:'14g',icon:'💇',desc:'Three geometric hair clips — bow, diamond, and arc shapes.'},
   {name:'Ring Display Stand',cat:'Fashion & Wearables',price:4,weight:'28g',icon:'💍',desc:'Cone-and-bar ring display for jewelry photography or storage.'},
-
-  // NATURE & ANIMALS
   {name:'Flexi Shark',cat:'Nature & Animals',price:4,weight:'36g',icon:'🦈',desc:'Articulated great white shark that moves like it\'s swimming.'},
   {name:'Dinosaur Pack',cat:'Nature & Animals',price:6,weight:'68g',icon:'🦕',desc:'3 mini dino figures — T-Rex, Triceratops, Brachiosaurus. Gift-ready.'},
   {name:'Flexi Cat',cat:'Nature & Animals',price:4,weight:'32g',icon:'🐱',desc:'Poseable cat figure with fully jointed spine and tail.'},
@@ -1233,8 +1083,6 @@ const RAW_PRODUCTS = [
   {name:'Bee Hive Planter',cat:'Nature & Animals',price:6,weight:'64g',icon:'🐝',desc:'Honeycomb-pattern succulent planter that stacks and expands.'},
   {name:'Whale Paperweight',cat:'Nature & Animals',price:4,weight:'44g',icon:'🐋',desc:'Humpback whale silhouette paperweight — beautiful and functional.'},
   {name:'Fern Leaf Dish',cat:'Nature & Animals',price:4,weight:'36g',icon:'🌿',desc:'Fern-pattern trinket dish for keys, rings, or small jewelry.'},
-
-  // SEASONAL & GIFTS
   {name:'Snowflake Ornament',cat:'Seasonal & Gifts',price:2,weight:'12g',icon:'❄️',desc:'Intricate snowflake Christmas ornament with hanging loop.'},
   {name:'Pumpkin Tealight',cat:'Seasonal & Gifts',price:4,weight:'46g',icon:'🎃',desc:'Hollowed pumpkin with carved face designed for a tealight.'},
   {name:'Gift Tag Set x6',cat:'Seasonal & Gifts',price:4,weight:'18g',icon:'🎁',desc:'Six shaped gift tags with string holes. Stars, hearts, and trees.'},
@@ -1244,8 +1092,6 @@ const RAW_PRODUCTS = [
   {name:'Party Favor Capsule',cat:'Seasonal & Gifts',price:2,weight:'16g',icon:'🎉',desc:'Screw-top capsule for small surprises, candy, or folded notes.'},
   {name:'Advent Calendar Box',cat:'Seasonal & Gifts',price:10,weight:'140g',icon:'📅',desc:'24-door printable advent calendar base for holiday gifting.'},
   {name:'Trophy Base',cat:'Seasonal & Gifts',price:6,weight:'72g',icon:'🏆',desc:'Custom trophy plinth with name plate. Perfect for any achievement.'},
-
-  // CUSTOM & NOVELTY
   {name:'Mini Chess Set',cat:'Custom & Novelty',price:10,weight:'148g',icon:'♟️',desc:'Full 32-piece mini chess set with board-base. Portable and printable.'},
   {name:'Domino Set',cat:'Custom & Novelty',price:8,weight:'96g',icon:'🁡',desc:'28-tile double-six domino set with carrying tray.'},
   {name:'Tic Tac Toe Travel',cat:'Custom & Novelty',price:4,weight:'40g',icon:'⭕',desc:'Travel tic-tac-toe set with magnetic pieces and folding board base.'},
@@ -1260,134 +1106,66 @@ const RAW_PRODUCTS = [
   {name:'Labyrinth Game',cat:'Custom & Novelty',price:8,weight:'92g',icon:'🎯',desc:'Classic tilt labyrinth ball maze with 2-axis control knobs.'},
 ];
 
-// GENERATE EXTENDED PRODUCTS (fill to 1000+ feel)
-const PRODUCT_VARIANTS = ['Classic','Pro','Mini','Deluxe','Slim','Bold','Elite','Ultra'];
-const EXTENDED_PRODUCTS = [...RAW_PRODUCTS];
+/*── REVIEWS DATA ──*/
+const REVIEWS=[
+  {text:'Got the Articulated Dragon in Neon Green and it is INSANE. The fact it prints as one piece and every joint moves — I\'ve bought three more as gifts already.',name:'Marcus T.',city:'Seattle, WA',product:'Articulated Dragon · Neon Green',stars:5,av:'MT',avcls:'av-g'},
+  {text:'The Voronoi Vase is a literal conversation piece. Everyone who comes over asks where I got it. Shipped in two days, packed perfectly, quality is 10/10.',name:'Priya S.',city:'Austin, TX',product:'Voronoi Vase · Electric Blue',stars:5,av:'PS',avcls:'av-b'},
+  {text:'Ordered 6 different things in one go and everything came out perfect. The pricing is unreal — $2 for the fidget spinners, crazy value. Already reordering.',name:'Jake R.',city:'Denver, CO',product:'Infinity Cube + Spiral Spinner',stars:5,av:'JR',avcls:'av-r'},
+  {text:'The dice tower is exactly what our DnD group needed. Rolls perfectly, looks incredible in Flame Red. Our dungeon master is obsessed with it.',name:'Caitlin M.',city:'Chicago, IL',product:'Dice Tower · Flame Red',stars:5,av:'CM',avcls:'av-r'},
+  {text:'Bought the laptop stand and it\'s honestly better than stuff I\'ve seen for $40 at retail stores. Solid, no wobble, looks great on my desk.',name:'David K.',city:'Portland, OR',product:'Laptop Stand · Void Black',stars:5,av:'DK',avcls:'av-b'},
+  {text:'Fast reply on my custom request, printed it exactly right, shipped next day. This is the kind of small business that deserves all the love.',name:'Aaliyah J.',city:'Nashville, TN',product:'Custom Order · Neon Green',stars:5,av:'AJ',avcls:'av-g'},
+];
 
-// Double the catalog with slight variations
-RAW_PRODUCTS.forEach((p, idx) => {
-  if(idx % 2 === 0){
-    const v = PRODUCT_VARIANTS[idx % PRODUCT_VARIANTS.length];
-    EXTENDED_PRODUCTS.push({
-      ...p,
-      name:`${p.name} ${v}`,
-      price: Math.min(10, p.price + 2),
-      weight: `${parseInt(p.weight)+10}g`,
-    });
-  }
-});
+function buildReviews(){
+  const g=document.getElementById('reviewsGrid');
+  g.innerHTML=REVIEWS.map(r=>`
+    <div class="review-card">
+      <div class="review-stars">${'<span class="star">★</span>'.repeat(r.stars)}</div>
+      <div class="review-text">${r.text}</div>
+      <div class="review-author">
+        <div class="review-avatar ${r.avcls}">${r.av}</div>
+        <div>
+          <div class="review-name">${r.name}</div>
+          <div class="review-meta">${r.city}</div>
+          <div class="review-product">Purchased: <span>${r.product}</span></div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
 
-// Triple — more categories fill
-RAW_PRODUCTS.forEach((p, idx) => {
-  if(idx % 3 === 0){
-    EXTENDED_PRODUCTS.push({
-      ...p,
-      name:`${p.name} XL`,
-      price: Math.min(10, p.price + 4),
-      weight: `${parseInt(p.weight)+20}g`,
-      desc: p.desc + ' Larger format for bigger impact.'
-    });
-  }
-});
-
-/*────────────────────────────────────────────────
-  FILTER STATE
-────────────────────────────────────────────────*/
-let activeCat = 'All';
-let activePrice = 'All';
-let visibleCount = 24;
-
-/*────────────────────────────────────────────────
-  BUILD FILTERS
-────────────────────────────────────────────────*/
+/*── FILTER STATE ──*/
+let activeCat='All',activePrice='All',visibleCount=24;
 function buildFilters(){
-  const cf = document.getElementById('catFilter');
-  CATEGORIES.forEach(c => {
-    const btn = document.createElement('button');
-    btn.className = 'fchip' + (c==='All'?' active':'');
-    btn.textContent = c;
-    btn.onclick = () => {
-      activeCat = c;
-      visibleCount = 24;
-      cf.querySelectorAll('.fchip').forEach(b=>b.classList.remove('active'));
-      btn.classList.add('active');
-      renderGrid();
-    };
+  const cf=document.getElementById('catFilter');
+  CATEGORIES.forEach(c=>{
+    const btn=document.createElement('button');
+    btn.className='fchip'+(c==='All'?' active':'');btn.textContent=c;
+    btn.onclick=()=>{activeCat=c;visibleCount=24;cf.querySelectorAll('.fchip').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderGrid();};
     cf.appendChild(btn);
   });
-
-  const pf = document.getElementById('priceFilter');
-  PRICES.forEach(p => {
-    const btn = document.createElement('button');
-    btn.className = 'pchip' + (p==='All'?' active':'');
-    btn.textContent = p === 'All' ? 'All Prices' : p;
-    btn.onclick = () => {
-      activePrice = p;
-      visibleCount = 24;
-      pf.querySelectorAll('.pchip').forEach(b=>b.classList.remove('active'));
-      btn.classList.add('active');
-      renderGrid();
-    };
+  const pf=document.getElementById('priceFilter');
+  PRICES.forEach(p=>{
+    const btn=document.createElement('button');
+    btn.className='pchip'+(p==='All'?' active':'');btn.textContent=p==='All'?'All Prices':p;
+    btn.onclick=()=>{activePrice=p;visibleCount=24;pf.querySelectorAll('.pchip').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderGrid();};
     pf.appendChild(btn);
   });
 }
-
-/*────────────────────────────────────────────────
-  FILTER PRODUCTS
-────────────────────────────────────────────────*/
-function getFiltered(){
-  return EXTENDED_PRODUCTS.filter(p => {
-    const catOk = activeCat === 'All' || p.cat === activeCat;
-    const priceOk = activePrice === 'All' || p.price === parseInt(activePrice.replace('$',''));
-    return catOk && priceOk;
-  });
-}
-
-/*────────────────────────────────────────────────
-  PRICE BADGE CLASS
-────────────────────────────────────────────────*/
-function priceBadgeClass(price){
-  const map = {2:'badge-2',4:'badge-4',6:'badge-6',8:'badge-8',10:'badge-10'};
-  return map[price] || 'badge-2';
-}
-
-function priceColor(price){
-  const map = {2:'var(--green)',4:'var(--blue)',6:'var(--pink)',8:'var(--red)',10:'#ffa500'};
-  return map[price] || 'var(--green)';
-}
-
-function thumbGradient(price){
-  const map = {
-    2:'rgba(57,255,20,0.15),rgba(57,255,20,0.04)',
-    4:'rgba(0,212,255,0.15),rgba(0,212,255,0.04)',
-    6:'rgba(255,0,200,0.12),rgba(255,0,200,0.03)',
-    8:'rgba(255,45,85,0.12),rgba(255,45,85,0.03)',
-    10:'rgba(255,165,0,0.12),rgba(255,165,0,0.03)'
-  };
-  return map[price] || map[2];
-}
-
-function sizeLabel(price){
-  const map = {2:'XS',4:'S',6:'M',8:'L',10:'XL'};
-  return map[price] || 'S';
-}
-
-/*────────────────────────────────────────────────
-  RENDER GRID
-────────────────────────────────────────────────*/
+function getFiltered(){return PRODUCTS.filter(p=>{const catOk=activeCat==='All'||p.cat===activeCat;const priceOk=activePrice==='All'||p.price===parseInt(activePrice.replace('$',''));return catOk&&priceOk;});}
+function priceBadgeClass(price){return{2:'badge-2',4:'badge-4',6:'badge-6',8:'badge-8',10:'badge-10'}[price]||'badge-2';}
+function sizeLabel(price){return{2:'XS',4:'S',6:'M',8:'L',10:'XL'}[price]||'S';}
+function thumbGrad(price){return{2:'rgba(57,255,20,0.15),rgba(57,255,20,0.04)',4:'rgba(0,212,255,0.15),rgba(0,212,255,0.04)',6:'rgba(255,0,200,0.12),rgba(255,0,200,0.03)',8:'rgba(255,45,85,0.12),rgba(255,45,85,0.03)',10:'rgba(255,165,0,0.12),rgba(255,165,0,0.03)'}[price]||'rgba(57,255,20,0.12),rgba(57,255,20,0.03)';}
 function renderGrid(){
-  const filtered = getFiltered();
-  const grid = document.getElementById('prodGrid');
-  const count = document.getElementById('resultsCount');
-  const btn = document.getElementById('loadMoreBtn');
-
-  count.innerHTML = `Showing <span>${Math.min(visibleCount, filtered.length)}</span> of <span>${filtered.length}</span> designs`;
-
-  const slice = filtered.slice(0, visibleCount);
-  grid.innerHTML = slice.map((p, i) => `
-    <div class="pc" style="animation:fadeIn .4s ease ${(i%12)*0.04}s both;" onclick="addToCart('${p.name.replace(/'/g,"\\'")}')">
+  const filtered=getFiltered();
+  const grid=document.getElementById('prodGrid');
+  const count=document.getElementById('resultsCount');
+  const btn=document.getElementById('loadMoreBtn');
+  count.innerHTML=`Showing <span>${Math.min(visibleCount,filtered.length)}</span> of <span>${filtered.length}</span> designs`;
+  grid.innerHTML=filtered.slice(0,visibleCount).map((p,i)=>`
+    <div class="pc" style="animation:fadeIn .4s ease ${(i%12)*.04}s both;" onclick="addToCart('${p.name.replace(/'/g,"\\'")}')">
       <div class="thumb">
-        <div class="thumb-bg" style="background:linear-gradient(135deg,${thumbGradient(p.price)});"></div>
+        <div class="thumb-bg" style="background:linear-gradient(135deg,${thumbGrad(p.price)});"></div>
         <div class="thumb-icon">${p.icon}</div>
         <div class="price-badge ${priceBadgeClass(p.price)}">$${p.price}</div>
         <div class="size-pip">${sizeLabel(p.price)}</div>
@@ -1402,92 +1180,77 @@ function renderGrid(){
         <div class="pname">${p.name}</div>
         <div class="ptag">${p.cat} · ${sizeLabel(p.price)}</div>
         <div class="pdesc">${p.desc}</div>
-        <div class="pmeta">
-          <span class="pweight">~${p.weight} filament</span>
-          <button class="add-btn" onclick="event.stopPropagation();addToCart('${p.name.replace(/'/g,"\\'")}')">ORDER →</button>
-        </div>
+        <div class="pmeta"><span class="pweight">~${p.weight} filament</span><button class="add-btn" onclick="event.stopPropagation();addToCart('${p.name.replace(/'/g,"\\'")}')">ORDER →</button></div>
       </div>
     </div>
   `).join('');
-
-  btn.style.display = filtered.length > visibleCount ? 'inline-block' : 'none';
+  btn.style.display=filtered.length>visibleCount?'inline-block':'none';
 }
+function loadMore(){visibleCount+=24;renderGrid();showToast('📦 Loaded more designs!');}
 
-function loadMore(){
-  visibleCount += 24;
-  renderGrid();
-  showToast(`📦 Loaded more designs — ${visibleCount} visible`);
-}
-
-/*────────────────────────────────────────────────
-  FADE IN ANIMATION
-────────────────────────────────────────────────*/
-const style = document.createElement('style');
-style.textContent = '@keyframes fadeIn{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}';
-document.head.appendChild(style);
-
-/*────────────────────────────────────────────────
-  TOAST
-────────────────────────────────────────────────*/
-let toastTimer;
-function showToast(msg){
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(()=>t.classList.remove('show'), 3000);
-}
-
-/*────────────────────────────────────────────────
-  ADD TO CART
-────────────────────────────────────────────────*/
-function addToCart(name){
-  showToast(`✅ ${name} added! Email us to finalize your order →`);
-}
-
-function selectColor(swatch, color){
-  const colorNames = {green:'Neon Green',blue:'Electric Blue',red:'Flame Red',black:'Void Black'};
-  showToast(`🎨 Color set to ${colorNames[color]}!`);
-}
-
-function handleOrder(){
-  const email = document.getElementById('emailInput').value;
-  if(email){
-    showToast(`🚀 Got it! We'll reach out to ${email} shortly.`);
-  } else {
-    showToast('✉️ Enter your email to get started!');
-  }
-}
-
-/*────────────────────────────────────────────────
-  INIT
-────────────────────────────────────────────────*/
-buildFilters();
-renderGrid();
-
-// COUNTER ANIMATION
-function animateCounters(){
-  document.querySelectorAll('.stat-num').forEach(el => {
-    const text = el.textContent;
-    if(text.includes('1000')){
-      let n = 0;
-      const target = 1000;
-      const step = () => {
-        n = Math.min(n+17, target);
-        el.textContent = n + '+';
-        if(n < target) requestAnimationFrame(step);
-      };
-      requestAnimationFrame(step);
-    }
+/*── BUILDER ──*/
+const buildState={cat:'—',color:'Neon Green',size:'$2 · XS',price:2,qty:1};
+function buildCatFilter(){
+  const el=document.getElementById('b-cats');
+  CATEGORIES.filter(c=>c!=='All').forEach(c=>{
+    const btn=document.createElement('button');
+    btn.className='bopt';btn.textContent=c;
+    btn.onclick=()=>{selectBuild('cat',c,btn);};
+    el.appendChild(btn);
   });
 }
+function selectBuild(type,val,el,price){
+  if(type==='cat'){buildState.cat=val;document.getElementById('b-cats').querySelectorAll('.bopt').forEach(b=>b.classList.remove('selected'));}
+  else if(type==='color'){document.querySelectorAll('#builder .bopt-color').forEach(b=>b.classList.remove('selected'));}
+  else if(type==='size'){document.querySelectorAll('#builder .build-step:nth-child(3) .bopt').forEach(b=>b.classList.remove('selected'));buildState.price=price||2;}
+  el.classList.add('selected');
+  buildState[type]=val;
+  updateSummary();
+}
+function changeQty(d){buildState.qty=Math.max(1,Math.min(50,buildState.qty+d));document.getElementById('qtyDisplay').textContent=buildState.qty;updateSummary();}
+function updateSummary(){
+  document.getElementById('s-cat').textContent=buildState.cat;
+  document.getElementById('s-color').textContent=buildState.color;
+  document.getElementById('s-size').textContent=buildState.size;
+  document.getElementById('s-qty').textContent=buildState.qty+' item'+(buildState.qty>1?'s':'');
+  document.getElementById('s-unit').textContent='$'+buildState.price+'.00';
+  const total=buildState.price*buildState.qty;
+  document.getElementById('s-total').textContent='$'+total;
+}
+function submitBuild(){
+  const notes=document.getElementById('buildNotes').value;
+  if(buildState.cat==='—'){showToast('⚠️ Please select a category first!');return;}
+  showToast('🚀 Order sent! We\'ll email you within 24hrs to confirm.');
+  setTimeout(()=>document.getElementById('cta').scrollIntoView({behavior:'smooth'}),1500);
+}
 
-// Trigger on scroll into view
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(e => { if(e.isIntersecting) animateCounters(); });
+/*── TOAST ──*/
+let toastTimer;
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),3200);}
+function addToCart(name){showToast('✅ '+name+' added! Scroll down to finalize your order →');}
+function selectColor(sw,color){const n={green:'Neon Green',blue:'Electric Blue',red:'Flame Red',black:'Void Black'};showToast('🎨 Color set to '+n[color]+'!');}
+function handleOrder(){const e=document.getElementById('emailInput').value;if(e){showToast('🚀 Got it! We\'ll reach out to '+e+' shortly.');}else{showToast('✉️ Enter your email to get started!');}}
+
+/*── ANIM ──*/
+const s=document.createElement('style');s.textContent='@keyframes fadeIn{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}';document.head.appendChild(s);
+
+/*── COUNTER ANIM ──*/
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){
+    const el=document.getElementById('designCount');
+    let n=0;const step=()=>{n=Math.min(n+2,PRODUCTS.length);el.textContent=n+'+';if(n<PRODUCTS.length)requestAnimationFrame(step);};
+    requestAnimationFrame(step);
+    observer.disconnect();
+  }});
 },{threshold:.5});
-const statsEl = document.querySelector('.statsbar');
-if(statsEl) observer.observe(statsEl);
+const statsEl=document.querySelector('.statsbar');
+if(statsEl)observer.observe(statsEl);
+
+/*── INIT ──*/
+buildFilters();
+renderGrid();
+buildReviews();
+buildCatFilter();
 </script>
 </body>
 </html>
