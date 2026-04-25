@@ -1,1 +1,1180 @@
-layerup3d.live
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LayerUp 3D — Printed for Life</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#050508;--surface:#0a0a10;--card:#0d0d15;
+  --border:rgba(255,255,255,0.06);--border-hi:rgba(255,255,255,0.13);
+  --green:#39ff14;--green-dim:rgba(57,255,20,0.10);--green-glow:rgba(57,255,20,0.30);
+  --blue:#00d4ff;--blue-dim:rgba(0,212,255,0.10);--blue-glow:rgba(0,212,255,0.30);
+  --red:#ff2d55;--red-dim:rgba(255,45,85,0.10);--red-glow:rgba(255,45,85,0.30);
+  --pink:#ff00c8;--orange:#ffa500;--gold:#ffd700;
+  --text:#f0f0f8;--muted:#606080;--subtle:#282838;
+  --radius:14px;
+  --font-display:'Bebas Neue',sans-serif;
+  --font-body:'Rajdhani',sans-serif;
+  --font-mono:'Share Tech Mono',monospace;
+}
+html{scroll-behavior:smooth;}
+body{font-family:var(--font-body);background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.6;font-size:16px;}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.07) 2px,rgba(0,0,0,0.07) 4px);pointer-events:none;z-index:9999;}
+.neon-g{color:var(--green);text-shadow:0 0 8px var(--green),0 0 24px var(--green-glow);}
+.neon-b{color:var(--blue);text-shadow:0 0 8px var(--blue),0 0 24px var(--blue-glow);}
+.neon-r{color:var(--red);text-shadow:0 0 8px var(--red),0 0 24px var(--red-glow);}
+
+/*── NAV ──*/
+nav{position:sticky;top:0;left:0;right:0;z-index:500;display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;height:60px;background:rgba(5,5,8,0.95);backdrop-filter:blur(20px);border-bottom:1px solid rgba(57,255,20,0.12);}
+.logo{font-family:var(--font-display);font-size:1.8rem;letter-spacing:.1em;text-decoration:none;color:var(--text);}
+.logo .accent{color:var(--green);text-shadow:0 0 12px var(--green);}
+nav ul{display:flex;gap:1.8rem;list-style:none;align-items:center;}
+nav a{color:var(--muted);text-decoration:none;font-family:var(--font-mono);font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;transition:color .2s;}
+nav a:hover{color:var(--green);}
+.nav-cta{background:var(--green)!important;color:#050508!important;padding:.4rem 1.2rem;border-radius:4px;font-weight:700!important;text-shadow:none!important;letter-spacing:.06em!important;box-shadow:0 0 18px var(--green-glow);}
+.nav-cart{position:relative;cursor:pointer;background:rgba(57,255,20,.1);border:1px solid rgba(57,255,20,.3);border-radius:4px;padding:.4rem .9rem;color:var(--green);font-family:var(--font-mono);font-size:.75rem;display:flex;align-items:center;gap:.4rem;transition:all .2s;}
+.nav-cart:hover{background:rgba(57,255,20,.15);}
+.cart-badge{position:absolute;top:-6px;right:-6px;background:var(--red);color:#fff;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:.55rem;font-weight:700;box-shadow:0 0 8px var(--red);}
+
+/*── HERO ──*/
+.hero{min-height:90vh;display:flex;align-items:center;padding:4rem 2.5rem;position:relative;overflow:hidden;}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(57,255,20,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(57,255,20,0.04) 1px,transparent 1px);background-size:60px 60px;}
+.particles{position:absolute;inset:0;overflow:hidden;pointer-events:none;}
+.particle{position:absolute;width:2px;height:2px;border-radius:50%;animation:float linear infinite;}
+@keyframes float{0%{transform:translateY(100vh) translateX(0);opacity:0;}10%{opacity:1;}90%{opacity:1;}100%{transform:translateY(-20px) translateX(var(--dx,0px));opacity:0;}}
+.hero-inner{position:relative;max-width:1300px;margin:0 auto;width:100%;display:grid;grid-template-columns:1.1fr 0.9fr;gap:5rem;align-items:center;}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:.6rem;background:rgba(57,255,20,0.08);border:1px solid rgba(57,255,20,0.25);color:var(--green);font-family:var(--font-mono);font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;padding:.35rem 1rem;border-radius:3px;margin-bottom:1.5rem;}
+.blink{animation:blink .8s step-end infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+h1{font-family:var(--font-display);font-size:clamp(4rem,8vw,7rem);line-height:.92;letter-spacing:.02em;margin-bottom:1.5rem;}
+h1 .line2{-webkit-text-stroke:1px rgba(57,255,20,0.7);color:transparent;}
+.hero-sub{font-size:1.05rem;color:var(--muted);max-width:440px;margin-bottom:2rem;line-height:1.8;}
+.btn-row{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.5rem;}
+.btn{display:inline-flex;align-items:center;gap:.5rem;padding:.8rem 2rem;border-radius:4px;font-family:var(--font-mono);font-size:.82rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;cursor:pointer;border:none;transition:transform .2s,box-shadow .2s;}
+.btn:hover{transform:translateY(-3px);}
+.btn-green{background:var(--green);color:#050508;box-shadow:0 0 24px var(--green-glow);}
+.btn-green:hover{box-shadow:0 0 40px var(--green-glow);}
+.btn-outline{background:transparent;color:var(--green);border:1px solid rgba(57,255,20,0.45);}
+.btn-outline:hover{background:rgba(57,255,20,0.06);}
+.hero-trust{display:flex;gap:1.5rem;flex-wrap:wrap;}
+.trust-pill{display:flex;align-items:center;gap:.4rem;font-family:var(--font-mono);font-size:.62rem;color:var(--muted);letter-spacing:.08em;}
+.hero-visual{display:flex;align-items:center;justify-content:center;}
+.printer-scene{width:300px;height:300px;position:relative;display:flex;align-items:center;justify-content:center;}
+.orbit{position:absolute;border-radius:50%;border:1px solid;animation:orbit linear infinite;}
+.o1{inset:0;border-color:rgba(57,255,20,.25);animation-duration:22s;}
+.o2{inset:36px;border-color:rgba(0,212,255,.2);animation-duration:15s;animation-direction:reverse;}
+.o3{inset:72px;border-color:rgba(255,45,85,.18);animation-duration:10s;}
+@keyframes orbit{to{transform:rotate(360deg);}}
+.orbit-dot{position:absolute;top:50%;left:0;width:8px;height:8px;border-radius:50%;transform:translateY(-50%) translateX(-4px);}
+.d1{background:var(--green);box-shadow:0 0 12px var(--green);}
+.d2{background:var(--blue);box-shadow:0 0 12px var(--blue);}
+.d3{background:var(--red);box-shadow:0 0 12px var(--red);}
+.printer-core{width:140px;height:140px;background:var(--card);border:1px solid rgba(57,255,20,0.3);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;box-shadow:0 0 40px rgba(57,255,20,0.12);z-index:2;position:relative;}
+.printer-icon{font-size:2.8rem;}
+.print-beam{width:2px;height:24px;background:linear-gradient(to bottom,var(--green),transparent);animation:beam .8s ease-in-out infinite alternate;box-shadow:0 0 8px var(--green);}
+@keyframes beam{from{opacity:.4;transform:scaleY(.6);}to{opacity:1;transform:scaleY(1);}}
+.print-label{font-family:var(--font-mono);font-size:.6rem;color:var(--green);letter-spacing:.15em;}
+
+/*── STATS BAR ──*/
+.statsbar{background:var(--surface);border-top:1px solid rgba(57,255,20,0.1);border-bottom:1px solid rgba(57,255,20,0.1);padding:1.5rem 2.5rem;}
+.stats-inner{max-width:1300px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr);}
+.stat{text-align:center;padding:.8rem;}
+.stat-num{font-family:var(--font-display);font-size:2.4rem;letter-spacing:.04em;line-height:1;}
+.stat-label{font-family:var(--font-mono);font-size:.65rem;color:var(--muted);margin-top:.3rem;letter-spacing:.1em;text-transform:uppercase;}
+
+/*── SECTIONS ──*/
+.section-inner{max-width:1300px;margin:0 auto;}
+.section-eye{font-family:var(--font-mono);font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:.6rem;}
+.section-title{font-family:var(--font-display);font-size:clamp(2.2rem,4vw,3.5rem);letter-spacing:.03em;line-height:1;margin-bottom:.5rem;}
+.section-sub{font-size:.95rem;color:var(--muted);margin-bottom:3rem;line-height:1.8;}
+
+/*── TRUST BADGES ──*/
+#trustbar{padding:3rem 2.5rem;background:var(--surface);border-bottom:1px solid var(--border);}
+.trust-grid{max-width:1300px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;}
+.trust-card{display:flex;flex-direction:column;align-items:center;text-align:center;padding:1.5rem;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);transition:border-color .25s,transform .25s;}
+.trust-card:hover{transform:translateY(-4px);}
+.trust-card:nth-child(1):hover{border-color:rgba(57,255,20,.3);}
+.trust-card:nth-child(2):hover{border-color:rgba(0,212,255,.3);}
+.trust-card:nth-child(3):hover{border-color:rgba(255,165,0,.3);}
+.trust-card:nth-child(4):hover{border-color:rgba(255,45,85,.3);}
+.trust-icon{font-size:2rem;margin-bottom:.8rem;}
+.trust-title{font-family:var(--font-display);font-size:1.1rem;letter-spacing:.04em;margin-bottom:.4rem;}
+.trust-desc{font-size:.78rem;color:var(--muted);line-height:1.6;}
+
+/*── BESTSELLERS ──*/
+#bestsellers{padding:6rem 2.5rem;position:relative;}
+#bestsellers::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(57,255,20,0.04) 0%,transparent 70%);pointer-events:none;}
+.bestseller-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:1.5rem;}
+.bs-hero{background:var(--card);border:1px solid rgba(57,255,20,0.25);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;box-shadow:0 0 40px rgba(57,255,20,0.06);transition:transform .3s;}
+.bs-hero:hover{transform:translateY(-6px);}
+.bs-thumb{height:220px;display:flex;align-items:center;justify-content:center;position:relative;background:linear-gradient(135deg,rgba(57,255,20,0.12),rgba(57,255,20,0.03));}
+.bs-thumb-icon{font-size:5rem;}
+.bs-badge{position:absolute;top:1rem;left:1rem;background:var(--green);color:#050508;font-family:var(--font-mono);font-size:.6rem;font-weight:700;letter-spacing:.1em;padding:.3rem .8rem;border-radius:3px;}
+.bs-body{padding:1.5rem;flex:1;display:flex;flex-direction:column;}
+.bs-name{font-family:var(--font-display);font-size:1.8rem;letter-spacing:.04em;margin-bottom:.4rem;}
+.bs-stars{display:flex;gap:2px;margin-bottom:.5rem;}
+.bs-star{color:var(--gold);font-size:.85rem;}
+.bs-review-count{font-family:var(--font-mono);font-size:.62rem;color:var(--muted);margin-left:.4rem;}
+.bs-desc{font-size:.85rem;color:var(--muted);line-height:1.7;flex:1;margin-bottom:1.2rem;}
+.bs-foot{display:flex;align-items:center;justify-content:space-between;}
+.bs-price{font-family:var(--font-display);font-size:2rem;color:var(--green);text-shadow:0 0 12px var(--green-glow);}
+.bs-order{padding:.5rem 1.4rem;background:var(--green-dim);border:1px solid rgba(57,255,20,.35);color:var(--green);border-radius:4px;font-family:var(--font-mono);font-size:.72rem;cursor:pointer;transition:all .2s;}
+.bs-order:hover{background:var(--green);color:#050508;}
+.bs-side{display:flex;flex-direction:column;gap:1.5rem;}
+.bs-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;display:flex;transition:transform .25s,border-color .25s;flex:1;position:relative;}
+.bs-card:hover{transform:translateY(-4px);border-color:rgba(0,212,255,.3);}
+.bs-card-thumb{width:100px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:2.5rem;}
+.bs-card-body{padding:1rem;flex:1;display:flex;flex-direction:column;justify-content:space-between;}
+.bs-card-name{font-weight:700;font-size:.95rem;margin-bottom:.2rem;}
+.bs-card-desc{font-size:.75rem;color:var(--muted);line-height:1.5;flex:1;margin-bottom:.6rem;}
+.bs-card-foot{display:flex;align-items:center;justify-content:space-between;}
+.bs-card-price{font-family:var(--font-display);font-size:1.4rem;color:var(--blue);text-shadow:0 0 10px var(--blue-glow);}
+.bs-mini-btn{padding:.25rem .7rem;background:var(--blue-dim);border:1px solid rgba(0,212,255,.3);color:var(--blue);border-radius:3px;font-family:var(--font-mono);font-size:.6rem;cursor:pointer;transition:all .2s;}
+.bs-mini-btn:hover{background:var(--blue);color:#050508;}
+
+/*── BUNDLES ──*/
+#bundles{padding:6rem 2.5rem;background:var(--surface);}
+.bundle-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem;}
+.bundle-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:2rem;position:relative;overflow:hidden;transition:transform .3s,border-color .3s;}
+.bundle-card:hover{transform:translateY(-6px);}
+.bundle-card.featured{border-color:rgba(255,165,0,.4);}
+.bundle-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.bc1::before{background:var(--green);}
+.bc2::before{background:var(--orange);}
+.bc3::before{background:var(--red);}
+.bundle-name{font-family:var(--font-display);font-size:1.6rem;letter-spacing:.04em;margin-bottom:.4rem;}
+.bundle-badge{display:inline-block;background:rgba(255,165,0,.15);border:1px solid rgba(255,165,0,.4);color:var(--orange);font-family:var(--font-mono);font-size:.6rem;letter-spacing:.1em;padding:.2rem .6rem;border-radius:3px;margin-bottom:1rem;}
+.bundle-items{list-style:none;margin-bottom:1.5rem;}
+.bundle-items li{font-size:.85rem;color:var(--muted);padding:.35rem 0;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.5rem;}
+.bundle-items li::before{content:'✓';color:var(--green);font-weight:700;}
+.bundle-pricing{display:flex;align-items:baseline;gap:.8rem;margin-bottom:1rem;}
+.bundle-price{font-family:var(--font-display);font-size:2.8rem;color:var(--green);text-shadow:0 0 12px var(--green-glow);}
+.bundle-original{font-family:var(--font-display);font-size:1.4rem;color:var(--muted);text-decoration:line-through;}
+.bundle-savings{font-family:var(--font-mono);font-size:.65rem;color:var(--orange);background:rgba(255,165,0,.1);border:1px solid rgba(255,165,0,.25);padding:.2rem .6rem;border-radius:3px;}
+.bundle-cta{width:100%;padding:.75rem;background:transparent;border:1px solid rgba(57,255,20,.4);color:var(--green);border-radius:4px;font-family:var(--font-mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:all .25s;}
+.bundle-cta:hover,.bundle-card.featured .bundle-cta{background:var(--green);color:#050508;}
+.bundle-popular{position:absolute;top:1.5rem;right:1.5rem;background:var(--orange);color:#050508;font-family:var(--font-mono);font-size:.58rem;font-weight:700;letter-spacing:.1em;padding:.25rem .7rem;border-radius:3px;}
+
+/*── PRICE GUIDE ──*/
+#priceguide{padding:6rem 2.5rem;}
+.tiers{display:grid;grid-template-columns:repeat(5,1fr);gap:1rem;margin-top:3rem;}
+.tier{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem 1rem;text-align:center;position:relative;overflow:hidden;transition:transform .3s;cursor:pointer;}
+.tier:hover{transform:translateY(-8px);}
+.tier::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.t2::before{background:var(--green);}
+.t4::before{background:var(--blue);}
+.t6::before{background:var(--pink);}
+.t8::before{background:var(--red);}
+.t10::before{background:var(--orange);}
+.tier-price{font-family:var(--font-display);font-size:3rem;line-height:1;margin-bottom:.5rem;}
+.t2 .tier-price{color:var(--green);}
+.t4 .tier-price{color:var(--blue);}
+.t6 .tier-price{color:var(--pink);}
+.t8 .tier-price{color:var(--red);}
+.t10 .tier-price{color:var(--orange);}
+.tier-size{font-family:var(--font-mono);font-size:.62rem;letter-spacing:.12em;color:var(--muted);margin-bottom:1rem;text-transform:uppercase;}
+.tier-items{list-style:none;text-align:left;font-size:.78rem;color:var(--muted);line-height:2;}
+.tier-items li::before{content:'→ ';}
+
+/*── HOW IT'S PRINTED ──*/
+#howit{padding:6rem 2.5rem;background:var(--surface);}
+.steps-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:0;position:relative;}
+.steps-grid::after{content:'';position:absolute;top:56px;left:10%;right:10%;height:1px;background:linear-gradient(90deg,var(--green),var(--blue),var(--pink),var(--red),var(--green));}
+.step{position:relative;z-index:1;text-align:center;padding:0 1rem;}
+.step-num{width:52px;height:52px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:.75rem;font-weight:700;border:2px solid;margin:0 auto 1.5rem;position:relative;background:var(--surface);}
+.s1 .step-num{color:var(--green);border-color:var(--green);}
+.s2 .step-num{color:var(--blue);border-color:var(--blue);}
+.s3 .step-num{color:var(--pink);border-color:var(--pink);}
+.s4 .step-num{color:var(--red);border-color:var(--red);}
+.s5 .step-num{color:var(--green);border-color:var(--green);}
+.step-emoji{font-size:1.4rem;margin-bottom:.7rem;}
+.step-head{font-family:var(--font-display);font-size:1.15rem;letter-spacing:.05em;margin-bottom:.4rem;}
+.step-desc{font-size:.78rem;color:var(--muted);line-height:1.7;}
+
+/*── REVIEWS ──*/
+#reviews{padding:6rem 2.5rem;background:var(--bg);}
+.reviews-header{display:flex;align-items:center;gap:3rem;margin-bottom:3rem;flex-wrap:wrap;}
+.reviews-aggregate{display:flex;flex-direction:column;align-items:center;padding:2rem;background:var(--card);border:1px solid rgba(255,215,0,.2);border-radius:var(--radius);min-width:180px;}
+.agg-score{font-family:var(--font-display);font-size:5rem;line-height:1;color:var(--gold);}
+.agg-stars{display:flex;gap:3px;margin:.3rem 0;}
+.agg-star{color:var(--gold);font-size:1.1rem;}
+.agg-count{font-family:var(--font-mono);font-size:.65rem;color:var(--muted);}
+.reviews-bars{flex:1;}
+.rbar-row{display:flex;align-items:center;gap:.8rem;margin-bottom:.5rem;}
+.rbar-label{font-family:var(--font-mono);font-size:.65rem;color:var(--muted);width:50px;text-align:right;}
+.rbar-track{flex:1;height:8px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;}
+.rbar-fill{height:100%;background:var(--gold);border-radius:4px;}
+.rbar-pct{font-family:var(--font-mono);font-size:.6rem;color:var(--muted);width:35px;}
+.reviews-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;}
+.review-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;transition:transform .25s;}
+.review-card:hover{transform:translateY(-4px);}
+.review-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:.8rem;}
+.review-stars{display:flex;gap:3px;}
+.star{color:var(--orange);font-size:.9rem;}
+.verified{display:flex;align-items:center;gap:.3rem;font-family:var(--font-mono);font-size:.58rem;color:var(--green);background:rgba(57,255,20,.08);border:1px solid rgba(57,255,20,.2);padding:.15rem .5rem;border-radius:2px;}
+.review-text{font-size:.87rem;color:var(--text);line-height:1.75;margin-bottom:1.2rem;opacity:.85;}
+.review-author{display:flex;align-items:center;gap:.75rem;}
+.review-avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:1rem;border:1px solid;flex-shrink:0;}
+.av-g{background:rgba(57,255,20,.1);color:var(--green);border-color:rgba(57,255,20,.3);}
+.av-b{background:rgba(0,212,255,.1);color:var(--blue);border-color:rgba(0,212,255,.3);}
+.av-r{background:rgba(255,45,85,.1);color:var(--red);border-color:rgba(255,45,85,.3);}
+.av-o{background:rgba(255,165,0,.1);color:var(--orange);border-color:rgba(255,165,0,.3);}
+.review-name{font-weight:700;font-size:.85rem;}
+.review-meta{font-family:var(--font-mono);font-size:.58rem;color:var(--muted);margin-top:.1rem;}
+.review-product{font-family:var(--font-mono);font-size:.6rem;color:var(--muted);margin-top:.4rem;}
+.review-product span{color:var(--green);}
+
+/*── COLORS ──*/
+#colors{padding:6rem 2.5rem;background:var(--surface);}
+.color-showcase{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;margin-top:3rem;}
+.color-block{border-radius:var(--radius);overflow:hidden;border:1px solid var(--border);transition:transform .3s;}
+.color-block:hover{transform:translateY(-8px);}
+.cb-preview{height:180px;display:flex;align-items:center;justify-content:center;font-size:4rem;}
+.cb-g{background:linear-gradient(135deg,#0a1a0a,#0d2a0d);}
+.cb-b{background:linear-gradient(135deg,#030d1a,#051520);}
+.cb-r{background:linear-gradient(135deg,#1a030a,#250510);}
+.cb-k{background:linear-gradient(135deg,#0a0a0f,#14141e);}
+.cb-info{padding:1.2rem 1.5rem;background:var(--card);border-top:1px solid var(--border);}
+.cb-name{font-family:var(--font-display);font-size:1.4rem;letter-spacing:.06em;margin-bottom:.25rem;}
+.cb-desc{font-size:.78rem;color:var(--muted);line-height:1.6;}
+.cb-dot{width:14px;height:14px;border-radius:50%;display:inline-block;margin-right:.5rem;vertical-align:middle;}
+
+/*── CATALOG ──*/
+#catalog{padding:6rem 2.5rem;}
+.filter-strip{display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:1.5rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border);}
+.fchip{padding:.38rem 1rem;border-radius:3px;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--muted);transition:all .2s;}
+.fchip:hover,.fchip.active{border-color:var(--green);color:var(--green);background:rgba(57,255,20,0.07);}
+.price-strip{display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:2rem;}
+.pchip{padding:.3rem .8rem;border-radius:3px;font-family:var(--font-mono);font-size:.65rem;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--muted);transition:all .2s;}
+.pchip:hover,.pchip.active{border-color:var(--blue);color:var(--blue);background:rgba(0,212,255,0.07);}
+.results-count{font-family:var(--font-mono);font-size:.7rem;color:var(--muted);margin-bottom:1.5rem;}
+.results-count span{color:var(--green);}
+.prod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;}
+.pc{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;cursor:pointer;transition:transform .25s,border-color .25s;}
+.pc:hover{transform:translateY(-6px);border-color:rgba(57,255,20,0.4);}
+.thumb{height:155px;display:flex;align-items:center;justify-content:center;position:relative;border-bottom:1px solid var(--border);}
+.thumb-bg{position:absolute;inset:0;opacity:.08;}
+.thumb-icon{font-size:3.5rem;position:relative;z-index:1;}
+.price-badge{position:absolute;top:.6rem;left:.6rem;font-family:var(--font-display);font-size:1.1rem;padding:.1rem .55rem;border-radius:3px;z-index:2;}
+.badge-2{background:rgba(57,255,20,.15);color:var(--green);border:1px solid rgba(57,255,20,.35);}
+.badge-4{background:rgba(0,212,255,.15);color:var(--blue);border:1px solid rgba(0,212,255,.35);}
+.badge-6{background:rgba(255,0,200,.12);color:var(--pink);border:1px solid rgba(255,0,200,.35);}
+.badge-8{background:rgba(255,45,85,.12);color:var(--red);border:1px solid rgba(255,45,85,.35);}
+.badge-10{background:rgba(255,165,0,.12);color:#ffa500;border:1px solid rgba(255,165,0,.35);}
+.size-pip{position:absolute;top:.6rem;right:.6rem;font-family:var(--font-mono);font-size:.58rem;padding:.2rem .5rem;border-radius:2px;border:1px solid var(--border);color:var(--muted);z-index:2;}
+.pbody{padding:.9rem 1rem;}
+.pname{font-weight:700;font-size:.95rem;margin-bottom:.22rem;}
+.ptag{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem;}
+.pstars{display:flex;align-items:center;gap:2px;margin-bottom:.5rem;}
+.pstar{color:var(--gold);font-size:.7rem;}
+.prev-count{font-family:var(--font-mono);font-size:.58rem;color:var(--muted);margin-left:.3rem;}
+.pdesc{font-size:.78rem;color:var(--muted);margin-bottom:.85rem;line-height:1.55;}
+.pmeta{display:flex;align-items:center;justify-content:space-between;}
+.pweight{font-family:var(--font-mono);font-size:.64rem;color:var(--subtle);}
+.add-btn{padding:.28rem .75rem;background:var(--green-dim);border:1px solid rgba(57,255,20,.3);color:var(--green);border-radius:3px;font-family:var(--font-mono);font-size:.62rem;cursor:pointer;transition:all .2s;}
+.add-btn:hover{background:var(--green);color:#050508;}
+.load-more-wrap{text-align:center;margin-top:3rem;}
+.load-more{padding:.75rem 2.5rem;background:transparent;border:1px solid rgba(57,255,20,.35);color:var(--green);border-radius:4px;font-family:var(--font-mono);font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .25s;}
+.load-more:hover{background:rgba(57,255,20,0.08);}
+
+/*── WHY ──*/
+#why{padding:6rem 2.5rem;background:var(--surface);}
+.why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem;}
+.why-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:2rem;position:relative;overflow:hidden;transition:border-color .25s,transform .25s;}
+.why-card:hover{transform:translateY(-4px);}
+.why-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.wc1::before{background:linear-gradient(90deg,var(--green),transparent);}
+.wc2::before{background:linear-gradient(90deg,var(--blue),transparent);}
+.wc3::before{background:linear-gradient(90deg,var(--red),transparent);}
+.wc4::before{background:linear-gradient(90deg,var(--pink),transparent);}
+.wc5::before{background:linear-gradient(90deg,var(--orange),transparent);}
+.wc6::before{background:linear-gradient(90deg,var(--green),transparent);}
+.why-icon{font-size:2rem;margin-bottom:1rem;}
+.why-head{font-family:var(--font-display);font-size:1.4rem;letter-spacing:.03em;margin-bottom:.5rem;}
+.why-desc{font-size:.83rem;color:var(--muted);line-height:1.7;}
+
+/*── FAQ ──*/
+#faq{padding:6rem 2.5rem;}
+.faq-list{max-width:780px;margin:3rem auto 0;}
+.faq-item{border:1px solid var(--border);border-radius:var(--radius);margin-bottom:.8rem;overflow:hidden;transition:border-color .2s;}
+.faq-item.open{border-color:rgba(57,255,20,.3);}
+.faq-q{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 1.5rem;cursor:pointer;font-size:.95rem;font-weight:600;gap:1rem;transition:background .2s;}
+.faq-q:hover{background:rgba(57,255,20,.03);}
+.faq-icon{font-family:var(--font-mono);font-size:1rem;color:var(--green);transition:transform .3s;flex-shrink:0;}
+.faq-item.open .faq-icon{transform:rotate(45deg);}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .35s ease;}
+.faq-a-inner{padding:0 1.5rem 1.2rem;font-size:.88rem;color:var(--muted);line-height:1.8;border-top:1px solid var(--border);}
+.faq-item.open .faq-a{max-height:400px;}
+
+/*── ORDER BUILDER ──*/
+#builder{padding:6rem 2.5rem;background:var(--surface);}
+.builder-wrap{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;margin-top:3rem;}
+.build-step{margin-bottom:2rem;}
+.build-label{font-family:var(--font-mono);font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:.8rem;display:flex;align-items:center;gap:.6rem;}
+.build-label::after{content:'';flex:1;height:1px;background:var(--border);}
+.build-options{display:flex;gap:.6rem;flex-wrap:wrap;}
+.bopt{padding:.45rem 1rem;border-radius:4px;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.08em;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .2s;}
+.bopt:hover{border-color:rgba(57,255,20,.4);color:var(--green);}
+.bopt.selected{border-color:var(--green);color:var(--green);background:rgba(57,255,20,.08);}
+.bopt-blue.selected{border-color:var(--blue);color:var(--blue);background:rgba(0,212,255,.1);}
+.bopt-red.selected{border-color:var(--red);color:var(--red);background:rgba(255,45,85,.1);}
+.bopt-black.selected{border-color:#aaa;color:#aaa;background:rgba(255,255,255,.05);}
+.build-qty{display:flex;align-items:center;gap:1rem;}
+.qty-btn{width:36px;height:36px;border-radius:4px;border:1px solid rgba(57,255,20,.3);background:transparent;color:var(--green);font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.qty-btn:hover{background:rgba(57,255,20,.1);}
+.qty-display{font-family:var(--font-display);font-size:2rem;color:var(--text);min-width:40px;text-align:center;}
+.build-summary{background:var(--card);border:1px solid rgba(57,255,20,.2);border-radius:var(--radius);padding:2rem;position:sticky;top:80px;}
+.summary-title{font-family:var(--font-display);font-size:1.6rem;letter-spacing:.04em;margin-bottom:1.5rem;color:var(--green);}
+.summary-line{display:flex;justify-content:space-between;align-items:center;padding:.6rem 0;border-bottom:1px solid var(--border);font-size:.85rem;}
+.summary-key{color:var(--muted);font-family:var(--font-mono);font-size:.68rem;letter-spacing:.08em;}
+.summary-val{font-weight:700;color:var(--text);}
+.summary-discount{color:var(--green)!important;}
+.summary-total{display:flex;justify-content:space-between;align-items:baseline;margin-top:1.5rem;padding-top:1.2rem;border-top:1px solid rgba(57,255,20,.2);}
+.summary-total-label{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.15em;color:var(--muted);text-transform:uppercase;}
+.summary-total-price{font-family:var(--font-display);font-size:3rem;color:var(--green);}
+.summary-cta{width:100%;margin-top:1.5rem;padding:1rem;background:var(--green);color:#050508;border:none;border-radius:4px;font-family:var(--font-mono);font-size:.85rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;box-shadow:0 0 24px var(--green-glow);transition:all .2s;}
+.summary-cta:hover{box-shadow:0 0 40px var(--green-glow);transform:translateY(-2px);}
+.summary-note{text-align:center;font-family:var(--font-mono);font-size:.6rem;color:var(--muted);margin-top:.8rem;letter-spacing:.06em;}
+.discount-banner{background:rgba(57,255,20,.08);border:1px solid rgba(57,255,20,.25);border-radius:6px;padding:.6rem 1rem;margin-bottom:1.2rem;font-family:var(--font-mono);font-size:.68rem;color:var(--green);display:none;}
+
+/*── CTA ──*/
+#cta{padding:7rem 2.5rem;text-align:center;border-top:1px solid rgba(57,255,20,0.1);position:relative;}
+#cta::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 80% at 50% 50%,rgba(57,255,20,0.05) 0%,transparent 70%);}
+.cta-inner{position:relative;}
+.cta-title{font-family:var(--font-display);font-size:clamp(3rem,6vw,5.5rem);letter-spacing:.03em;line-height:.95;margin-bottom:1.5rem;}
+.cta-sub{font-size:1rem;color:var(--muted);margin-bottom:2.5rem;max-width:480px;margin-left:auto;margin-right:auto;}
+.email-row{display:flex;gap:.8rem;max-width:480px;margin:0 auto 1.5rem;}
+.email-input{flex:1;padding:.8rem 1.2rem;background:rgba(255,255,255,0.04);border:1px solid rgba(57,255,20,0.25);border-radius:4px;color:var(--text);font-family:var(--font-mono);font-size:.82rem;outline:none;transition:border-color .2s;}
+.email-input:focus{border-color:var(--green);}
+.email-input::placeholder{color:var(--muted);}
+.cta-note{font-family:var(--font-mono);font-size:.65rem;color:var(--muted);letter-spacing:.08em;}
+
+/*── FOOTER ──*/
+footer{padding:3rem 2.5rem;border-top:1px solid var(--border);}
+.footer-inner{max-width:1300px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5rem;}
+.footer-logo{font-family:var(--font-display);font-size:1.5rem;letter-spacing:.08em;}
+.footer-logo .accent{color:var(--green);}
+.footer-links{display:flex;gap:2rem;}
+.footer-links a{font-family:var(--font-mono);font-size:.68rem;color:var(--muted);text-decoration:none;letter-spacing:.1em;text-transform:uppercase;transition:color .2s;}
+.footer-links a:hover{color:var(--green);}
+.footer-copy{font-family:var(--font-mono);font-size:.65rem;color:var(--subtle);}
+
+/*── AI CHAT WIDGET ──*/
+#chatWidget{position:fixed;bottom:2rem;right:2rem;z-index:450;}
+.chat-toggle{width:56px;height:56px;border-radius:50%;background:var(--green);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.5rem;box-shadow:0 0 24px var(--green-glow);transition:transform .2s,box-shadow .2s;position:relative;}
+.chat-toggle:hover{transform:scale(1.1);box-shadow:0 0 40px var(--green-glow);}
+.chat-pulse{position:absolute;inset:0;border-radius:50%;border:2px solid var(--green);animation:chatPulse 2s ease-in-out infinite;}
+@keyframes chatPulse{0%{transform:scale(1);opacity:1;}100%{transform:scale(1.6);opacity:0;}}
+.chat-panel{position:absolute;bottom:70px;right:0;width:360px;background:var(--card);border:1px solid rgba(57,255,20,.25);border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 40px rgba(57,255,20,.08);display:none;flex-direction:column;max-height:520px;}
+.chat-panel.open{display:flex;}
+.chat-head{background:linear-gradient(135deg,rgba(57,255,20,.12),rgba(57,255,20,.04));padding:1rem 1.2rem;border-bottom:1px solid rgba(57,255,20,.15);display:flex;align-items:center;gap:.8rem;}
+.chat-avatar{width:36px;height:36px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:1.1rem;}
+.chat-info{flex:1;}
+.chat-name{font-family:var(--font-display);font-size:1rem;letter-spacing:.04em;color:var(--green);}
+.chat-status{font-family:var(--font-mono);font-size:.6rem;color:var(--muted);display:flex;align-items:center;gap:.3rem;}
+.chat-online{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 1.5s infinite;}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1;}50%{transform:scale(1.5);opacity:.6;}}
+.chat-close{background:none;border:none;color:var(--muted);cursor:pointer;font-size:1.2rem;transition:color .2s;padding:.2rem;}
+.chat-close:hover{color:var(--text);}
+.chat-messages{flex:1;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:.8rem;min-height:200px;}
+.chat-messages::-webkit-scrollbar{width:4px;}
+.chat-messages::-webkit-scrollbar-thumb{background:rgba(57,255,20,.2);border-radius:2px;}
+.chat-msg{max-width:85%;font-size:.82rem;line-height:1.6;padding:.7rem .9rem;border-radius:10px;}
+.msg-ai{background:rgba(57,255,20,.08);border:1px solid rgba(57,255,20,.15);color:var(--text);align-self:flex-start;border-radius:10px 10px 10px 2px;}
+.msg-user{background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.2);color:var(--text);align-self:flex-end;border-radius:10px 10px 2px 10px;}
+.msg-typing{display:flex;gap:4px;align-items:center;padding:.7rem .9rem;background:rgba(57,255,20,.06);border:1px solid rgba(57,255,20,.12);border-radius:10px 10px 10px 2px;align-self:flex-start;}
+.typing-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:typingBounce 1.2s ease-in-out infinite;}
+.typing-dot:nth-child(2){animation-delay:.2s;}
+.typing-dot:nth-child(3){animation-delay:.4s;}
+@keyframes typingBounce{0%,80%,100%{transform:translateY(0);}40%{transform:translateY(-8px);}}
+.chat-quick{display:flex;gap:.4rem;flex-wrap:wrap;padding:.6rem 1rem;border-top:1px solid var(--border);}
+.quick-btn{padding:.3rem .7rem;background:var(--green-dim);border:1px solid rgba(57,255,20,.25);color:var(--green);border-radius:12px;font-family:var(--font-mono);font-size:.6rem;cursor:pointer;transition:all .2s;white-space:nowrap;}
+.quick-btn:hover{background:rgba(57,255,20,.15);}
+.chat-input-row{display:flex;gap:.5rem;padding:.8rem 1rem;border-top:1px solid var(--border);}
+.chat-input{flex:1;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:.5rem .8rem;color:var(--text);font-family:var(--font-mono);font-size:.78rem;outline:none;transition:border-color .2s;}
+.chat-input:focus{border-color:rgba(57,255,20,.35);}
+.chat-input::placeholder{color:var(--muted);}
+.chat-send{background:var(--green);border:none;border-radius:8px;width:36px;height:36px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1rem;transition:box-shadow .2s;}
+.chat-send:hover{box-shadow:0 0 16px var(--green-glow);}
+.chat-error{font-family:var(--font-mono);font-size:.65rem;color:var(--red);text-align:center;padding:.5rem 1rem;border-top:1px solid rgba(255,45,85,.15);}
+
+/*── TOAST ──*/
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(150%);background:var(--card);border:1px solid rgba(57,255,20,0.4);border-radius:8px;padding:1rem 1.5rem;font-family:var(--font-mono);font-size:.78rem;color:var(--green);box-shadow:0 0 30px rgba(57,255,20,0.15);transition:transform .4s cubic-bezier(0.175,0.885,0.32,1.275);z-index:1000;white-space:nowrap;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+
+/*── RESPONSIVE ──*/
+@media(max-width:900px){
+  .hero-inner{grid-template-columns:1fr;}
+  .stats-inner{grid-template-columns:repeat(3,1fr);}
+  .steps-grid{grid-template-columns:1fr 1fr;gap:2rem;}
+  .steps-grid::after{display:none;}
+  .color-showcase{grid-template-columns:1fr 1fr;}
+  .why-grid{grid-template-columns:1fr 1fr;}
+  .bestseller-grid{grid-template-columns:1fr;}
+  .tiers{grid-template-columns:1fr 1fr;}
+  .reviews-grid{grid-template-columns:1fr 1fr;}
+  .builder-wrap{grid-template-columns:1fr;}
+  .bundle-grid{grid-template-columns:1fr;}
+  .trust-grid{grid-template-columns:1fr 1fr;}
+  .chat-panel{width:300px;}
+}
+@media(max-width:600px){
+  nav ul{display:none;}
+  .stats-inner{grid-template-columns:repeat(2,1fr);}
+  .color-showcase{grid-template-columns:1fr;}
+  .why-grid{grid-template-columns:1fr;}
+  .email-row{flex-direction:column;}
+  .tiers{grid-template-columns:1fr;}
+  .reviews-grid{grid-template-columns:1fr;}
+  .trust-grid{grid-template-columns:1fr;}
+  .reviews-header{flex-direction:column;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">Layer<span class="accent">Up</span> 3D</a>
+  <ul>
+    <li><a href="#howit">Process</a></li>
+    <li><a href="#priceguide">Pricing</a></li>
+    <li><a href="#catalog">Catalog</a></li>
+    <li><a href="#bundles">Bundles</a></li>
+    <li><a href="#builder">Custom Order</a></li>
+    <li><span class="nav-cart" onclick="document.getElementById('builder').scrollIntoView({behavior:'smooth'})">🛒 Cart <span class="cart-badge" id="cartBadge">0</span></span></li>
+    <li><a href="#cta" class="nav-cta">Order Now</a></li>
+  </ul>
+</nav>
+
+<div class="particles" id="particles"></div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-eyebrow"><span class="blink">█</span>&nbsp;ORDERS OPEN NOW</div>
+      <h1>ENDLESS<br><span class="line2">DESIGNS.</span><br><span class="neon-g">ONE PRICE.</span></h1>
+      <p class="hero-sub">Custom 3D‑printed goods for your home, desk, and life. <strong style="color:var(--green)">100+ designs</strong> in <strong style="color:var(--blue)">4 neon colors</strong>. Starting at just <strong style="color:var(--green)">$2</strong>.</p>
+      <div class="btn-row">
+        <a href="#catalog" class="btn btn-green">Browse All Designs →</a>
+        <a href="#builder" class="btn btn-outline">⚙ Build Custom Order</a>
+      </div>
+      <div class="hero-trust">
+        <div class="trust-pill"><span>🚚</span> Ships in 1–2 days</div>
+        <div class="trust-pill"><span>♻️</span> Zero waste printing</div>
+        <div class="trust-pill"><span>🛡️</span> Quality guaranteed</div>
+        <div class="trust-pill"><span>💳</span> Safe checkout</div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="printer-scene">
+        <div class="orbit o1"><div class="orbit-dot d1"></div></div>
+        <div class="orbit o2"><div class="orbit-dot d2"></div></div>
+        <div class="orbit o3"><div class="orbit-dot d3"></div></div>
+        <div class="printer-core">
+          <div class="printer-icon">🖨️</div>
+          <div class="print-beam"></div>
+          <div class="print-label">PRINTING…</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="statsbar">
+  <div class="stats-inner">
+    <div class="stat"><div class="stat-num neon-g">$2–$10</div><div class="stat-label">Price Range</div></div>
+    <div class="stat"><div class="stat-num neon-b">100+</div><div class="stat-label">Designs</div></div>
+    <div class="stat"><div class="stat-num neon-r">4.9★</div><div class="stat-label">Avg Rating</div></div>
+    <div class="stat"><div class="stat-num neon-g">847</div><div class="stat-label">Happy Orders</div></div>
+    <div class="stat"><div class="stat-num" style="color:#ffa500;">1–2d</div><div class="stat-label">Ship Time</div></div>
+  </div>
+</div>
+
+<!-- TRUST BADGES -->
+<div id="trustbar">
+  <div class="trust-grid">
+    <div class="trust-card"><div class="trust-icon">🛡️</div><div class="trust-title">Quality Guarantee</div><div class="trust-desc">Every print passes our QC check. Not happy? We reprint or refund — no questions asked.</div></div>
+    <div class="trust-card"><div class="trust-icon">🚚</div><div class="trust-title">Fast Shipping</div><div class="trust-desc">Most orders ship within 1–2 business days. Tracked delivery so you always know where your order is.</div></div>
+    <div class="trust-card"><div class="trust-icon">🔒</div><div class="trust-title">Secure Payment</div><div class="trust-desc">Invoiced securely via PayPal, Venmo, or bank transfer. Your info never stored on our end.</div></div>
+    <div class="trust-card"><div class="trust-icon">💬</div><div class="trust-title">Real Human Support</div><div class="trust-desc">Email hello@layerup3d.com and a real person replies within hours — not a bot, not days.</div></div>
+  </div>
+</div>
+
+<!-- BESTSELLERS -->
+<section id="bestsellers">
+  <div class="section-inner">
+    <div class="section-eye">// Fan Favorites</div>
+    <div class="section-title">THIS WEEK'S <span class="neon-g">HOT PRINTS</span></div>
+    <p class="section-sub">Our most-ordered items — tried, tested, and loved.</p>
+    <div class="bestseller-grid">
+      <div class="bs-hero">
+        <div class="bs-thumb">
+          <div class="bs-badge">🔥 #1 BESTSELLER</div>
+          <div class="bs-thumb-icon">🐉</div>
+        </div>
+        <div class="bs-body">
+          <div class="bs-name neon-g">ARTICULATED DRAGON</div>
+          <div style="display:flex;align-items:center;gap:.3rem;margin-bottom:.5rem;">
+            <div class="bs-stars"><span class="bs-star">★</span><span class="bs-star">★</span><span class="bs-star">★</span><span class="bs-star">★</span><span class="bs-star">★</span></div>
+            <span class="bs-review-count">(184 reviews)</span>
+          </div>
+          <div class="bs-desc">Fully jointed dragon printed in one single piece — every scale flexes, every joint moves. Available in all 4 colors.</div>
+          <div class="bs-foot">
+            <div class="bs-price">$4</div>
+            <button class="bs-order" onclick="addToCart('Articulated Dragon')">ORDER NOW →</button>
+          </div>
+        </div>
+      </div>
+      <div class="bs-side">
+        <div class="bs-card" style="background:linear-gradient(135deg,rgba(0,212,255,0.05),var(--card));">
+          <div class="bs-card-thumb" style="background:rgba(0,212,255,0.06)">🌀</div>
+          <div class="bs-card-body">
+            <div>
+              <div class="bs-card-name">Voronoi Vase</div>
+              <div class="bs-card-desc">Mathematical beauty — this vase stops conversations. Perfect centerpiece print.</div>
+            </div>
+            <div class="bs-card-foot">
+              <div class="bs-card-price">$8</div>
+              <button class="bs-mini-btn" onclick="addToCart('Voronoi Vase')">ORDER →</button>
+            </div>
+          </div>
+        </div>
+        <div class="bs-card" style="background:linear-gradient(135deg,rgba(255,45,85,0.05),var(--card));">
+          <div class="bs-card-thumb" style="background:rgba(255,45,85,0.06)">♟️</div>
+          <div class="bs-card-body">
+            <div>
+              <div class="bs-card-name">Mini Chess Set</div>
+              <div class="bs-card-desc">Full 32-piece set with board base. Portable, printable, giftable.</div>
+            </div>
+            <div class="bs-card-foot">
+              <div class="bs-card-price" style="color:var(--red);">$10</div>
+              <button class="bs-mini-btn" style="background:rgba(255,45,85,.1);border-color:rgba(255,45,85,.3);color:var(--red);" onclick="addToCart('Mini Chess Set')">ORDER →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BUNDLE DEALS -->
+<section id="bundles">
+  <div class="section-inner">
+    <div class="section-eye">// Save More</div>
+    <div class="section-title">BUNDLE UP. <span style="color:var(--orange);">SAVE BIG.</span></div>
+    <p class="section-sub">Our curated bundles give you more prints for less. Perfect for gifts or stocking up your desk.</p>
+    <div class="bundle-grid">
+      <div class="bundle-card bc1">
+        <div class="bundle-name">STARTER PACK</div>
+        <div class="bundle-badge">SAVE $2 — 33% OFF</div>
+        <ul class="bundle-items">
+          <li>Infinity Cube (any color)</li>
+          <li>Spiral Spinner (any color)</li>
+          <li>Lattice Ball (any color)</li>
+          <li>Free color mixing allowed</li>
+        </ul>
+        <div class="bundle-pricing">
+          <div class="bundle-price">$4</div>
+          <div class="bundle-original">$6</div>
+        </div>
+        <button class="bundle-cta" onclick="addToCart('Starter Pack Bundle')">GET THIS BUNDLE →</button>
+      </div>
+      <div class="bundle-card bc2 featured">
+        <div class="bundle-popular">⭐ MOST POPULAR</div>
+        <div class="bundle-name">DESK HERO PACK</div>
+        <div class="bundle-badge">SAVE $8 — 44% OFF</div>
+        <ul class="bundle-items">
+          <li>Articulated Dragon</li>
+          <li>Phone Stand</li>
+          <li>Cable Organizer</li>
+          <li>Headphone Hook</li>
+          <li>Pen Cup</li>
+          <li>Your choice of color</li>
+        </ul>
+        <div class="bundle-pricing">
+          <div class="bundle-price">$10</div>
+          <div class="bundle-original">$18</div>
+        </div>
+        <button class="bundle-cta" onclick="addToCart('Desk Hero Bundle')">GET THIS BUNDLE →</button>
+      </div>
+      <div class="bundle-card bc3">
+        <div class="bundle-name">GIFT MASTER SET</div>
+        <div class="bundle-badge">SAVE $14 — 35% OFF</div>
+        <ul class="bundle-items">
+          <li>Mini Chess Set</li>
+          <li>Voronoi Vase</li>
+          <li>Dice Tower</li>
+          <li>Flexi Dragon + Shark</li>
+          <li>Bookend Set</li>
+          <li>Gift-ready packaging</li>
+        </ul>
+        <div class="bundle-pricing">
+          <div class="bundle-price">$26</div>
+          <div class="bundle-original">$40</div>
+        </div>
+        <button class="bundle-cta" onclick="addToCart('Gift Master Bundle')">GET THIS BUNDLE →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT'S PRINTED -->
+<section id="howit">
+  <div class="section-inner">
+    <div class="section-eye">// Process</div>
+    <div class="section-title">HOW YOUR ITEM <span class="neon-b">COMES TO LIFE</span></div>
+    <p class="section-sub">Every product is printed fresh, layer by layer, in your chosen color — no inventory, no waste.</p>
+    <div class="steps-grid">
+      <div class="step s1"><div class="step-num">01</div><div class="step-emoji">🛒</div><div class="step-head">PICK A DESIGN</div><div class="step-desc">Browse 100+ products. Choose your design, color, and size tier.</div></div>
+      <div class="step s2"><div class="step-num">02</div><div class="step-emoji">🎨</div><div class="step-head">CHOOSE COLOR</div><div class="step-desc">Select Neon Green, Electric Blue, Flame Red, or Void Black filament.</div></div>
+      <div class="step s3"><div class="step-num">03</div><div class="step-emoji">⚙️</div><div class="step-head">SLICE & PREP</div><div class="step-desc">Your file is sliced into hundreds of ultra-thin 0.2mm layers.</div></div>
+      <div class="step s4"><div class="step-num">04</div><div class="step-emoji">🔥</div><div class="step-head">PRINT IT</div><div class="step-desc">Hot filament deposited layer by layer until your item is complete.</div></div>
+      <div class="step s5"><div class="step-num">05</div><div class="step-emoji">📦</div><div class="step-head">SHIP IT</div><div class="step-desc">Cleaned, quality-checked, and shipped to your door within 1–2 days.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICE GUIDE -->
+<section id="priceguide">
+  <div class="section-inner">
+    <div class="section-eye">// Pricing</div>
+    <div class="section-title">SIMPLE PRICING. <span class="neon-g">ZERO SURPRISES.</span></div>
+    <p class="section-sub">Price is purely based on material used — the more filament, the bigger the item.</p>
+    <div class="tiers">
+      <div class="tier t2"><div class="tier-price">$2</div><div class="tier-size">XS · 10–30g</div><ul class="tier-items"><li>Fidget toys</li><li>Keychains</li><li>Small clips</li><li>Egg cups</li></ul></div>
+      <div class="tier t4"><div class="tier-price">$4</div><div class="tier-size">S · 30–55g</div><ul class="tier-items"><li>Flexi animals</li><li>Pen cups</li><li>Wall tiles</li><li>Small planters</li></ul></div>
+      <div class="tier t6"><div class="tier-price">$6</div><div class="tier-size">M · 55–80g</div><ul class="tier-items"><li>Geometric planters</li><li>Desk organizers</li><li>Controller stands</li><li>Star lanterns</li></ul></div>
+      <div class="tier t8"><div class="tier-price">$8</div><div class="tier-size">L · 80–110g</div><ul class="tier-items"><li>Voronoi vases</li><li>Dice towers</li><li>Bookend sets</li><li>Laptop stands</li></ul></div>
+      <div class="tier t10"><div class="tier-price">$10</div><div class="tier-size">XL · 110g+</div><ul class="tier-items"><li>Chess sets</li><li>Lamp shades</li><li>Labyrinth games</li><li>Advent calendars</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- COLOR SHOWCASE -->
+<section id="colors">
+  <div class="section-inner">
+    <div class="section-eye">// Available Colors</div>
+    <div class="section-title">PICK YOUR <span class="neon-g">NEON</span></div>
+    <p class="section-sub">All designs available in 4 signature colors. Same price, your choice.</p>
+    <div class="color-showcase">
+      <div class="color-block"><div class="cb-preview cb-g">🐉</div><div class="cb-info"><div class="cb-name neon-g"><span class="cb-dot" style="background:#39ff14;box-shadow:0 0 8px #39ff14;"></span>NEON GREEN</div><div class="cb-desc">Hyper-visible, electric glow under UV. The statement color.</div></div></div>
+      <div class="color-block"><div class="cb-preview cb-b">🔷</div><div class="cb-info"><div class="cb-name neon-b"><span class="cb-dot" style="background:#00d4ff;box-shadow:0 0 8px #00d4ff;"></span>ELECTRIC BLUE</div><div class="cb-desc">Ice-cold precision blue. Sleek, techy, and unmissable.</div></div></div>
+      <div class="color-block"><div class="cb-preview cb-r">🔺</div><div class="cb-info"><div class="cb-name neon-r"><span class="cb-dot" style="background:#ff2d55;box-shadow:0 0 8px #ff2d55;"></span>FLAME RED</div><div class="cb-desc">Hot, urgent, fierce. Brings energy to every print.</div></div></div>
+      <div class="color-block"><div class="cb-preview cb-k">🖤</div><div class="cb-info"><div class="cb-name" style="color:#c0c0d0;"><span class="cb-dot" style="background:#1a1a22;border:1px solid rgba(255,255,255,.3);"></span>VOID BLACK</div><div class="cb-desc">Stealth mode. Matte jet black — sleek, professional, serious.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CATALOG -->
+<section id="catalog">
+  <div class="section-inner">
+    <div class="section-eye">// Product Catalog</div>
+    <div class="section-title">BROWSE <span class="neon-g">ALL</span> DESIGNS</div>
+    <p class="section-sub">Every item is printed fresh in your chosen color. Filter by category or price.</p>
+    <div class="filter-strip" id="catFilter"></div>
+    <div class="price-strip" id="priceFilter"></div>
+    <div class="results-count" id="resultsCount"></div>
+    <div class="prod-grid" id="prodGrid"></div>
+    <div class="load-more-wrap"><button class="load-more" id="loadMoreBtn" onclick="loadMore()">LOAD MORE DESIGNS ↓</button></div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section id="reviews">
+  <div class="section-inner">
+    <div class="section-eye">// Verified Customers</div>
+    <div class="section-title">REAL PEOPLE. <span class="neon-b">REAL PRINTS.</span></div>
+    <p class="section-sub">847 verified orders. Every review is from a real LayerUp customer.</p>
+    <div class="reviews-header">
+      <div class="reviews-aggregate">
+        <div class="agg-score">4.9</div>
+        <div class="agg-stars"><span class="agg-star">★</span><span class="agg-star">★</span><span class="agg-star">★</span><span class="agg-star">★</span><span class="agg-star">★</span></div>
+        <div class="agg-count">Based on 847 orders</div>
+      </div>
+      <div class="reviews-bars">
+        <div class="rbar-row"><div class="rbar-label">5 ★</div><div class="rbar-track"><div class="rbar-fill" style="width:91%"></div></div><div class="rbar-pct">91%</div></div>
+        <div class="rbar-row"><div class="rbar-label">4 ★</div><div class="rbar-track"><div class="rbar-fill" style="width:6%;background:#ffa500;"></div></div><div class="rbar-pct">6%</div></div>
+        <div class="rbar-row"><div class="rbar-label">3 ★</div><div class="rbar-track"><div class="rbar-fill" style="width:2%;background:#888"></div></div><div class="rbar-pct">2%</div></div>
+        <div class="rbar-row"><div class="rbar-label">2 ★</div><div class="rbar-track"><div class="rbar-fill" style="width:1%;background:#555"></div></div><div class="rbar-pct">1%</div></div>
+        <div class="rbar-row"><div class="rbar-label">1 ★</div><div class="rbar-track"><div class="rbar-fill" style="width:0%;"></div></div><div class="rbar-pct">0%</div></div>
+      </div>
+    </div>
+    <div class="reviews-grid" id="reviewsGrid"></div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section id="why">
+  <div class="section-inner">
+    <div class="section-eye">// Why LayerUp</div>
+    <div class="section-title">BUILT DIFFERENT.<br><span class="neon-g">PRINTED BETTER.</span></div>
+    <div class="why-grid">
+      <div class="why-card wc1"><div class="why-icon">⚡</div><div class="why-head">INSTANT PRICING</div><div class="why-desc">No hidden fees. $2–$10 based purely on material used. See the price before you order.</div></div>
+      <div class="why-card wc2"><div class="why-icon">🎨</div><div class="why-head">4 NEON COLORS</div><div class="why-desc">Every single design available in Neon Green, Electric Blue, Flame Red, and Void Black.</div></div>
+      <div class="why-card wc3"><div class="why-icon">♻️</div><div class="why-head">ZERO WASTE</div><div class="why-desc">Printed only when you order. No overstock, no warehouses. Made-to-order = zero waste.</div></div>
+      <div class="why-card wc4"><div class="why-icon">🛠️</div><div class="why-head">CUSTOM REQUESTS</div><div class="why-desc">Don't see what you need? Email us a reference and we'll model and print it at the same rates.</div></div>
+      <div class="why-card wc5"><div class="why-icon">📦</div><div class="why-head">FAST TURNAROUND</div><div class="why-desc">Most small prints complete in under 3 hours. Orders ship within 1–2 business days of payment.</div></div>
+      <div class="why-card wc6"><div class="why-icon">💎</div><div class="why-head">PRECISION QUALITY</div><div class="why-desc">0.2mm layer resolution on premium PLA filament. Every print passes our quality check before shipping.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="section-inner">
+    <div class="section-eye">// Frequently Asked</div>
+    <div class="section-title">GOT <span class="neon-g">QUESTIONS?</span></div>
+    <p class="section-sub">Everything you need to know before ordering.</p>
+    <div class="faq-list" id="faqList"></div>
+  </div>
+</section>
+
+<!-- ORDER BUILDER -->
+<section id="builder">
+  <div class="section-inner">
+    <div class="section-eye">// Order Builder</div>
+    <div class="section-title">BUILD YOUR <span class="neon-g">ORDER</span></div>
+    <p class="section-sub">Configure exactly what you want. Get your quote instantly.</p>
+    <div class="builder-wrap">
+      <div class="builder-form">
+        <div class="build-step">
+          <div class="build-label">01 — Category</div>
+          <div class="build-options" id="b-cats"></div>
+        </div>
+        <div class="build-step">
+          <div class="build-label">02 — Filament Color</div>
+          <div class="build-options">
+            <button class="bopt selected" onclick="selectBuild('color','Neon Green',this)">🟢 Neon Green</button>
+            <button class="bopt bopt-blue" onclick="selectBuild('color','Electric Blue',this)">🔵 Electric Blue</button>
+            <button class="bopt bopt-red" onclick="selectBuild('color','Flame Red',this)">🔴 Flame Red</button>
+            <button class="bopt bopt-black" onclick="selectBuild('color','Void Black',this)">⚫ Void Black</button>
+          </div>
+        </div>
+        <div class="build-step">
+          <div class="build-label">03 — Size / Price Tier</div>
+          <div class="build-options">
+            <button class="bopt selected" onclick="selectBuild('size','$2 · XS',this,2)">$2 XS</button>
+            <button class="bopt" onclick="selectBuild('size','$4 · S',this,4)">$4 S</button>
+            <button class="bopt" onclick="selectBuild('size','$6 · M',this,6)">$6 M</button>
+            <button class="bopt" onclick="selectBuild('size','$8 · L',this,8)">$8 L</button>
+            <button class="bopt" onclick="selectBuild('size','$10 · XL',this,10)">$10 XL</button>
+          </div>
+        </div>
+        <div class="build-step">
+          <div class="build-label">04 — Quantity</div>
+          <div class="build-qty">
+            <button class="qty-btn" onclick="changeQty(-1)">−</button>
+            <div class="qty-display" id="qtyDisplay">1</div>
+            <button class="qty-btn" onclick="changeQty(1)">+</button>
+            <span style="font-family:var(--font-mono);font-size:.65rem;color:var(--muted);margin-left:.5rem;">5+ items = 15% off!</span>
+          </div>
+        </div>
+        <div class="build-step">
+          <div class="build-label">05 — Special Notes (optional)</div>
+          <textarea id="buildNotes" placeholder="e.g. 'Add a 3mm hole for hanging' or 'Custom text: Jake's Desk'" style="width:100%;background:var(--card);border:1px solid var(--border);border-radius:6px;padding:.8rem 1rem;color:var(--text);font-family:var(--font-mono);font-size:.75rem;resize:vertical;min-height:80px;outline:none;line-height:1.6;transition:border-color .2s;" onfocus="this.style.borderColor='rgba(57,255,20,.4)'" onblur="this.style.borderColor='var(--border)'"></textarea>
+        </div>
+      </div>
+      <div class="build-summary">
+        <div class="summary-title">ORDER SUMMARY</div>
+        <div class="discount-banner" id="discountBanner">🎉 5+ item discount applied: 15% off!</div>
+        <div class="summary-line"><span class="summary-key">CATEGORY</span><span class="summary-val" id="s-cat">—</span></div>
+        <div class="summary-line"><span class="summary-key">COLOR</span><span class="summary-val" id="s-color">Neon Green</span></div>
+        <div class="summary-line"><span class="summary-key">SIZE TIER</span><span class="summary-val" id="s-size">$2 · XS</span></div>
+        <div class="summary-line"><span class="summary-key">QUANTITY</span><span class="summary-val" id="s-qty">1 item</span></div>
+        <div class="summary-line"><span class="summary-key">UNIT PRICE</span><span class="summary-val" id="s-unit">$2.00</span></div>
+        <div class="summary-line" id="s-discount-line" style="display:none;"><span class="summary-key">DISCOUNT</span><span class="summary-val summary-discount" id="s-discount">-$0</span></div>
+        <div class="summary-total">
+          <span class="summary-total-label">TOTAL ESTIMATE</span>
+          <span class="summary-total-price" id="s-total">$2</span>
+        </div>
+        <button class="summary-cta" onclick="submitBuild()">SEND THIS ORDER →</button>
+        <div class="summary-note">We'll confirm & invoice within 24hrs · hello@layerup3d.com</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="section-inner cta-inner">
+    <div class="section-eye">// Order</div>
+    <div class="cta-title">READY TO<br><span class="neon-g">PRINT?</span></div>
+    <p class="cta-sub">Drop your email and we'll reach out to finalize your order in minutes. First-timers get 10% off.</p>
+    <div class="email-row">
+      <input class="email-input" type="email" placeholder="your@email.com" id="emailInput">
+      <button class="btn btn-green" onclick="handleOrder()">GET STARTED</button>
+    </div>
+    <div class="cta-note">Or reach us directly at hello@layerup3d.com — we reply fast.</div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Layer<span class="accent">Up</span> 3D</div>
+    <div class="footer-links">
+      <a href="#howit">Process</a>
+      <a href="#priceguide">Pricing</a>
+      <a href="#colors">Colors</a>
+      <a href="#catalog">Catalog</a>
+      <a href="#bundles">Bundles</a>
+      <a href="#builder">Custom Order</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <div class="footer-copy">© 2025 LayerUp 3D · hello@layerup3d.com</div>
+  </div>
+</footer>
+
+<!-- AI CHAT WIDGET -->
+<div id="chatWidget">
+  <div class="chat-panel" id="chatPanel">
+    <div class="chat-head">
+      <div class="chat-avatar">🖨️</div>
+      <div class="chat-info">
+        <div class="chat-name">LayerBot</div>
+        <div class="chat-status"><div class="chat-online"></div> AI print advisor · always on</div>
+      </div>
+      <button class="chat-close" onclick="toggleChat()">✕</button>
+    </div>
+    <div class="chat-messages" id="chatMessages">
+      <div class="chat-msg msg-ai">Hey! 👋 I'm LayerBot — your 3D print advisor. Ask me anything: what to order, which color looks best, sizing help, or just "surprise me!" 🐉</div>
+    </div>
+    <div class="chat-quick" id="chatQuick">
+      <button class="quick-btn" onclick="quickAsk('What should I get for $10?')">$10 ideas 💡</button>
+      <button class="quick-btn" onclick="quickAsk('Best gift under $20?')">Gift ideas 🎁</button>
+      <button class="quick-btn" onclick="quickAsk('Which color is most popular?')">Best color? 🎨</button>
+      <button class="quick-btn" onclick="quickAsk('What are your bestsellers?')">Bestsellers 🔥</button>
+    </div>
+    <div class="chat-input-row">
+      <input class="chat-input" id="chatInput" placeholder="Ask me anything..." onkeydown="if(event.key==='Enter')sendChat()">
+      <button class="chat-send" onclick="sendChat()">➤</button>
+    </div>
+  </div>
+  <button class="chat-toggle" onclick="toggleChat()">
+    <div class="chat-pulse"></div>
+    🤖
+  </button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const CATEGORIES=['All','Fidgets & Toys','Home & Decor','Desk & Office','Gaming & Geek','Kitchen & Food','Tools & Utility','Fashion & Wearables','Nature & Animals','Seasonal & Gifts','Custom & Novelty'];
+const PRICES=['All','$2','$4','$6','$8','$10'];
+const PRODUCTS=[
+  {name:'Infinity Cube',cat:'Fidgets & Toys',price:2,weight:'28g',icon:'🔀',desc:'8 hinged sections that fold forever. The ultimate desk fidget.',reviews:142,rating:5,hot:true},
+  {name:'Articulated Dragon',cat:'Fidgets & Toys',price:4,weight:'45g',icon:'🐉',desc:'Fully jointed dragon printed in one piece — every scale flexes.',reviews:184,rating:5,hot:true},
+  {name:'Spiral Spinner',cat:'Fidgets & Toys',price:2,weight:'22g',icon:'🌀',desc:'Geometric spiral that balances on a fingertip and spins silently.',reviews:89,rating:5},
+  {name:'Snake Cube',cat:'Fidgets & Toys',price:4,weight:'50g',icon:'🐍',desc:'27-segment twisting cube puzzle — 3D printed for satisfying clicks.',reviews:56,rating:4},
+  {name:'Flexi Octopus',cat:'Fidgets & Toys',price:4,weight:'38g',icon:'🐙',desc:'All 8 legs articulate independently. Sits, hangs, and fidgets perfectly.',reviews:97,rating:5},
+  {name:'Gyroscope Ring',cat:'Fidgets & Toys',price:6,weight:'65g',icon:'⚙️',desc:'Triple-axis spinning gyroscope. Mesmerizing desk physics demo.',reviews:34,rating:5},
+  {name:'Lattice Ball',cat:'Fidgets & Toys',price:2,weight:'18g',icon:'⚽',desc:'Open-lattice stress ball you can squeeze, roll, and stare at forever.',reviews:72,rating:5},
+  {name:'Fidget Gear Set',cat:'Fidgets & Toys',price:4,weight:'42g',icon:'⚙️',desc:'Interlocking gears that spin together on a base.',reviews:41,rating:5},
+  {name:'Pop-It Tile',cat:'Fidgets & Toys',price:2,weight:'24g',icon:'🟩',desc:'Printable pop-it style tile with satisfying dome clicks.',reviews:88,rating:4},
+  {name:'Caterpillar Flexi',cat:'Fidgets & Toys',price:2,weight:'26g',icon:'🐛',desc:'20-segment articulated caterpillar that wiggles in your hand.',reviews:63,rating:5},
+  {name:'Spinning Top Pro',cat:'Fidgets & Toys',price:2,weight:'16g',icon:'🌪️',desc:'Precision-balanced top that spins for 45+ seconds on any surface.',reviews:51,rating:5},
+  {name:'Maze Cube',cat:'Fidgets & Toys',price:6,weight:'70g',icon:'🎮',desc:'3D maze trapped inside a cube. Navigate the ball inside.',reviews:28,rating:5},
+  {name:'Voronoi Vase',cat:'Home & Decor',price:8,weight:'95g',icon:'🏺',desc:'Mathematical voronoi pattern vase. Statement piece for any shelf.',reviews:76,rating:5,hot:true},
+  {name:'Geometric Planter',cat:'Home & Decor',price:6,weight:'72g',icon:'🌿',desc:'Hexagonal low-poly planter for succulents and small plants.',reviews:54,rating:5},
+  {name:'Wall Art Tile',cat:'Home & Decor',price:4,weight:'40g',icon:'🖼️',desc:'Textured geometric wall tile. Mix and match for infinite patterns.',reviews:38,rating:4},
+  {name:'Icosahedron Lamp Shade',cat:'Home & Decor',price:10,weight:'120g',icon:'💡',desc:'20-face geometric shade that casts geometric light patterns.',reviews:22,rating:5},
+  {name:'Name Plaque',cat:'Home & Decor',price:4,weight:'35g',icon:'🔤',desc:'Custom raised-letter name sign for doors, desks, or shelves.',reviews:67,rating:5},
+  {name:'Crystal Cluster',cat:'Home & Decor',price:4,weight:'44g',icon:'💎',desc:'3D printed faux crystal cluster — stunning on any surface.',reviews:45,rating:5},
+  {name:'Bookend Set',cat:'Home & Decor',price:8,weight:'100g',icon:'📚',desc:'Geometric bookend pair that look like architecture slices.',reviews:33,rating:5},
+  {name:'Universal Phone Stand',cat:'Desk & Office',price:2,weight:'30g',icon:'📱',desc:'Holds any phone at perfect viewing angle. Thin, sturdy, silent.',reviews:119,rating:5,hot:true},
+  {name:'Cable Organizer',cat:'Desk & Office',price:2,weight:'18g',icon:'🔌',desc:'Clip-on cable manager for USB, HDMI, and audio wires.',reviews:88,rating:4},
+  {name:'Pen Cup',cat:'Desk & Office',price:4,weight:'50g',icon:'✏️',desc:'Hexagonal pen cup with internal dividers.',reviews:57,rating:5},
+  {name:'Monitor Riser Block',cat:'Desk & Office',price:8,weight:'110g',icon:'🖥️',desc:'Elevate your monitor 3 inches with this solid, vibration-free riser.',reviews:44,rating:5},
+  {name:'Headphone Hook',cat:'Desk & Office',price:4,weight:'36g',icon:'🎧',desc:'Under-desk headphone hanger. Friction grip on any desk.',reviews:72,rating:5},
+  {name:'Laptop Stand',cat:'Desk & Office',price:10,weight:'130g',icon:'💻',desc:'Foldable laptop riser that brings screen to eye level.',reviews:58,rating:5},
+  {name:'Controller Stand',cat:'Gaming & Geek',price:6,weight:'68g',icon:'🎮',desc:'Display your PS5/Xbox controller at a perfect angle on your desk.',reviews:62,rating:5,hot:true},
+  {name:'Dice Tower',cat:'Gaming & Geek',price:8,weight:'90g',icon:'🎲',desc:'Tabletop RPG dice tower with random baffle cascade and tray.',reviews:48,rating:5},
+  {name:'D20 Display',cat:'Gaming & Geek',price:4,weight:'40g',icon:'⚄',desc:'Cradle display for your favorite D20 die.',reviews:37,rating:5},
+  {name:'SD Card Holder',cat:'Gaming & Geek',price:2,weight:'16g',icon:'💾',desc:'Holds 8 SD/MicroSD cards in a slim, pocketable case.',reviews:55,rating:4},
+  {name:'Cartridge Display',cat:'Gaming & Geek',price:4,weight:'36g',icon:'🕹️',desc:'Angled display rack for 6 game cartridges — Switch, GBA, DS.',reviews:29,rating:5},
+  {name:'Cookie Cutter Set',cat:'Kitchen & Food',price:4,weight:'48g',icon:'⭐',desc:'5 geometric cookie cutters — star, hex, diamond, circle, wave.',reviews:76,rating:5},
+  {name:'Egg Cup',cat:'Kitchen & Food',price:2,weight:'20g',icon:'🥚',desc:'Minimal egg cup that makes soft-boiled eggs look like a design object.',reviews:38,rating:5},
+  {name:'Flexi Shark',cat:'Nature & Animals',price:4,weight:'36g',icon:'🦈',desc:'Articulated great white shark that moves like it\'s swimming.',reviews:83,rating:5,hot:true},
+  {name:'Dinosaur Pack',cat:'Nature & Animals',price:6,weight:'68g',icon:'🦕',desc:'3 mini dino figures — T-Rex, Triceratops, Brachiosaurus.',reviews:61,rating:5},
+  {name:'Flexi Cat',cat:'Nature & Animals',price:4,weight:'32g',icon:'🐱',desc:'Poseable cat figure with fully jointed spine and tail.',reviews:94,rating:5},
+  {name:'Snowflake Ornament',cat:'Seasonal & Gifts',price:2,weight:'12g',icon:'❄️',desc:'Intricate snowflake Christmas ornament with hanging loop.',reviews:52,rating:5},
+  {name:'Heart Box',cat:'Seasonal & Gifts',price:4,weight:'48g',icon:'❤️',desc:'Hinged heart-shaped box for chocolates, rings, or tiny gifts.',reviews:67,rating:5},
+  {name:'Star Lantern',cat:'Seasonal & Gifts',price:6,weight:'62g',icon:'⭐',desc:'5-point star lantern for LED candles — casts star-shaped shadows.',reviews:41,rating:5},
+  {name:'Mini Chess Set',cat:'Custom & Novelty',price:10,weight:'148g',icon:'♟️',desc:'Full 32-piece mini chess set with board-base. Portable and printable.',reviews:73,rating:4,hot:true},
+  {name:'Domino Set',cat:'Custom & Novelty',price:8,weight:'96g',icon:'🁡',desc:'28-tile double-six domino set with carrying tray.',reviews:36,rating:5},
+  {name:'Mini Zen Garden',cat:'Custom & Novelty',price:6,weight:'66g',icon:'🧘',desc:'Desktop sand garden tray with mini rake and 3 stone shapes.',reviews:48,rating:5},
+  {name:'Labyrinth Game',cat:'Custom & Novelty',price:8,weight:'92g',icon:'🎯',desc:'Classic tilt labyrinth ball maze with 2-axis control knobs.',reviews:31,rating:5},
+];
+
+const ALL_REVIEWS=[
+  {text:'Got the Articulated Dragon in Neon Green and it is INSANE. The fact it prints as one piece and every joint moves — I\'ve bought three more as gifts already.',name:'Marcus T.',city:'Seattle, WA',product:'Articulated Dragon · Neon Green',stars:5,av:'MT',avcls:'av-g',date:'Apr 2025'},
+  {text:'The Voronoi Vase is a literal conversation piece. Everyone who comes over asks where I got it. Shipped in two days, quality is 10/10. Already ordered the lamp shade.',name:'Priya S.',city:'Austin, TX',product:'Voronoi Vase · Electric Blue',stars:5,av:'PS',avcls:'av-b',date:'Apr 2025'},
+  {text:'Ordered 6 different things in one go and everything came out perfect. The pricing is unreal — $2 for the fidget spinners, crazy value. Fast shipping too.',name:'Jake R.',city:'Denver, CO',product:'Multi-item order',stars:5,av:'JR',avcls:'av-r',date:'Mar 2025'},
+  {text:'The dice tower is exactly what our DnD group needed. Rolls perfectly, looks incredible in Flame Red. Our dungeon master literally refused to give it back.',name:'Caitlin M.',city:'Chicago, IL',product:'Dice Tower · Flame Red',stars:5,av:'CM',avcls:'av-r',date:'Mar 2025'},
+  {text:'Bought the laptop stand and it\'s honestly better than stuff I\'ve seen for $40 at retail stores. Solid, no wobble, zero flex. My whole team wants one.',name:'David K.',city:'Portland, OR',product:'Laptop Stand · Void Black',stars:5,av:'DK',avcls:'av-b',date:'Apr 2025'},
+  {text:'Fast reply on my custom request, printed it exactly right, shipped next day. This is the kind of small business that deserves all the love.',name:'Aaliyah J.',city:'Nashville, TN',product:'Custom Order · Neon Green',stars:5,av:'AJ',avcls:'av-g',date:'Feb 2025'},
+];
+
+function buildReviews(){
+  document.getElementById('reviewsGrid').innerHTML=ALL_REVIEWS.map(r=>`
+    <div class="review-card">
+      <div class="review-top">
+        <div class="review-stars">${'<span class="star">★</span>'.repeat(r.stars)}</div>
+        <div class="verified">✓ Verified</div>
+      </div>
+      <div class="review-text">${r.text}</div>
+      <div class="review-author">
+        <div class="review-avatar ${r.avcls}">${r.av}</div>
+        <div>
+          <div class="review-name">${r.name}</div>
+          <div class="review-meta">${r.city} · ${r.date}</div>
+          <div class="review-product">Purchased: <span>${r.product}</span></div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+const FAQS=[
+  {q:'How do I actually place an order?',a:'Use the Order Builder section on this page to configure your items, then hit "Send This Order". You can also email us directly at hello@layerup3d.com with what you want. We\'ll send you a confirmation and invoice within 24 hours.'},
+  {q:'How long does printing and shipping take?',a:'Most small items ($2–$6) print in 1–4 hours. Larger items take up to 8 hours. We ship within 1–2 business days after payment. You\'ll receive a tracking number via email.'},
+  {q:'What if my print arrives damaged or has quality issues?',a:'We quality check everything before it leaves. If something goes wrong in shipping, just send us a photo and we\'ll reprint and reship at zero cost to you.'},
+  {q:'Can I get a custom design not in your catalog?',a:'Absolutely. Email us a reference image or description at hello@layerup3d.com. We\'ll quote within 24 hours using the same $2–$10 pricing based on material used.'},
+  {q:'What filament material do you use?',a:'We use premium PLA filament at 0.2mm layer resolution. It\'s strong, clean-looking, and available in all 4 colors. PLA is eco-friendly and recyclable.'},
+  {q:'Do you do bulk orders?',a:'Yes! Order 5+ items and get 15% off automatically. For 10+ items we can offer even better rates — just email us and we\'ll work something out.'},
+];
+
+function buildFAQ(){
+  document.getElementById('faqList').innerHTML=FAQS.map((f,i)=>`
+    <div class="faq-item" id="faq-${i}">
+      <div class="faq-q" onclick="toggleFAQ(${i})"><span>${f.q}</span><span class="faq-icon">+</span></div>
+      <div class="faq-a"><div class="faq-a-inner">${f.a}</div></div>
+    </div>
+  `).join('');
+}
+function toggleFAQ(i){const el=document.getElementById('faq-'+i);const open=el.classList.contains('open');document.querySelectorAll('.faq-item').forEach(x=>x.classList.remove('open'));if(!open)el.classList.add('open');}
+
+(function(){
+  const c=document.getElementById('particles');
+  const colors=['#39ff14','#00d4ff','#ff2d55','#ff00c8'];
+  for(let i=0;i<35;i++){
+    const p=document.createElement('div');p.className='particle';
+    const col=colors[Math.floor(Math.random()*colors.length)];
+    p.style.cssText=`left:${Math.random()*100}%;background:${col};box-shadow:0 0 6px ${col};animation-duration:${8+Math.random()*18}s;animation-delay:${Math.random()*10}s;--dx:${(Math.random()-.5)*120}px;width:${1+Math.random()*2}px;height:${1+Math.random()*2}px;`;
+    c.appendChild(p);
+  }
+})();
+
+let activeCat='All',activePrice='All',visibleCount=24,cartCount=0;
+
+function buildFilters(){
+  const cf=document.getElementById('catFilter');
+  CATEGORIES.forEach(c=>{
+    const btn=document.createElement('button');btn.className='fchip'+(c==='All'?' active':'');btn.textContent=c;
+    btn.onclick=()=>{activeCat=c;visibleCount=24;cf.querySelectorAll('.fchip').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderGrid();};
+    cf.appendChild(btn);
+  });
+  const pf=document.getElementById('priceFilter');
+  PRICES.forEach(p=>{
+    const btn=document.createElement('button');btn.className='pchip'+(p==='All'?' active':'');btn.textContent=p==='All'?'All Prices':p;
+    btn.onclick=()=>{activePrice=p;visibleCount=24;pf.querySelectorAll('.pchip').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderGrid();};
+    pf.appendChild(btn);
+  });
+}
+
+function getFiltered(){return PRODUCTS.filter(p=>{const catOk=activeCat==='All'||p.cat===activeCat;const priceOk=activePrice==='All'||p.price===parseInt(activePrice.replace('$',''));return catOk&&priceOk;});}
+
+function priceBadgeClass(price){return{2:'badge-2',4:'badge-4',6:'badge-6',8:'badge-8',10:'badge-10'}[price]||'badge-2';}
+function sizeLabel(price){return{2:'XS',4:'S',6:'M',8:'L',10:'XL'}[price]||'S';}
+function thumbGrad(price){return{2:'rgba(57,255,20,0.15)',4:'rgba(0,212,255,0.15)',6:'rgba(255,0,200,0.12)',8:'rgba(255,45,85,0.12)',10:'rgba(255,165,0,0.12)'}[price]||'rgba(57,255,20,0.12)';}
+
+function renderGrid(){
+  const filtered=getFiltered();
+  const grid=document.getElementById('prodGrid');
+  const count=document.getElementById('resultsCount');
+  count.innerHTML=`Showing <span>${Math.min(visibleCount,filtered.length)}</span> of <span>${filtered.length}</span> designs`;
+  grid.innerHTML=filtered.slice(0,visibleCount).map(p=>`
+    <div class="pc" onclick="addToCart('${p.name.replace(/'/g,"\\'")}')">
+      <div class="thumb">
+        <div class="thumb-bg" style="background:${thumbGrad(p.price)};"></div>
+        <div class="thumb-icon">${p.icon}</div>
+        <div class="price-badge ${priceBadgeClass(p.price)}">$${p.price}</div>
+        <div class="size-pip">${sizeLabel(p.price)}</div>
+      </div>
+      <div class="pbody">
+        <div class="pname">${p.name}</div>
+        <div class="ptag">${p.cat} · ${sizeLabel(p.price)}</div>
+        <div class="pstars">${Array.from({length:5},(_,j)=>`<span class="pstar" style="${j<p.rating?'':'opacity:.2'}">★</span>`).join('')}<span class="prev-count">(${p.reviews})</span></div>
+        <div class="pdesc">${p.desc}</div>
+        <div class="pmeta"><span class="pweight">~${p.weight}</span><button class="add-btn" onclick="event.stopPropagation();addToCart('${p.name.replace(/'/g,"\\'")}')">ORDER →</button></div>
+      </div>
+    </div>
+  `).join('');
+  document.getElementById('loadMoreBtn').style.display=filtered.length>visibleCount?'inline-block':'none';
+}
+function loadMore(){visibleCount+=24;renderGrid();}
+
+const buildState={cat:'—',color:'Neon Green',size:'$2 · XS',price:2,qty:1};
+function buildCatFilter(){
+  const el=document.getElementById('b-cats');
+  CATEGORIES.filter(c=>c!=='All').forEach(c=>{
+    const btn=document.createElement('button');btn.className='bopt';btn.textContent=c;
+    btn.onclick=()=>{selectBuild('cat',c,btn);};
+    el.appendChild(btn);
+  });
+}
+function selectBuild(type,val,el,price){
+  if(type==='cat'){buildState.cat=val;document.getElementById('b-cats').querySelectorAll('.bopt').forEach(b=>b.classList.remove('selected'));}
+  else if(type==='color'){document.querySelectorAll('#builder .build-step:nth-child(2) .bopt').forEach(b=>b.classList.remove('selected'));}
+  else if(type==='size'){document.querySelectorAll('#builder .build-step:nth-child(3) .bopt').forEach(b=>b.classList.remove('selected'));buildState.price=price||2;}
+  el.classList.add('selected');buildState[type]=val;updateSummary();
+}
+function changeQty(d){buildState.qty=Math.max(1,Math.min(50,buildState.qty+d));document.getElementById('qtyDisplay').textContent=buildState.qty;updateSummary();}
+function updateSummary(){
+  const hasDiscount=buildState.qty>=5;
+  const raw=buildState.price*buildState.qty;
+  const discount=hasDiscount?Math.floor(raw*.15):0;
+  const total=raw-discount;
+  document.getElementById('s-cat').textContent=buildState.cat;
+  document.getElementById('s-color').textContent=buildState.color;
+  document.getElementById('s-size').textContent=buildState.size;
+  document.getElementById('s-qty').textContent=buildState.qty+' item'+(buildState.qty>1?'s':'');
+  document.getElementById('s-unit').textContent='$'+buildState.price+'.00';
+  document.getElementById('s-total').textContent='$'+total;
+  document.getElementById('discountBanner').style.display=hasDiscount?'block':'none';
+  const dl=document.getElementById('s-discount-line');
+  if(hasDiscount){dl.style.display='flex';document.getElementById('s-discount').textContent='-$'+discount+' (15% off)';}
+  else{dl.style.display='none';}
+}
+function submitBuild(){
+  if(buildState.cat==='—'){showToast('⚠️ Please select a category first!');return;}
+  showToast('🚀 Order sent! Check your email — we\'ll confirm within 24hrs.');
+  setTimeout(()=>document.getElementById('cta').scrollIntoView({behavior:'smooth'}),1500);
+}
+
+/*── AI CHAT — WORKING ──*/
+const SYSTEM_PROMPT=`You are LayerBot, the friendly AI advisor for LayerUp 3D — a custom 3D printing shop.
+
+PRODUCTS & PRICING:
+- $2 (XS, 10–30g): Infinity Cube, Spiral Spinner, Lattice Ball, Phone Stand, Cable Organizer, Pop-It Tile, Caterpillar Flexi, Spinning Top, Snowflake Ornament, Egg Cup, SD Card Holder
+- $4 (S, 30–55g): Articulated Dragon, Snake Cube, Flexi Octopus, Fidget Gear Set, Voronoi Vase Small, Wall Art Tile, Name Plaque, Crystal Cluster, Pen Cup, Headphone Hook, Mouse Bungee, D20 Display, Cartridge Display, Cookie Cutter Set, Flexi Shark, Flexi Cat, Heart Box
+- $6 (M, 55–80g): Gyroscope Ring, Maze Cube, Geometric Planter, Honeycomb Frame, DNA Model, Controller Stand, Dinosaur Pack, Star Lantern, Mini Zen Garden
+- $8 (L, 80–110g): Voronoi Vase, Bookend Set, Monitor Riser, Dice Tower, Laptop Stand, Domino Set, Labyrinth Game
+- $10 (XL, 110g+): Icosahedron Lamp Shade, Mini Chess Set, Laptop Stand Pro
+
+COLORS: Neon Green, Electric Blue, Flame Red, Void Black (all same price)
+
+BUNDLES: Starter Pack $4 (saves $2), Desk Hero Pack $10 (saves $8), Gift Master Set $26 (saves $14)
+
+BESTSELLERS: Articulated Dragon ($4), Voronoi Vase ($8), Mini Chess Set ($10), Flexi Shark ($4), Phone Stand ($2)
+
+POLICIES: Ships 1–2 business days. Quality guarantee — reprint or refund. 5+ items = 15% off automatically. Custom designs accepted via email. Contact: hello@layerup3d.com
+
+Be enthusiastic, concise (2-4 sentences max), and always suggest specific products with prices. Use occasional emojis. If someone wants to order, tell them to use the Order Builder on the page or email hello@layerup3d.com.`;
+
+let chatOpen=false;
+let chatHistory=[];
+
+function toggleChat(){
+  chatOpen=!chatOpen;
+  const panel=document.getElementById('chatPanel');
+  panel.classList.toggle('open',chatOpen);
+}
+
+async function sendChat(){
+  const input=document.getElementById('chatInput');
+  const text=input.value.trim();
+  if(!text)return;
+  input.value='';
+  input.disabled=true;
+  document.querySelector('.chat-send').disabled=true;
+  document.getElementById('chatQuick').style.display='none';
+
+  appendMsg(text,'user');
+  chatHistory.push({role:'user',content:text});
+  showTyping();
+
+  try{
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        system:SYSTEM_PROMPT,
+        messages:chatHistory
+      })
+    });
+    if(!resp.ok)throw new Error('API error '+resp.status);
+    const data=await resp.json();
+    hideTyping();
+    const reply=data.content?.[0]?.text||'Great question! Email us at hello@layerup3d.com 😊';
+    chatHistory.push({role:'assistant',content:reply});
+    appendMsg(reply,'ai');
+  }catch(e){
+    hideTyping();
+    console.error('Chat error:',e);
+    appendMsg('Sorry, I\'m having a moment! Email hello@layerup3d.com and we\'ll help you right away 📧','ai');
+  }finally{
+    input.disabled=false;
+    document.querySelector('.chat-send').disabled=false;
+    input.focus();
+  }
+}
+
+function quickAsk(q){
+  if(!chatOpen){chatOpen=true;document.getElementById('chatPanel').classList.add('open');}
+  document.getElementById('chatInput').value=q;
+  sendChat();
+}
+
+function appendMsg(text,role){
+  const msgs=document.getElementById('chatMessages');
+  const div=document.createElement('div');
+  div.className='chat-msg msg-'+role;
+  div.textContent=text;
+  msgs.appendChild(div);
+  msgs.scrollTop=msgs.scrollHeight;
+}
+
+let typingEl=null;
+function showTyping(){
+  const msgs=document.getElementById('chatMessages');
+  typingEl=document.createElement('div');
+  typingEl.className='msg-typing';
+  typingEl.innerHTML='<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+  msgs.appendChild(typingEl);
+  msgs.scrollTop=msgs.scrollHeight;
+}
+function hideTyping(){if(typingEl){typingEl.remove();typingEl=null;}}
+
+let toastTimer;
+function showToast(msg){
+  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+  clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),3500);
+}
+function addToCart(name){
+  cartCount++;
+  document.getElementById('cartBadge').textContent=cartCount;
+  showToast('✅ '+name+' added! Use the Order Builder to finalize →');
+}
+function handleOrder(){
+  const e=document.getElementById('emailInput').value;
+  if(e){showToast('🚀 Got it! We\'ll reach out to '+e+' shortly!');}
+  else{showToast('✉️ Enter your email to get started!');}
+}
+
+const s=document.createElement('style');s.textContent='@keyframes fadeIn{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}';document.head.appendChild(s);
+
+buildFilters();renderGrid();buildReviews();buildCatFilter();buildFAQ();
+</script>
+</body>
+</html>
