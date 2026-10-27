@@ -3,231 +3,277 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Password Arcade</title>
-<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<title> GAME ARCADE🎮 </title>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;800;900&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0a0612;--panel:#140c24;--line:#2d1f4d;--pink:#ff2e93;--cyan:#22e4ff;--lime:#b6ff3b;--gold:#ffc933;--violet:#9b6bff;--ink:#f3eaff;--mute:#9a8bb8;
-box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:dark}
+:root{--bg:#fff;--ink:#111;--mute:#6a6a78;--line:#e4e4ea;--soft:#f6f6f9;--ok:#2fa84f;--okbg:#eaf8ee;--bad:#e5384f;--badbg:#fdecee;--shadow:0 6px 0 #0001;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e0a1a;--ink:#f5eeff;--mute:#a698c4;--line:#2e2347;--soft:#171028;--okbg:#10281a;--badbg:#32101c;--shadow:0 6px 0 #0006;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0e0a1a;--ink:#f5eeff;--mute:#a698c4;--line:#2e2347;--soft:#171028;--okbg:#10281a;--badbg:#32101c;--shadow:0 6px 0 #0006;color-scheme:dark}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
-body{background:var(--bg);color:var(--ink);font-family:'Chakra Petch',sans-serif;min-height:100vh;
-background-image:radial-gradient(60rem 30rem at 10% -10%,#ff2e9326,transparent),radial-gradient(50rem 30rem at 100% 0,#22e4ff1f,transparent),radial-gradient(40rem 30rem at 50% 110%,#9b6bff26,transparent)}
-body::after{content:"";position:fixed;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,#0000 0 3px,#0000000f 3px 4px)}
-.mono{font-family:'JetBrains Mono',monospace}
-.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px}
-.tab{padding:.55rem 1rem;border:1px solid var(--line);border-radius:10px;font-weight:700;color:var(--mute);background:var(--panel);transition:.15s}
-.tab.on{color:#0a0612;border-color:transparent}
-.btn{padding:.6rem 1.1rem;border-radius:10px;font-weight:700;color:#0a0612;background:var(--cyan);transition:transform .1s}
-.btn:active{transform:scale(.96)}
-.glow{text-shadow:0 0 18px #ff2e9399,0 0 2px #ff2e93}
-.card{aspect-ratio:1;border-radius:12px;font-size:2rem;display:grid;place-items:center;border:1px solid var(--line);transition:transform .25s,background .2s;cursor:pointer}
-.shake{animation:sh .3s}@keyframes sh{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
-.hidden{display:none}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Nunito',system-ui,sans-serif;font-weight:600;min-height:100vh}
+.wrap{max-width:760px;margin:0 auto;padding:28px 18px 60px}
+h1{font-weight:900;font-size:clamp(2.2rem,8vw,3.6rem);margin:0;letter-spacing:-.03em;line-height:1}
+.sub{color:var(--mute);margin:10px 0 0;font-size:1.1rem}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:26px;gap:10px}
+.pill{border:2px solid var(--line);background:var(--soft);color:var(--ink);border-radius:99px;padding:8px 14px;font:inherit;font-weight:800;cursor:pointer}
+.pill:hover{border-color:var(--ink)}
+:focus-visible{outline:3px solid #3b82f6;outline-offset:2px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin-top:30px}
+.tile{display:block;text-align:left;border:2px solid var(--line);border-radius:22px;background:var(--soft);padding:0;overflow:hidden;cursor:pointer;font:inherit;color:inherit;box-shadow:var(--shadow);transition:transform .15s}
+.tile:hover{transform:translateY(-4px) rotate(-.6deg)}
+.tile .art{height:130px;display:grid;place-items:center;font-size:3.8rem}
+.tile b{display:block;font-size:1.25rem;font-weight:900;padding:14px 16px 0}
+.tile span.d{display:block;color:var(--mute);padding:2px 16px 4px;font-size:.95rem}
+.tile span.bs{display:block;padding:0 16px 14px;font-size:.85rem;color:var(--mute)}
+.box{border:2px solid var(--line);border-radius:18px;background:var(--soft);padding:18px}
+.mono{font-variant-numeric:tabular-nums}
+.btn{border:0;border-radius:12px;background:var(--ink);color:var(--bg);font:inherit;font-weight:900;padding:12px 22px;cursor:pointer;box-shadow:var(--shadow)}
+.btn:active{transform:translateY(2px)}
+.hid{display:none!important}
+/* password */
+.pwl{font-weight:900;font-size:1.3rem;margin:0 0 8px}
+#pw{width:100%;font:inherit;font-size:1.3rem;font-weight:700;padding:14px;border:2px solid var(--ink);border-radius:12px;background:var(--bg);color:var(--ink);resize:none;outline:none}
+.meta{display:flex;justify-content:space-between;color:var(--mute);margin:8px 2px 18px;font-size:.95rem}
+.rule{border:2px solid;border-radius:12px;padding:10px 14px;margin-bottom:10px;animation:pop .25s}
+.rule.ok{border-color:var(--ok);background:var(--okbg)}.rule.no{border-color:var(--bad);background:var(--badbg)}
+.rule h3{margin:0 0 2px;font-size:1.05rem;font-weight:900}
+.rule p{margin:0}.rule small{display:block;margin-top:4px;color:var(--mute);font-weight:700}
+@keyframes pop{from{transform:scale(.97);opacity:.4}}
+/* memory */
+#mgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.c{aspect-ratio:1;border-radius:14px;border:2px solid var(--line);background:var(--bg);font-size:clamp(1.6rem,8vw,2.6rem);display:grid;place-items:center;cursor:pointer;color:var(--mute);font-family:inherit;font-weight:900;transition:transform .2s}
+.c.up{background:var(--soft);transform:rotateY(0);color:var(--ink);border-color:var(--ink)}.c.done{border-color:var(--ok);background:var(--okbg)}
+.stats{display:flex;justify-content:space-between;margin-bottom:12px;font-weight:800}
+#rbox{height:280px;border-radius:18px;display:grid;place-items:center;text-align:center;font-size:1.7rem;font-weight:900;cursor:pointer;user-select:none;color:#111;padding:20px}
+#cw{font-size:clamp(3rem,16vw,5rem);font-weight:900;text-align:center;margin:18px 0}
+#copts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+#copts .btn{background:var(--bg);color:var(--ink);border:2px solid var(--ink)}
+.shake{animation:sh .3s}@keyframes sh{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+#win{position:fixed;inset:0;background:#000b;display:none;place-items:center;padding:18px;z-index:9}
+#win .box{max-width:420px;text-align:center;background:var(--bg);border-color:var(--ok)}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.big{font-size:6.5rem;background:none;border:0;cursor:pointer;line-height:1;margin:6px 0 14px;transition:transform .06s}.big:active{transform:scale(.88)}
+.row{display:flex;align-items:center;gap:10px;border:2px solid var(--line);border-radius:12px;padding:10px;margin-top:8px;background:var(--bg)}.row b{flex:1}
+.pill:disabled{opacity:.35;cursor:default}
+.spbar{position:sticky;top:0;z-index:2;background:var(--ok);color:#fff;border-radius:12px;padding:12px;text-align:center;font-size:1.7rem;font-weight:900;margin-bottom:8px}
+.pads{display:flex;gap:8px;justify-content:center;margin-top:12px}.pads .btn{min-width:84px;touch-action:none}
+.hint{color:var(--mute);margin:10px 0 0}
 </style>
 </head>
-<body class="p-4 sm:p-8">
-<div class="max-w-2xl mx-auto">
-  <header class="text-center mb-6">
-    <h1 class="text-4xl sm:text-5xl font-bold glow" style="color:var(--pink)">Password Arcade</h1>
-    <p class="mt-2" style="color:var(--mute)">One brutal password game, three quick games. Beat your best scores.</p>
-  </header>
-  <nav id="tabs" class="flex flex-wrap gap-2 justify-center mb-6"></nav>
+<body>
+<div class="wrap">
+  <div class="top"><button id="home" class="pill hid">← All games</button><span></span><span><button id="snd" class="pill">Sound on</button> <button id="thm" class="pill">Theme</button></span></div>
 
-  <!-- PASSWORD -->
-  <section id="g-pw">
-    <div class="panel p-4 mb-4" style="border-color:var(--violet)">
-      <div class="flex justify-between text-sm mb-2 mono" style="color:var(--mute)">
-        <span>Digits sum <b id="sum" style="color:var(--gold)">0</b></span>
-        <span>Length <b id="len" style="color:var(--cyan)">0</b></span>
-      </div>
-      <textarea id="pw" rows="3" spellcheck="false" autocomplete="off" placeholder="Type your password…" class="mono w-full p-3 rounded-lg outline-none text-lg resize-none" style="background:#0a0612;border:2px solid var(--line);color:var(--ink)"></textarea>
-      <div class="flex justify-between items-center mt-2 text-sm">
-        <span id="paul" style="color:var(--mute)"></span>
-        <span class="flex gap-3"><button id="snd" class="underline" style="color:var(--mute)">Sound on</button><button id="clr" class="underline" style="color:var(--pink)">Clear</button></span>
-      </div>
-    </div>
-    <div class="flex justify-between text-sm mb-2" style="color:var(--mute)"><span>Rules unlocked: <b id="uc" style="color:var(--lime)">1</b>/<span id="tc"></span></span><span id="st"></span></div>
-    <div id="rules" class="flex flex-col gap-2"></div>
+  <section id="s-home">
+    <h1>Password Arcade</h1>
+    <p class="sub">Six games. Zero instructions you’ll enjoy reading.</p>
+    <div class="grid" id="tiles"></div>
   </section>
 
-  <!-- MEMORY -->
-  <section id="g-mem" class="hidden">
-    <div class="panel p-4">
-      <div class="flex justify-between mono text-sm mb-3"><span>Moves <b id="mv" style="color:var(--gold)">0</b></span><span>Pairs <b id="pr" style="color:var(--lime)">0</b>/8</span><span>Best <b id="mb" style="color:var(--cyan)">–</b></span></div>
-      <div id="mgrid" class="grid grid-cols-4 gap-2"></div>
-      <button id="mnew" class="btn mt-4">New game</button>
-    </div>
+  <section id="s-pw" class="hid">
+    <h2 class="pwl">Please choose a password</h2>
+    <textarea id="pw" rows="2" spellcheck="false" autocomplete="off" aria-label="Password"></textarea>
+    <div class="meta"><span id="paul"></span><span class="mono">Length <b id="len">0</b> · <button id="clr" class="pill" style="padding:2px 10px">Clear</button></span></div>
+    <div id="rules"></div>
   </section>
 
-  <!-- REACTION -->
-  <section id="g-rx" class="hidden">
-    <div class="panel p-4">
-      <div id="rbox" class="rounded-xl grid place-items-center text-center text-xl font-bold cursor-pointer select-none" style="height:260px"></div>
-      <div class="flex justify-between mono text-sm mt-3"><span>Last <b id="rl" style="color:var(--gold)">–</b></span><span>Average (5) <b id="ra" style="color:var(--violet)">–</b></span><span>Best <b id="rb" style="color:var(--lime)">–</b></span></div>
-    </div>
-  </section>
+  <section id="s-rx" class="hid"><div class="box">
+    <div id="rbox" role="button" tabindex="0"></div>
+    <div class="stats mono" style="margin:14px 0 0"><span>Last <span id="rl">–</span></span><span>Average of 5 <span id="ra">–</span></span><span>Best <span id="rb">–</span></span></div></div></section>
 
-  <!-- COLOR CLASH -->
-  <section id="g-cc" class="hidden">
-    <div class="panel p-4 text-center">
-      <div class="flex justify-between mono text-sm mb-3"><span>Time <b id="ct" style="color:var(--cyan)">30</b></span><span>Score <b id="cs" style="color:var(--gold)">0</b></span><span>Best <b id="cb" style="color:var(--lime)">0</b></span></div>
-      <p class="text-sm mb-2" style="color:var(--mute)">Tap the name of the colour the word is painted in, not what it says.</p>
-      <div id="cw" class="text-6xl font-bold my-6 py-4">Ready?</div>
-      <div id="copts" class="grid grid-cols-2 gap-2"></div>
-      <button id="cgo" class="btn mt-4">Start</button>
-    </div>
-  </section>
+  <section id="s-sp" class="hid"><div class="box"><div id="spb" class="spbar"></div><div id="spl"></div><p style="text-align:center"><button id="spr" class="btn">Start over</button></p></div></section>
+
+  <section id="s-ck" class="hid"><div class="box" style="text-align:center"><div class="stats mono"><span>🍪 <b id="cn">0</b></span><span><span id="cps">0</span> per second</span></div><button id="cbig" class="big" aria-label="Cookie">🍪</button><div id="cu"></div></div></section>
+
+  <section id="s-fl" class="hid"><div class="box" style="text-align:center"><div class="stats mono"><span>Score <span id="fs">0</span></span><span>Best <span id="fb">0</span></span></div><canvas id="fc" width="320" height="480" style="width:100%;max-width:340px;border-radius:14px;touch-action:none"></canvas><p class="hint">Tap, click or press Space to flap.</p></div></section>
+
+  <section id="s-pl" class="hid"><div class="box" style="text-align:center"><canvas id="pc" width="480" height="270" style="width:100%;border-radius:14px"></canvas><div class="pads"><button id="bl" class="btn">◀</button><button id="br" class="btn">▶</button><button id="bj" class="btn">Jump</button></div><p class="hint">Arrow keys or WASD, Space to jump.</p></div></section>
 </div>
 
-<div id="win" class="fixed inset-0 hidden place-items-center p-4 z-50" style="background:#000c">
-  <div class="panel p-8 max-w-md w-full text-center" style="border:2px solid var(--lime)">
-    <div class="text-6xl mb-2">🏆</div>
-    <h2 class="text-3xl font-bold mb-2" style="color:var(--lime)">Password accepted</h2>
-    <p class="mb-4" style="color:var(--mute)">You satisfied all 20 rules and Paul is still alive.</p>
-    <div id="wpw" class="mono text-xs p-3 rounded-lg mb-4 break-all" style="background:#0a0612;color:var(--cyan)"></div>
-    <button id="again" class="btn w-full">Play again</button>
-  </div>
-</div>
+<div id="win"><div class="box"><div style="font-size:4rem">🏆</div><h2 style="margin:6px 0;font-size:2rem;font-weight:900">Password accepted</h2>
+<p style="color:var(--mute)">Every rule satisfied, and Paul is still alive.</p>
+<div id="wpw" style="word-break:break-all;background:var(--soft);border-radius:10px;padding:10px;margin:12px 0"></div>
+<button id="again" class="btn">Play again</button></div></div>
 
 <script>
 const $=s=>document.querySelector(s);
 const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
 let sound=true,ac=null;
-function tone(f,t='triangle',d=.15,g=.07){if(!sound)return;try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();const o=ac.createOscillator(),n=ac.createGain();o.type=t;o.frequency.value=f;n.gain.setValueAtTime(g,ac.currentTime);n.gain.exponentialRampToValueAtTime(1e-4,ac.currentTime+d);o.connect(n);n.connect(ac.destination);o.start();o.stop(ac.currentTime+d)}catch(e){}}
-const sPass=()=>{tone(587);setTimeout(()=>tone(880),80)},sFail=()=>{tone(220,'sawtooth');setTimeout(()=>tone(165,'sawtooth'),70)},sUnlock=()=>[523,659,784,1047].forEach((f,i)=>setTimeout(()=>tone(f,'sine'),i*60));
+function tone(f,t='triangle',d=.15,g=.06){if(!sound)return;try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();const o=ac.createOscillator(),n=ac.createGain();o.type=t;o.frequency.value=f;n.gain.setValueAtTime(g,ac.currentTime);n.gain.exponentialRampToValueAtTime(1e-4,ac.currentTime+d);o.connect(n);n.connect(ac.destination);o.start();o.stop(ac.currentTime+d)}catch(e){}}
+const sPass=()=>{tone(587);setTimeout(()=>tone(880),80)},sFail=()=>{tone(220,'sawtooth');setTimeout(()=>tone(165,'sawtooth'),70)},sUnlock=()=>[523,659,784].forEach((f,i)=>setTimeout(()=>tone(f,'sine'),i*60));
 $('#snd').onclick=e=>{sound=!sound;e.target.textContent=sound?'Sound on':'Sound off'};
+$('#thm').onclick=()=>{const r=document.documentElement,d=getComputedStyle(r).colorScheme==='dark';r.dataset.theme=d?'light':'dark'};
 
-// Tabs
-const GAMES=[['pw','Password','var(--pink)'],['mem','Memory','var(--cyan)'],['rx','Reaction','var(--lime)'],['cc','Colour Clash','var(--gold)']];
-GAMES.forEach(([id,n,c])=>{const b=document.createElement('button');b.className='tab';b.textContent=n;b.dataset.id=id;b.onclick=()=>show(id);b.style.setProperty('--c',c);$('#tabs').appendChild(b)});
-function show(id){GAMES.forEach(([g,,c])=>{$('#g-'+g).classList.toggle('hidden',g!==id);const t=document.querySelector(`[data-id=${g}]`);t.classList.toggle('on',g===id);t.style.background=g===id?c:'';});if(id!=='cc')ccStop();}
+/* ---- routing: only a bare #token reaches the page ---- */
+const GAMES=[['pw','Password Game','Rules get meaner. Paul needs worms.','#ffd6e7','🥚'],['rx','Reaction Test','Wait for green. Then be fast.','#d8f7c8','⚡'],['sp','Spend Elon’s Money','Try to get rid of $400 billion.','#c9f2d4','💸'],['ck','Cookie Clicker','Click. Upgrade. Click faster.','#fff0b8','🍪'],['fl','Flappy Bird','One button. Zero mercy.','#cdeeff','🐤'],['pl','Platformer','Run, jump, grab coins, dodge spikes.','#e3d9ff','🏃']];
+const tiles=$('#tiles');
+GAMES.forEach(([id,n,d,c,e])=>{const b=document.createElement('button');b.className='tile';b.innerHTML=`<div class="art" style="background:${c}">${e}</div><b>${n}</b><span class="d">${d}</span><span class="bs" id="bs-${id}"></span>`;b.onclick=()=>{location.hash=id};tiles.appendChild(b)});
+function route(){
+  const id=(location.hash||'').slice(1),g=GAMES.some(x=>x[0]===id)?id:'home';
+  ['home','pw','rx','sp','ck','fl','pl'].forEach(k=>$('#s-'+k).classList.toggle('hid',k!==g));
+  $('#home').classList.toggle('hid',g==='home');
+  cur=g;if(g==='fl')flReset();if(g==='pl')plReset(1);
+  if(g==='pw')$('#pw').focus();
+  $('#bs-fl').textContent=store.get('best-fl')?'Best: '+store.get('best-fl'):'';
+  $('#bs-rx').textContent=store.get('best-rx')?'Best: '+store.get('best-rx')+' ms':'';
+}
+$('#home').onclick=()=>{location.hash=''; history.replaceState(null,'',location.pathname+location.search);route()};
+addEventListener('hashchange',route);
 
-// ---------- PASSWORD GAME ----------
+/* ---- PASSWORD GAME ---- */
 const len=s=>Array.from(s).length;
 const moons=[['🌑','new moon'],['🌒','waxing crescent'],['🌓','first quarter'],['🌔','waxing gibbous'],['🌕','full moon'],['🌖','waning gibbous'],['🌗','last quarter'],['🌘','waning crescent']];
 const moon=(()=>{const d=(Date.now()-Date.parse('2024-01-11T11:57:00Z'))/864e5,s=29.53058867,p=((d%s)+s)%s/s;return moons[Math.floor((p+.0625)*8)%8]})();
 const digits=p=>(p.match(/\d/g)||[]).reduce((a,d)=>a+ +d,0);
-const rom=p=>(p.match(/[IVXLCDM]/g)||[]).map(c=>({I:1,V:5,X:10,L:50,C:100,D:500,M:1000})[c]);
+/* Roman numerals: each run of capital I V X L C D M is one numeral (VII = 7), and the numerals multiply */
+const rv=s=>{const m={I:1,V:5,X:10,L:50,C:100,D:500,M:1000};let t=0;for(let i=0;i<s.length;i++){const a=m[s[i]],b=m[s[i+1]]||0;t+=a<b?-a:a}return t};
+const runs=p=>p.match(/[IVXLCDM]+/g)||[];
+const prod=p=>runs(p).reduce((a,r)=>a*rv(r),1);
 const prime=n=>{if(n<2)return false;for(let i=2;i*i<=n;i++)if(n%i==0)return false;return true};
 const leap=y=>(y%4==0&&y%100!=0)||y%400==0;
 const hasPal=p=>{const a=Array.from(p.toLowerCase()).filter(c=>/[a-z0-9]/.test(c));for(let i=0;i<a.length;i++)for(let l=5;i+l<=a.length;l++){const s=a.slice(i,i+l);if(s.join('')===[...s].reverse().join(''))return s.join('')}return null};
 const YEAR=new Date().getFullYear();
 const R=[
-['Your password must be at least 5 characters.',p=>len(p)>=5,p=>`${len(p)} / 5`],
-['Include a number.',p=>/\d/.test(p),()=>'0–9'],
-['Include an uppercase letter.',p=>/[A-Z]/.test(p),()=>'A–Z'],
-['Include a special character: ! @ # $ % ^ & *',p=>/[!@#$%^&*]/.test(p),()=>'one of !@#$%^&*'],
-['The digits must add up to 25.',p=>digits(p)==25,p=>`sum ${digits(p)} / 25`],
-['Include a month of the year.',p=>/january|february|march|april|may|june|july|august|september|october|november|december/i.test(p),()=>'e.g. June'],
-['Include a Roman numeral (I V X L C D M).',p=>/[IVXLCDM]/.test(p),()=>'capitals only'],
-['Include a sponsor: PEPSI, NIKE or SHELL.',p=>/PEPSI|NIKE|SHELL/.test(p),()=>'ALL CAPS'],
-['The Roman numerals must multiply to 35.',p=>{const n=rom(p);return n.length>0&&n.reduce((a,b)=>a*b,1)==35},p=>{const n=rom(p);return n.length?`product ${n.reduce((a,b)=>a*b,1)} (V × VII). Every capital counts.`:'no Roman numerals'}],
-['Paul has hatched! Include an egg 🥚 and keep a worm 🐛 so he doesn’t starve.',p=>p.includes('🥚')&&p.includes('🐛'),p=>p.includes('🥚')?(p.includes('🐛')?'Paul is fed':'Paul is starving'):'missing the egg'],
-[`Include today’s moon phase: ${moon[0]}`,p=>p.includes(moon[0]),()=>moon[1]],
-['Include a leap year (4 digits).',p=>(p.match(/\d{4}/g)||[]).some(y=>leap(+y)),p=>{const y=p.match(/\d{4}/g);return y?y.join(', '):'e.g. 2024'}],
-['Include a colour name: red, blue, green, yellow, purple, orange or pink.',p=>/red|blue|green|yellow|purple|orange|pink/i.test(p),()=>'lowercase keeps your Roman maths safe'],
-['Your password must be at least 35 characters.',p=>len(p)>=35,p=>`${len(p)} / 35`],
-['Include a palindrome of 5+ letters or digits (like “level” or “12321”).',p=>!!hasPal(p),p=>hasPal(p)||'none found'],
-[`Include the current year (${YEAR}).`,p=>p.includes(String(YEAR)),()=>'mind that digit sum'],
-['Include a planet: mercury, venus, earth, mars, jupiter, saturn, uranus or neptune.',p=>/mercury|venus|earth|mars|jupiter|saturn|uranus|neptune/i.test(p),()=>'lowercase is safest'],
-['Include a power-up: 🔥, ⚡ or 🌈',p=>/🔥|⚡|🌈/.test(p),()=>'pick one'],
-['The total length must be a prime number.',p=>prime(len(p)),p=>`length ${len(p)} ${prime(len(p))?'is prime':'is not prime'}`],
-['The password must end with the finish flag 🏁',p=>p.endsWith('🏁'),()=>'last character']
+['Your password must be at least 5 characters.',p=>len(p)>=5,p=>`${len(p)} of 5`],
+['Your password must include a number.',p=>/\d/.test(p),()=>'Any digit, 0–9'],
+['Your password must include an uppercase letter.',p=>/[A-Z]/.test(p),()=>'A–Z'],
+['Your password must include a special character: ! @ # $ % ^ & *',p=>/[!@#$%^&*]/.test(p),()=>'One of !@#$%^&*'],
+['The digits in your password must add up to 25.',p=>digits(p)==25,p=>`Digits add up to ${digits(p)}`],
+['Your password must include a month of the year.',p=>/january|february|march|april|may|june|july|august|september|october|november|december/i.test(p),()=>'Tip: write it in lowercase. Capitals can turn into Roman numerals.'],
+['Your password must include a Roman numeral.',p=>runs(p).length>0,()=>'Capital I, V, X, L, C, D or M'],
+['Your password must include one of our sponsors: PEPSI, NIKE or IKEA.',p=>/PEPSI|NIKE|IKEA/.test(p),()=>'All caps'],
+['The Roman numerals in your password must multiply to 35.',p=>runs(p).length>0&&prod(p)==35,p=>runs(p).length?`${runs(p).map(r=>r+' ('+rv(r)+')').join(' × ')} = ${prod(p)}. Every capital letter counts, even inside a sponsor.`:'No Roman numerals yet']
+,['Paul has hatched! Include an egg 🥚 and keep a worm 🐛 in your password so he doesn’t starve.',p=>p.includes('🥚')&&p.includes('🐛'),p=>p.includes('🥚')?(p.includes('🐛')?'Paul is fed':'Paul is starving'):'Paul is still an egg']
+,[`Your password must include today’s moon phase: ${moon[0]}`,p=>p.includes(moon[0]),()=>`Tonight: ${moon[1]}`]
+,['Your password must include a leap year.',p=>(p.match(/\d{4}/g)||[]).some(y=>leap(+y)),p=>{const y=p.match(/\d{4}/g);return y?'Found: '+y.join(', '):'Four digits, like 2024'}]
+,['Your password must include a colour: red, blue, green, yellow, purple, orange or pink.',p=>/red|blue|green|yellow|purple|orange|pink/i.test(p),()=>'Lowercase keeps your Roman maths safe']
+,['Your password must be at least 35 characters.',p=>len(p)>=35,p=>`${len(p)} of 35`]
+,['Your password must include a palindrome of 5 or more characters.',p=>!!hasPal(p),p=>hasPal(p)?'Found: '+hasPal(p):'Like “level” or “12321”']
+,[`Your password must include the current year (${YEAR}).`,p=>p.includes(String(YEAR)),()=>'Watch that digit sum']
+,['Your password must include a planet: mercury, venus, earth, mars, jupiter, saturn, uranus or neptune.',p=>/mercury|venus|earth|mars|jupiter|saturn|uranus|neptune/i.test(p),()=>'Lowercase is safest']
+,['Your password must include a power-up: 🔥, ⚡ or 🌈',p=>/🔥|⚡|🌈/.test(p),()=>'Pick one']
+,['The length of your password must be a prime number.',p=>prime(len(p)),p=>`Length ${len(p)} is ${prime(len(p))?'prime':'not prime'}`]
+,['Your password must end with the finish flag 🏁',p=>p.endsWith('🏁'),()=>'It has to be the very last character']
 ];
-$('#tc').textContent=R.length;
 let unlocked=1,won=false,prev={};
 function ev(){
-  const p=$('#pw').value;
-  $('#len').textContent=len(p);$('#sum').textContent=digits(p);
-  $('#paul').textContent=p.includes('🥚')?(p.includes('🐛')?'Paul is fed 🐛':'Paul is starving…'):'';
+  const p=$('#pw').value;$('#len').textContent=len(p);
+  $('#paul').textContent=p.includes('🥚')?(p.includes('🐛')?'🐛 Paul is fed':'🥚 Paul is starving…'):'';
   while(unlocked<R.length&&R.slice(0,unlocked).every(r=>r[1](p))){unlocked++;sUnlock()}
-  $('#uc').textContent=unlocked;
   const box=$('#rules');box.innerHTML='';
   for(let i=unlocked-1;i>=0;i--){
-    const r=R[i],ok=r[1](p),h=(i*47+320)%360;
-    if(prev[i]!==undefined&&prev[i]!==ok)ok?sPass():sFail();prev[i]=ok;
-    const d=document.createElement('div');d.className='panel p-3';
-    d.style.cssText=`border-left:5px solid ${ok?'var(--lime)':'var(--pink)'};background:${ok?'#10200f66':'#2a0c1f88'}`;
-    d.innerHTML=`<div class="flex gap-3"><span class="text-xl">${ok?'✅':'❌'}</span><div><div class="font-bold" style="color:hsl(${h} 100% 70%)">Rule ${i+1}</div><div class="text-sm" style="color:var(--ink)">${r[0]}</div><div class="mono text-xs mt-1" style="color:${ok?'var(--lime)':'var(--gold)'}">${r[2](p)}</div></div></div>`;
-    box.appendChild(d);
+    const ok=R[i][1](p);if(prev[i]!==undefined&&prev[i]!==ok)ok?sPass():sFail();prev[i]=ok;
+    const d=document.createElement('div');d.className='rule '+(ok?'ok':'no');
+    d.innerHTML=`<h3>${ok?'✓':'✗'} Rule ${i+1}</h3><p>${R[i][0]}</p><small>${R[i][2](p)}</small>`;box.appendChild(d);
   }
-  const all=R.every(r=>r[1](p));
-  $('#st').innerHTML=all?'<b style="color:var(--lime)">All solved</b>':'<span style="color:var(--gold)">In progress</span>';
-  if(all&&!won){won=true;win(p)}
+  if(R.every(r=>r[1](p))&&!won){won=true;$('#wpw').textContent=p;$('#win').style.display='grid';[523,659,784,1047,1319].forEach((f,i)=>setTimeout(()=>tone(f),i*100));if(window.confetti)confetti({particleCount:200,spread:90,origin:{y:.6}})}
 }
-function win(p){$('#wpw').textContent=p;$('#win').style.display='grid';[523,659,784,1047,1319].forEach((f,i)=>setTimeout(()=>tone(f),i*100));if(window.confetti)confetti({particleCount:180,spread:80,origin:{y:.6},colors:['#ff2e93','#22e4ff','#b6ff3b','#ffc933','#9b6bff']})}
-function resetPw(){$('#pw').value='';won=false;ev();$('#pw').focus()}
-$('#pw').oninput=ev;$('#clr').onclick=resetPw;
-$('#again').onclick=()=>{$('#win').style.display='none';unlocked=1;prev={};resetPw()};
+function resetPw(){$('#pw').value='';won=false;unlocked=1;prev={};ev();$('#pw').focus()}
+$('#pw').oninput=ev;$('#clr').onclick=resetPw;$('#again').onclick=()=>{$('#win').style.display='none';resetPw()};
 
-// ---------- MEMORY ----------
-let mFirst=null,mLock=false,moves=0,pairs=0;
-function mInit(){
-  const e=['🦄','🍕','🚀','🎧','🐙','🌵','👾','🍩'];const deck=[...e,...e].sort(()=>Math.random()-.5);
-  moves=pairs=0;mFirst=null;mLock=false;$('#mv').textContent=0;$('#pr').textContent=0;
-  $('#mb').textContent=store.get('best-mem')||'–';
-  const g=$('#mgrid');g.innerHTML='';
-  deck.forEach((em,i)=>{const c=document.createElement('button');c.className='card';c.style.background='linear-gradient(135deg,#2d1f4d,#1a1030)';c.textContent='?';c.dataset.e=em;c.dataset.h=(i*53)%360;c.onclick=()=>mFlip(c);g.appendChild(c)});
-}
-function mFlip(c){
-  if(mLock||c.dataset.done||c===mFirst)return;
-  c.textContent=c.dataset.e;c.style.background=`hsl(${c.dataset.h} 80% 30%)`;tone(500+c.dataset.h*1.5,'sine',.1);
-  if(!mFirst){mFirst=c;return}
-  moves++;$('#mv').textContent=moves;
-  if(mFirst.dataset.e===c.dataset.e){
-    [mFirst,c].forEach(x=>{x.dataset.done=1;x.style.borderColor='var(--lime)'});sPass();mFirst=null;$('#pr').textContent=++pairs;
-    if(pairs==8){const b=+store.get('best-mem')||999;if(moves<b){store.set('best-mem',moves);$('#mb').textContent=moves}if(window.confetti)confetti({particleCount:120,spread:70})}
-  }else{
-    mLock=true;const a=mFirst;mFirst=null;
-    setTimeout(()=>{[a,c].forEach(x=>{x.textContent='?';x.style.background='linear-gradient(135deg,#2d1f4d,#1a1030)'});mLock=false},700);
-  }
-}
-$('#mnew').onclick=mInit;
-
-// ---------- REACTION ----------
-let rs='idle',rt=0,rto=null,rhist=[];
-const rb=$('#rbox');
-function rSet(txt,bg,fg){rb.innerHTML=txt;rb.style.background=bg;rb.style.color=fg||'#0a0612'}
-function rIdle(){rs='idle';rSet('Tap to start','var(--violet)')}
-rb.onclick=()=>{
-  if(rs==='idle'){rs='wait';rSet('Wait for green…','var(--pink)');rto=setTimeout(()=>{rs='go';rt=performance.now();rSet('TAP NOW!','var(--lime)')},1500+Math.random()*3000)}
-  else if(rs==='wait'){clearTimeout(rto);rs='idle';rSet('Too soon! Tap to try again','var(--gold)');sFail()}
+/* ---- REACTION ---- */
+let rs='idle',rt=0,rto=null,rhist=[];const rb=$('#rbox');
+function rSet(t,bg){rb.innerHTML=t;rb.style.background=bg}
+function rIdle(){rs='idle';rSet('Tap to start','#ffd6e7')}
+function rTap(){
+  if(rs==='idle'){rs='wait';rSet('Wait for green…','#ff9fb0');rto=setTimeout(()=>{rs='go';rt=performance.now();rSet('TAP NOW!','#5be37d')},1500+Math.random()*3000)}
+  else if(rs==='wait'){clearTimeout(rto);rs='idle';rSet('Too soon! Tap to try again','#ffe08a');sFail()}
   else if(rs==='go'){
     const ms=Math.round(performance.now()-rt);rs='idle';rhist.push(ms);if(rhist.length>5)rhist.shift();
     $('#rl').textContent=ms+' ms';$('#ra').textContent=Math.round(rhist.reduce((a,b)=>a+b)/rhist.length)+' ms';
     const b=+store.get('best-rx')||9999;if(ms<b){store.set('best-rx',ms);$('#rb').textContent=ms+' ms'}
-    rSet(`${ms} ms<br><span class="text-sm">Tap to go again</span>`,'var(--cyan)');sPass();
+    rSet(`${ms} ms<br><small>Tap to go again</small>`,'#a8e6ff');sPass();
   }
-};
+}
+rb.onclick=rTap;rb.onkeydown=e=>{if(e.key===' '||e.key==='Enter'){e.preventDefault();rTap()}};
 $('#rb').textContent=store.get('best-rx')?store.get('best-rx')+' ms':'–';
 
-// ---------- COLOUR CLASH ----------
-const CC=[['Red','#ff3b5c'],['Blue','#3b8bff'],['Green','#3bff8a'],['Yellow','#ffd93b'],['Purple','#b46bff'],['Orange','#ff8a3b']];
-let cInt=null,cScore=0,cTime=30,cAns='';
-const cBest=()=>+store.get('best-cc')||0;
-$('#cb').textContent=cBest();
-function ccStop(){clearInterval(cInt);cInt=null}
-function ccNext(){
-  const w=CC[Math.floor(Math.random()*6)];let ink;do{ink=CC[Math.floor(Math.random()*6)]}while(ink===w);
-  cAns=ink[0];const el=$('#cw');el.textContent=w[0];el.style.color=ink[1];
-  const opts=[ink,...CC.filter(c=>c!==ink).sort(()=>Math.random()-.5).slice(0,3)].sort(()=>Math.random()-.5);
-  $('#copts').innerHTML='';
-  opts.forEach(o=>{const b=document.createElement('button');b.className='btn';b.style.cssText='background:#241640;color:var(--ink);border:1px solid var(--line)';b.textContent=o[0];b.onclick=()=>ccPick(o[0],b);$('#copts').appendChild(b)});
+/* ---- SPEND ELON'S MONEY ---- */
+let cur='home';
+const EL=[['🍔','Big Mac',2],['📺','Netflix for a year',180],['📱','iPhone',1000],['🚗','Tesla Model S',95000],['🏠','Mansion',12e6],['🚀','Rocket launch',67e6],['🛥️','Superyacht',300e6],['✈️','Boeing 747',420e6],['🛳️','Cruise ship',1.2e9],['🏟️','Stadium',2.5e9],['🚢','Aircraft carrier',13e9],['🐦','A social network',44e9]];
+const BUD=400e9;let q=EL.map(()=>0);
+const fm=n=>'$'+Math.round(n).toLocaleString('en-US');
+function spRender(){
+  const left=BUD-EL.reduce((a,e,i)=>a+e[2]*q[i],0);
+  $('#spb').textContent=left>0?fm(left)+' left':'You did it. $0 left!';
+  $('#spl').innerHTML='';
+  EL.forEach((e,i)=>{const r=document.createElement('div');r.className='row';
+    r.innerHTML=`<span style="font-size:2rem">${e[0]}</span><b>${e[1]}<br><small style="color:var(--mute)">${fm(e[2])}</small></b><button class="pill" ${q[i]?'':'disabled'}>−</button><span class="mono" style="min-width:2.5ch;text-align:center">${q[i]}</span><button class="pill" ${e[2]>left?'disabled':''}>+</button>`;
+    const [m,p]=r.querySelectorAll('button');m.onclick=()=>{q[i]--;sPass();spRender()};p.onclick=()=>{q[i]++;tone(700,'sine',.08);spRender()};$('#spl').appendChild(r)});
+  if(left<1&&window.confetti)confetti({particleCount:150,spread:80});
 }
-function ccPick(n,b){
-  if(!cInt)return;
-  if(n===cAns){cScore++;sPass()}else{cScore=Math.max(0,cScore-1);sFail();$('#cw').classList.remove('shake');void $('#cw').offsetWidth;$('#cw').classList.add('shake')}
-  $('#cs').textContent=cScore;ccNext();
-}
-$('#cgo').onclick=()=>{
-  ccStop();cScore=0;cTime=30;$('#cs').textContent=0;$('#ct').textContent=30;$('#cgo').textContent='Restart';ccNext();
-  cInt=setInterval(()=>{$('#ct').textContent=--cTime;if(cTime<=0){ccStop();$('#cw').textContent=`Score ${cScore}`;$('#cw').style.color='var(--cyan)';$('#copts').innerHTML='';
-    if(cScore>cBest()){store.set('best-cc',cScore);$('#cb').textContent=cScore;$('#cw').textContent=`New best: ${cScore}!`;if(window.confetti)confetti({particleCount:100,spread:70})}}},1000);
-};
+$('#spr').onclick=()=>{q=EL.map(()=>0);spRender()};spRender();
 
-mInit();rIdle();show('pw');ev();$('#pw').focus();
+/* ---- COOKIE CLICKER ---- */
+let ck=JSON.parse(store.get('ck')||'null')||{n:0,own:[0,0,0,0,0]};
+const CU=[['👆','Stronger finger','+1 per click',15,0],['👵','Grandma','1 per second',100,1],['🌾','Farm','8 per second',1100,8],['🏭','Factory','47 per second',12000,47],['🚀','Rocket lab','260 per second',130000,260]];
+const cost=i=>Math.ceil(CU[i][3]*1.15**ck.own[i]);
+const cpsF=()=>CU.reduce((a,u,i)=>i?a+u[4]*ck.own[i]:a,0);
+function ckRender(){
+  $('#cn').textContent=Math.floor(ck.n).toLocaleString();$('#cps').textContent=cpsF().toLocaleString();
+  $('#cu').innerHTML='';
+  CU.forEach((u,i)=>{const b=document.createElement('button');b.className='row';b.style.cssText='width:100%;font:inherit;color:inherit;text-align:left;cursor:pointer';b.disabled=ck.n<cost(i);if(b.disabled)b.style.opacity=.5;
+    b.innerHTML=`<span style="font-size:2rem">${u[0]}</span><b>${u[1]} <small style="color:var(--mute)">(${ck.own[i]}) ${u[2]}</small></b><span class="mono">🍪 ${cost(i).toLocaleString()}</span>`;
+    b.onclick=()=>{if(ck.n>=cost(i)){ck.n-=cost(i);ck.own[i]++;sUnlock();ckRender()}};$('#cu').appendChild(b)});
+}
+$('#cbig').onclick=()=>{ck.n+=1+ck.own[0];tone(400+Math.random()*200,'sine',.05);$('#cn').textContent=Math.floor(ck.n).toLocaleString()};
+setInterval(()=>{ck.n+=cpsF()/10;if(cur==='ck')ckRender()},100);
+setInterval(()=>store.set('ck',JSON.stringify(ck)),4000);ckRender();
+
+/* ---- FLAPPY BIRD ---- */
+const fc=$('#fc'),fx=fc.getContext('2d');let F,fBest=+store.get('best-fl')||0;
+function flReset(){F={y:220,v:0,p:[],s:0,t:0,on:0,dead:0};$('#fs').textContent=0;$('#fb').textContent=fBest}
+function flap(){if(F.dead){if(F.t>25)flReset();return}F.on=1;F.v=-7;tone(600,'square',.06)}
+function die(){F.dead=1;F.t=0;sFail();if(F.s>fBest){fBest=F.s;store.set('best-fl',fBest);$('#fb').textContent=fBest}}
+fc.onpointerdown=flap;flReset();
+function fl(){
+  if(F.on&&!F.dead){F.v+=.42;F.y+=F.v;F.t++;if(F.t%85==1)F.p.push({x:330,g:110+Math.random()*220,s:0});
+    F.p.forEach(o=>{o.x-=2.4;if(!o.s&&o.x+50<70){o.s=1;F.s++;$('#fs').textContent=F.s;sPass()}if(92>o.x&&68<o.x+50&&(F.y-12<o.g-60||F.y+12>o.g+60))die()});
+    F.p=F.p.filter(o=>o.x>-60);if(F.y>450||F.y<0)die()}else if(F.dead)F.t++;
+  fx.fillStyle='#70c5ce';fx.fillRect(0,0,320,480);
+  F.p.forEach(o=>{fx.fillStyle='#4fb94f';fx.fillRect(o.x,0,50,o.g-60);fx.fillRect(o.x,o.g+60,50,480);fx.fillStyle='#2e8b2e';fx.fillRect(o.x-3,o.g-76,56,16);fx.fillRect(o.x-3,o.g+60,56,16)});
+  fx.fillStyle='#ded895';fx.fillRect(0,455,320,25);
+  fx.fillStyle='#ffd23f';fx.beginPath();fx.arc(80,F.y,13,0,7);fx.fill();fx.fillStyle='#fff';fx.beginPath();fx.arc(85,F.y-4,4,0,7);fx.fill();fx.fillStyle='#111';fx.fillRect(86,F.y-5,2,2);fx.fillStyle='#ff7a1a';fx.fillRect(90,F.y+1,9,5);
+  fx.fillStyle='#fff';fx.font='900 28px Nunito,sans-serif';fx.textAlign='center';
+  if(!F.on)fx.fillText('Tap to start',160,150);if(F.dead)fx.fillText('Game over: '+F.s,160,150);
+}
+
+/* ---- PLATFORMER ---- */
+const pc=$('#pc'),px=pc.getContext('2d');
+const PL=[[0,240,500],[580,240,300],[940,200,120],[1120,160,120],[1300,240,400],[1760,200,100],[1920,160,100],[2080,240,420]];
+const SPK=[700,1400,1480];let CO,pp,pwin,K={};
+function plReset(full){pp={x:40,y:200,vx:0,vy:0,on:0};if(full){pwin=0;CO=[[620,200],[980,160],[1160,120],[1350,200],[1790,160],[1950,120],[2200,200]].map(c=>({x:c[0],y:c[1],t:0}))}}
+const hit=(x,y,w,h)=>pp.x+18>x&&pp.x<x+w&&pp.y+24>y&&pp.y<y+h;
+function pl(){
+  if(!pwin){
+    const d=(K.r?1:0)-(K.l?1:0);pp.vx=d*3;pp.vy+=.5;
+    if(K.j&&pp.on){pp.vy=-9.5;tone(500,'square',.08)}
+    pp.x=Math.max(0,pp.x+pp.vx);PL.forEach(([x,y,w])=>{if(hit(x,y,w,30))pp.x-=pp.vx});
+    pp.y+=pp.vy;pp.on=0;PL.forEach(([x,y,w])=>{if(hit(x,y,w,30)){if(pp.vy>0){pp.y=y-24;pp.on=1}else pp.y=y+30;pp.vy=0}});
+    if(pp.y>320||SPK.some(x=>hit(x,230,24,10))){sFail();plReset(0)}
+    CO.forEach(c=>{if(!c.t&&hit(c.x-8,c.y-8,16,16)){c.t=1;sPass()}});
+    if(pp.x>2420){pwin=1;sUnlock();if(window.confetti)confetti({particleCount:120,spread:70})}
+  }else if(K.j)plReset(1);
+  const cx=Math.min(Math.max(pp.x-200,0),2020);
+  px.fillStyle='#8fd3ff';px.fillRect(0,0,480,270);px.save();px.translate(-cx,0);
+  PL.forEach(([x,y,w])=>{px.fillStyle='#8a5a2b';px.fillRect(x,y,w,30);px.fillStyle='#3fae4a';px.fillRect(x,y,w,8)});
+  px.fillStyle='#555';SPK.forEach(x=>{for(let i=0;i<3;i++){px.beginPath();px.moveTo(x+i*8,240);px.lineTo(x+i*8+4,228);px.lineTo(x+i*8+8,240);px.fill()}});
+  CO.forEach(c=>{if(!c.t){px.fillStyle='#ffd23f';px.beginPath();px.arc(c.x,c.y,7,0,7);px.fill()}});
+  px.fillStyle='#fff';px.fillRect(2420,170,4,70);px.fillStyle='#e5384f';px.fillRect(2424,170,26,16);
+  px.fillStyle='#ff4d6d';px.fillRect(pp.x,pp.y,18,24);px.fillStyle='#fff';px.fillRect(pp.x+10,pp.y+5,5,5);
+  px.restore();px.fillStyle='#111';px.font='900 18px Nunito,sans-serif';px.textAlign='left';px.fillText('Coins '+CO.filter(c=>c.t).length+'/'+CO.length,12,24);
+  if(pwin){px.textAlign='center';px.font='900 30px Nunito,sans-serif';px.fillText('Level complete! Jump to replay',240,130)}
+}
+plReset(1);
+const kmap={ArrowLeft:'l',a:'l',ArrowRight:'r',d:'r',' ':'j',ArrowUp:'j',w:'j'};
+addEventListener('keydown',e=>{if(cur==='fl'&&(e.key===' '||e.key==='ArrowUp')){e.preventDefault();flap()}if(cur==='pl'&&kmap[e.key]){e.preventDefault();K[kmap[e.key]]=1}});
+addEventListener('keyup',e=>{if(kmap[e.key])K[kmap[e.key]]=0});
+[['bl','l'],['br','r'],['bj','j']].forEach(([id,k])=>{const b=$('#'+id);b.onpointerdown=e=>{e.preventDefault();K[k]=1};['pointerup','pointerleave','pointercancel'].forEach(ev=>b.addEventListener(ev,()=>K[k]=0))});
+(function tick(){if(cur==='fl')fl();if(cur==='pl')pl();requestAnimationFrame(tick)})();
+rIdle();ev();route();
 </script>
 </body>
 </html>
